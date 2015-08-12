@@ -7,17 +7,19 @@ public class Card : MonoBehaviour {
 	
 	public Lerper myPosition;
 
-    public Player myOwningPlayer;
+    public HandScript myHandScript;
 	
 	// Use this for initialization
 	void Start () {
-		myPosition = new Lerper();
+		
+        myPosition = new Lerper();
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        myPosition.Reanimate(Position(1), 2.0f);
+        myPosition.Reanimate(Position(myHandScript ? myHandScript.CountCards() : 1), 2.0f);
 
 		transform.localPosition = myPosition.Lerp();
 		
