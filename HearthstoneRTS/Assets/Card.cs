@@ -6,6 +6,8 @@ public class Card : MonoBehaviour {
 	public int myHandIndex;
 	
 	public Lerper myPosition;
+
+    public Player myOwningPlayer;
 	
 	// Use this for initialization
 	void Start () {

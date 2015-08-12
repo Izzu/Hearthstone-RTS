@@ -15,7 +15,6 @@ public class Lerper : Clocker {
 
 	public Vector3 Lerp ()
 	{
-		Debug.Log(IsActive() ? "true" : "false");
 		return IsActive() ? Vector3.Lerp(myLocation, myDestination, Percent()) : myDestination;
 	}
 
@@ -26,7 +25,6 @@ public class Lerper : Clocker {
 		if(0.0f > inTIME)
 		{
             Stop();
-            Debug.Log("0.0f > inTIME\n");
 			
 			return false;
 			
@@ -35,7 +33,6 @@ public class Lerper : Clocker {
 			myDestination = inPOSITION;
 
             Set(inTIME);
-            Debug.Log("Animating.\n");
 			
 			return true;
 			
@@ -46,10 +43,7 @@ public class Lerper : Clocker {
 		
 		if (myDestination == inPOSITION) {
 			
-            Debug.Log("myDestination == input\n");
-			
 			return false;
-			
 			
 		} else {
 			
