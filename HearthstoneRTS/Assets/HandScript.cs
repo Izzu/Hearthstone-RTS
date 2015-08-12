@@ -3,22 +3,10 @@ using System.Collections;
 
 public class HandScript : MonoBehaviour {
 
-    public Player myOwningPlayer;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-
+    public PlayerScript myOwningPlayer;
 
     public int CountCards()
     {
-        return transform.childCount;
+        return transform.GetComponentsInChildren<CardScript>().Length;
     }
 }

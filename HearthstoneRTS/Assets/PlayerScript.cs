@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Player : MonoBehaviour {
+public class PlayerScript : MonoBehaviour {
 
 	public string myName;
 
@@ -41,26 +41,26 @@ public class Player : MonoBehaviour {
 
 		Vector2 screenPosition = new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
 		
-		if (mouseMovement.x > 0.0f && screenPosition.x > 0.95f) {
+		if (screenPosition.x > 0.95f) {
 			//moving EAST
 			
 			transform.Translate(myPanningFactor, 0.0f, 0.0f);
 
 
-		} else if(mouseMovement.x < 0.0f && screenPosition.x < 0.05f) {
+		} else if(screenPosition.x < 0.05f) {
 			//moving WEST
 			
 			transform.Translate(-myPanningFactor, 0.0f, 0.0f);
 
 		}
 		
-		if (mouseMovement.y > 0.0f && screenPosition.y > 0.95f) {
+		if (screenPosition.y > 0.95f) {
 			//moving NORTH
 			
 			transform.Translate(0.0f, 0.0f, myPanningFactor);
 
 
-		} else if(mouseMovement.y < 0.0f && screenPosition.y < 0.05f) {
+		} else if(screenPosition.y < 0.05f) {
 			//moving SOUTH
 			
 			transform.Translate(0.0f, 0.0f, -myPanningFactor);
