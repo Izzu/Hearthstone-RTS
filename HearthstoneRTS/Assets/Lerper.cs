@@ -23,17 +23,19 @@ public class Lerper : Clocker {
 	{
 		myLocation = Lerp();
 
-		if(myLocation == inPOSITION || 0.0f < inTIME)
+		if(0.0f > inTIME)
 		{
-			Stop();
+            Stop();
+            Debug.Log("0.0f > inTIME\n");
 			
 			return false;
 			
 		} else {
 			
 			myDestination = inPOSITION;
-			
-			Set(inTIME);
+
+            Set(inTIME);
+            Debug.Log("Animating.\n");
 			
 			return true;
 			
@@ -44,7 +46,7 @@ public class Lerper : Clocker {
 		
 		if (myDestination == inPOSITION) {
 			
-			Stop();
+            Debug.Log("myDestination == input\n");
 			
 			return false;
 			
