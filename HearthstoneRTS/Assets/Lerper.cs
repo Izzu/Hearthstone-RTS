@@ -15,10 +15,11 @@ public class Lerper : Clocker {
 
 	public Vector3 Lerp ()
 	{
+		Debug.Log(IsActive() ? "true" : "false");
 		return IsActive() ? Vector3.Lerp(myLocation, myDestination, Percent()) : myDestination;
 	}
 
-	public bool Reanimate (Vector3 inPOSITION, float inTIME)
+	public bool Animate (Vector3 inPOSITION, float inTIME)
 	{
 		myLocation = Lerp();
 
@@ -39,7 +40,7 @@ public class Lerper : Clocker {
 		}
 	}
 	
-	public bool Animate (Vector3 inPOSITION, float inTIME) {
+	public bool Reanimate (Vector3 inPOSITION, float inTIME) {
 		
 		if (myDestination == inPOSITION) {
 			
@@ -50,7 +51,7 @@ public class Lerper : Clocker {
 			
 		} else {
 			
-			return Reanimate(inPOSITION, inTIME);
+			return Animate(inPOSITION, inTIME);
 			
 		}
 		

@@ -5,17 +5,19 @@ public class Card : MonoBehaviour {
 
 	public int myHandIndex;
 	
-	public Lerper myPosition = new Lerper();
+	public Lerper myPosition;
 	
 	// Use this for initialization
 	void Start () {
-		
+		myPosition = new Lerper();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-		transform.position = myPosition.Lerp();
+
+        myPosition.Reanimate(Position(1), 1.0f);
+
+		transform.localPosition = myPosition.Lerp();
 		
 	}
 	
