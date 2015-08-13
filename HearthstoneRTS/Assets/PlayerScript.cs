@@ -11,13 +11,18 @@ public class PlayerScript : MonoBehaviour {
 
 	private Vector3 myMouseLastPosition;
 
+	public HandScript myHandScript;
+
 	void Start () {
-	
+
 	}
 	
 	void Update () {
 
-		Panning (Input.mousePosition - myMouseLastPosition);
+		//Panning (Input.mousePosition - myMouseLastPosition);
+
+		//GameObject card = Instantiate(Resources.Load("Card")) as GameObject;
+		//GiftCard(card.GetComponent<CardScript>());
 
 		myMouseLastPosition = Input.mousePosition;
 
@@ -54,6 +59,24 @@ public class PlayerScript : MonoBehaviour {
 
 		}
 
+	}
+
+	bool GiftCard (CardScript input)
+	{
+		if(myHandScript)
+		{
+			return myHandScript.InsertCard(input);
+		}
+		return false;
+	}
+
+	CardScript BurnCard (int index)
+	{
+		if (myHandScript)
+		{
+			return myHandScript.RemoveCard(myHandScript.GetCard(index));
+		}
+		return null;
 	}
 	
 }
