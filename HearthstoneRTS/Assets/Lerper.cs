@@ -18,6 +18,16 @@ public class Lerper : Clocker {
 		return IsActive() ? Vector3.Lerp(myLocation, myDestination, Percent()) : myDestination;
 	}
 
+	public Lerper Reposition (Vector3 input)
+	{
+		myLocation = input;
+		myDestination = input;
+
+		Stop();
+
+		return this;
+	}
+
 	public bool Animate (Vector3 inPOSITION, float inTIME)
 	{
 		myLocation = Lerp();
