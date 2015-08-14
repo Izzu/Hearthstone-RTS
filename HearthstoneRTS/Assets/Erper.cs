@@ -26,7 +26,7 @@ public class Erper : Clocker {
 		return IsActive() ? Erp(myBegin, myEnd, Percent()) : myEnd;
 	}
 
-	public Erper Set (float input)
+	public Erper Reset (float input)
 	{
 		myBegin = input;
 		myEnd = input;

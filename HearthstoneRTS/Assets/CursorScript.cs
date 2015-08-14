@@ -24,7 +24,7 @@ public class CursorScript : MonoBehaviour
 	// Update is called once per frame
 	void Update () {
 
-		//Panning (Input.mousePosition - myMouseLastPosition);
+		Panning (Input.mousePosition - myMouseLastPosition);
 
 		myMouseLastPosition = Input.mousePosition;
 
@@ -40,26 +40,26 @@ public class CursorScript : MonoBehaviour
 
 		Vector2 screenPosition = new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
 
-		if (screenPosition.x > 0.95f)
+		if (screenPosition.x > 0.975f)
 		{
 			//moving EAST
 			transform.Translate(myPanningFactor, 0.0f, 0.0f);
 
 		}
-		else if (screenPosition.x < 0.05f)
+		else if (screenPosition.x < 0.025f)
 		{
 			//moving WEST
 			transform.Translate(-myPanningFactor, 0.0f, 0.0f);
 
 		}
 
-		if (screenPosition.y > 0.95f)
+		if (screenPosition.y > 0.975f)
 		{
 			//moving NORTH
 			transform.Translate(0.0f, 0.0f, myPanningFactor);
 
 		}
-		else if (screenPosition.y < 0.05f)
+		else if (screenPosition.y < 0.025f)
 		{
 			//moving SOUTH
 			transform.Translate(0.0f, 0.0f, -myPanningFactor);

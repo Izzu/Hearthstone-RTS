@@ -55,7 +55,7 @@ public class CardScript : MonoBehaviour {
 	{
 		transform.position = Camera.main.ScreenToWorldPoint(myHandScript.myOwningPlayer.myCurserScript.Cursor());
 
-		myPosition.Set(transform.localPosition);
+		myPosition.Reset(transform.localPosition);
 	}
 
 	void OnMouseEnter()
@@ -80,9 +80,9 @@ public class CardScript : MonoBehaviour {
 	{
 		myHandScript.myOwningPlayer.myCurserScript.myCardScript = null;
 
-		myPosition.Set(transform.localPosition).Animate(myHandScript.CardPosition(this), .2f);
+		myPosition.Reset(transform.localPosition).Animate(myHandScript.CardPosition(this), .2f);
 
-		myRotation.Set(transform.localRotation).Animate(myHandScript.CardRotation(this), .2f);
+		myRotation.Reset(transform.localRotation).Animate(myHandScript.CardRotation(this), .2f);
 	}
 
 }
