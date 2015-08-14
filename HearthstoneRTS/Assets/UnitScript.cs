@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class UnitScript : MonoBehaviour {
 
 	private string myName;
 	

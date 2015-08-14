@@ -13,6 +13,23 @@ public class CardScript : MonoBehaviour {
 
     public HandScript myHandScript;
 
+	private RenderTexture myRenderTexture = new RenderTexture(300, 400, 0);
+
+	private Camera myCamera = new Camera();
+
+	private Material myMaterial = new Material(Shader.Find("Diffuse"));
+
+	void Start()
+	{
+		myRenderTexture.isPowerOfTwo = false;
+
+		myRenderTexture.Create();
+
+		myCamera.targetTexture = myRenderTexture;
+
+		renderer.material.SetTexture("0", myRenderTexture);
+	}
+
 	// Update is called once per frame
 	void Update () {
 
