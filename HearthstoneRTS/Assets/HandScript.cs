@@ -7,7 +7,7 @@ public class HandScript : MonoBehaviour {
 
     public int myCardCapacity = 10;
 
-	static private Vector3 ourDifference = new Vector3(1.8f, 0.0f, 0.0f);
+	public float myOffset = 2.0f;
 
     public int CountCards()
     {
@@ -39,9 +39,9 @@ public class HandScript : MonoBehaviour {
 
 			foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
 			{
-				cardScript.myPosition.Reanimate(
-					CardPosition(cardScript.myHandIndex, cardCount),
-					0.2f);
+				cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount), 0.2f);
+
+				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount), 0.2f);
 			}
 
             return true;
@@ -68,9 +68,25 @@ public class HandScript : MonoBehaviour {
         return null;
     }
 
+	public Quaternion CardRotation(int cardIndex, int cardCount)
+	{
+		return Quaternion.Euler(0f, 0f, cardCount > 5 ? 
+			Erper.Erp(
+				60f,
+				-60f,
+				(cardIndex + 1f) / (cardCount + 1f)):
+			0f);
+	}
+
+	public Quaternion CardRotation(CardScript input)
+	{
+		return CardRotation(input.myHandIndex, CountCards());
+	}
+
 	public Vector3 CardPosition(int cardIndex, int cardCount)
 	{
-		return Vector3.Lerp(-ourDifference, ourDifference, (1.0f + cardIndex) / (1.0f + cardCount));
+		Vector3 offset = new Vector3(myOffset, 0f, -.1f);
+		return Vector3.Lerp(-offset, offset, (1.0f + cardIndex) / (1.0f + cardCount));
 	}
 
 	public Vector3 CardPosition(CardScript input)

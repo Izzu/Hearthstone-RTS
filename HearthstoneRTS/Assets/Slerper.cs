@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//moves a vector 3 through time
-public class Lerper : Clocker {
+public class Slerper : Clocker {
 
-	private Vector3 myBegin, myEnd;
-	
-	public Lerper(Vector3 inPOSITION = new Vector3()) {
+	private Quaternion myBegin, myEnd;
+
+	public Slerper(Quaternion inPOSITION = new Quaternion())
+	{
 		
 		myBegin = inPOSITION;
 		
@@ -14,12 +14,12 @@ public class Lerper : Clocker {
 		
 	}
 
-	public Vector3 Lerp ()
+	public Quaternion Slerp ()
 	{
-		return IsActive() ? Vector3.Lerp(myBegin, myEnd, Percent()) : myEnd;
+		return IsActive() ? Quaternion.Slerp(myBegin, myEnd, Percent()) : myEnd;
 	}
 
-	public Lerper Set (Vector3 input)
+	public Slerper Set(Quaternion input)
 	{
 		myBegin = input;
 		myEnd = input;
@@ -29,9 +29,9 @@ public class Lerper : Clocker {
 		return this;
 	}
 
-	public bool Animate (Vector3 inPOSITION, float inTIME)
+	public bool Animate (Quaternion inPOSITION, float inTIME)
 	{
-		myBegin = Lerp();
+		myBegin = Slerp();
 
 		if(0.0f > inTIME)
 		{
@@ -50,7 +50,7 @@ public class Lerper : Clocker {
 		}
 	}
 	
-	public bool Reanimate (Vector3 inPOSITION, float inTIME) {
+	public bool Reanimate (Quaternion inPOSITION, float inTIME) {
 		
 		if (myEnd == inPOSITION) {
 			
@@ -64,4 +64,4 @@ public class Lerper : Clocker {
 		
 	}
 
-};
+}

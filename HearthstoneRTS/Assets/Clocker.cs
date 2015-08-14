@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//keeps track of two times and the time lapse between them
 public class Clocker {
 
 	private float myBegin;

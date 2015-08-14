@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//moves a vector 3 through time
-public class Lerper : Clocker {
 
-	private Vector3 myBegin, myEnd;
+//moves a float through time
+public class Erper : Clocker {
 	
-	public Lerper(Vector3 inPOSITION = new Vector3()) {
+	private float myBegin, myEnd;
+
+	public Erper(float inPOSITION = 0.0f)
+	{
 		
 		myBegin = inPOSITION;
 		
@@ -14,12 +16,17 @@ public class Lerper : Clocker {
 		
 	}
 
-	public Vector3 Lerp ()
+	public static float Erp(float a, float b, float t)
 	{
-		return IsActive() ? Vector3.Lerp(myBegin, myEnd, Percent()) : myEnd;
+		return a + t * (b - a);
 	}
 
-	public Lerper Set (Vector3 input)
+	public float Erp ()
+	{
+		return IsActive() ? Erp(myBegin, myEnd, Percent()) : myEnd;
+	}
+
+	public Erper Set (float input)
 	{
 		myBegin = input;
 		myEnd = input;
@@ -29,9 +36,9 @@ public class Lerper : Clocker {
 		return this;
 	}
 
-	public bool Animate (Vector3 inPOSITION, float inTIME)
+	public bool Animate (float inPOSITION, float inTIME)
 	{
-		myBegin = Lerp();
+		myBegin = Erp();
 
 		if(0.0f > inTIME)
 		{
@@ -50,7 +57,7 @@ public class Lerper : Clocker {
 		}
 	}
 	
-	public bool Reanimate (Vector3 inPOSITION, float inTIME) {
+	public bool Reanimate (float inPOSITION, float inTIME) {
 		
 		if (myEnd == inPOSITION) {
 			
@@ -63,5 +70,4 @@ public class Lerper : Clocker {
 		}
 		
 	}
-
-};
+}
