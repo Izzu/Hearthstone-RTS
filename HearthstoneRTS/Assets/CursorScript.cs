@@ -8,7 +8,7 @@ public class CursorScript : MonoBehaviour
 
 	private Vector3 myTransformScreenPoint;
 
-	private Vector3 myScreenToTransformOffset;
+	//private Vector3 myScreenToTransformOffset;
 
 	public CardScript myCardScript = null;
 
@@ -66,6 +66,8 @@ public class CursorScript : MonoBehaviour
 
 		}
 
+		Debug.Log(screenPosition.y);
+
 	}
 
 	//screen point
@@ -73,7 +75,7 @@ public class CursorScript : MonoBehaviour
 	{
 		myTransformScreenPoint = Camera.main.WorldToScreenPoint(intransform.position);
 
-		myScreenToTransformOffset = intransform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, myTransformScreenPoint.z));
+		//myScreenToTransformOffset = intransform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, myTransformScreenPoint.z));
 
 		return myTransformScreenPoint;
 	}

@@ -3,17 +3,16 @@ using System.Collections;
 
 public class UnitScript : MonoBehaviour {
 
-	private string myName;
-	
 	private int myHealth, myDamage, myOffense, myDefense;
 	
 	void Start () {
-	
+		
 	}
 	
 	public void Damage (int input) {
+
 		myDamage += input;
-		
+
 		Checkup();
 	}
 	
@@ -21,7 +20,9 @@ public class UnitScript : MonoBehaviour {
 		
 	}
 	
-	//void Update () {}
+	void Update () {
+		
+	}
 	
 	
 }

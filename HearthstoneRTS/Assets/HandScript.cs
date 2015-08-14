@@ -5,6 +5,8 @@ public class HandScript : MonoBehaviour {
 
     public PlayerScript myOwningPlayer;
 
+	public QuadScript myQuadScript;
+
     public int myCardCapacity = 10;
 
 	public float myOffset = 2.0f;

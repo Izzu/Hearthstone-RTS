@@ -17,7 +17,7 @@ public class CardScript : MonoBehaviour {
 
 	private Camera myCamera = new Camera();
 
-	private Material myMaterial = new Material(Shader.Find("Diffuse"));
+
 
 	void Start()
 	{
@@ -48,7 +48,7 @@ public class CardScript : MonoBehaviour {
 
 		mySize.Animate(new Vector3(.5f, .75f, .01f), .2f);
 
-		myRotation.Animate(Quaternion.Euler(30f, 0f, 0f), 0.2f);
+		myRotation.Animate(Quaternion.Euler(0f, 0f, 0f), 0.2f);
 	}
  
 	void OnMouseDrag ()
@@ -80,9 +80,25 @@ public class CardScript : MonoBehaviour {
 	{
 		myHandScript.myOwningPlayer.myCurserScript.myCardScript = null;
 
+		if (Input.mousePosition.y / Screen.height > .2f)
+		{
+			mySize.Reset(new Vector3(0f, 0f, 0f));
+
+			return;
+		}
+
 		myPosition.Reset(transform.localPosition).Animate(myHandScript.CardPosition(this), .2f);
 
 		myRotation.Reset(transform.localRotation).Animate(myHandScript.CardRotation(this), .2f);
+
+	}
+
+	private int myCostMana = 0;
+
+	public int CostMana
+	{
+		get { return myCostMana; }
+		set { myCostMana = value; }
 	}
 
 }
