@@ -10,7 +10,7 @@ public class CreditsButton : MonoBehaviour {
     {
         GUI.skin = MenuButtons;
 
-        if(GUI.Button(new Rect(385,410,120,50), "Credits", "button"))
+        if (GUI.Button(new Rect((Screen.width / 2) - (Screen.width / 29) - (Screen.height / 29), (Screen.height / 3) + (Screen.height / 8) + (Screen.width / 18), (Screen.height + Screen.width) / 13, (Screen.width + Screen.height) / 30), "Credits", "button"))
         {
             maincamera.transform.Rotate(Vector3.left * 180f);
         }
