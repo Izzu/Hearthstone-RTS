@@ -17,7 +17,9 @@ public class CardScript : MonoBehaviour {
 
 	private Camera myCamera = new Camera();
 
-
+	private delegate int myPlayEffect(Message inMessage);
+	private delegate int myDiscardEffect(Message inMessage);
+	private delegate int myDrawEffect(Message inMessage);
 
 	void Start()
 	{
@@ -40,7 +42,38 @@ public class CardScript : MonoBehaviour {
 		transform.localScale = mySize.Lerp();
 	}
 	
-	void OnMouseDown ()
+	void OnMouseDrag ()
+	{
+		transform.position = Camera.main.ScreenToWorldPoint(myHandScript.myOwningPlayer.myCurserScript.Cursor());
+
+		myPosition.Reset(transform.localPosition);
+	}
+
+	void OnMouseEnter()
+	{
+		if (myHandScript.myOwningPlayer.myCurserScript.myCardScript != this)
+		{
+			myRotation.Animate(Quaternion.Euler(0f, 0f, 0f), .2f);
+
+			myPosition.Animate(myHandScript.CardPosition(this) + new Vector3(0f, .5f, -.1f), .2f);
+
+			mySize.Animate(new Vector3(1f, 1.5f, .01f), .2f);
+		}
+	}
+
+	void OnMouseExit()
+	{
+		if (myHandScript.myOwningPlayer.myCurserScript.myCardScript != this)
+		{
+			myRotation.Animate(myHandScript.CardRotation(this), .2f);
+
+			myPosition.Animate(myHandScript.CardPosition(this), .2f);
+
+			mySize.Animate(new Vector3(.5f, .75f, .01f), .2f);
+		}
+	}
+
+	void OnMouseDown()
 	{
 		myHandScript.myOwningPlayer.myCurserScript.myCardScript = this;
 
@@ -51,31 +84,6 @@ public class CardScript : MonoBehaviour {
 		myRotation.Animate(Quaternion.Euler(0f, 0f, 0f), 0.2f);
 	}
  
-	void OnMouseDrag ()
-	{
-		transform.position = Camera.main.ScreenToWorldPoint(myHandScript.myOwningPlayer.myCurserScript.Cursor());
-
-		myPosition.Reset(transform.localPosition);
-	}
-
-	void OnMouseEnter()
-	{
-		myRotation.Animate(Quaternion.Euler(0f, 0f, 0f), .2f);
-
-		myPosition.Animate(myHandScript.CardPosition(this) + new Vector3(0f, .5f, -.1f), .2f);
-
-		mySize.Animate(new Vector3(1f, 1.5f, .01f), .2f);
-	}
-
-	void OnMouseExit()
-	{
-		myRotation.Animate(myHandScript.CardRotation(this), .2f);
-
-		myPosition.Animate(myHandScript.CardPosition(this), .2f);
-
-		mySize.Animate(new Vector3(.5f, .75f, .01f), .2f);
-	}
-
 	void OnMouseUp ()
 	{
 		myHandScript.myOwningPlayer.myCurserScript.myCardScript = null;

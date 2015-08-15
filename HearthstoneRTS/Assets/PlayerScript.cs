@@ -20,7 +20,10 @@ public class PlayerScript : MonoBehaviour {
 		if (Input.GetKey("down"))
 		{
 			GameObject card = Instantiate(Resources.Load("Card")) as GameObject;
-			GiftCard(card.GetComponent<CardScript>());
+			if(false == GiftCard(card.GetComponent<CardScript>()))
+			{
+				Object.Destroy(card);
+			}
 		}
 
 	}
