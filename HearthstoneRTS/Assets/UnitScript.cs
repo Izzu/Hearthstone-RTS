@@ -45,6 +45,10 @@ public class UnitScript : MonoBehaviour {
 		{
 			color.g = 1f;
 		}
+		if(myOwningPlayer.myCurserScript.myUnitScript == this)
+		{
+			color.r = 1f;
+		}
 
 		transform.renderer.material.color = color;
 
