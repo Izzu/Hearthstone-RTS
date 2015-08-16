@@ -27,6 +27,7 @@ public class UnitScript : MonoBehaviour {
 	void Update () {
 
 		myScreenPosition = Camera.main.WorldToScreenPoint(this.transform.position);
+
 		//should actually check with all players to see if it's on screen but w/e
 		if(ScreenCheck(new Rect(0f, 0f, Screen.width, Screen.height)))
 		{
@@ -41,7 +42,7 @@ public class UnitScript : MonoBehaviour {
 		{
 			color.b = 1f;
 		}
-		if(myOwningPlayer.myCurserScript.mySelectedUnits.Contains(this))
+		if (myOwningPlayer.mySelectionScript.mySelectedUnits.Contains(this))
 		{
 			color.g = 1f;
 		}
@@ -61,24 +62,26 @@ public class UnitScript : MonoBehaviour {
 
 	void OnMouseUp()
 	{
+		myOwningPlayer.myCurserScript.myUnitScript = null;
+
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 
-		if (Physics.Raycast(ray, out hit, 10f))
+		if (Physics.Raycast(ray, out hit, myOwningPlayer.myCurserScript.myRayLength))
 		{
 			if(hit.transform == this.transform)
 			{
 				if (Input.GetKey("left shift"))
 				{
-					myOwningPlayer.myCurserScript.mySelectedUnits.Add(this);
+					myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
 				} else {
-					myOwningPlayer.myCurserScript.mySelectedUnits.Clear();
-					myOwningPlayer.myCurserScript.mySelectedUnits.Add(this);
+					myOwningPlayer.mySelectionScript.mySelectedUnits.Clear();
+					myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
+
 				}
 			}
 		}
 		
-		myOwningPlayer.myCurserScript.myUnitScript = null;
 		
 	}
 

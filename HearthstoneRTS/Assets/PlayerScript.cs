@@ -9,7 +9,11 @@ public class PlayerScript : MonoBehaviour {
 
 	public HandScript myHandScript;
 
+	public PanningScript myPanningScript;
+
 	public CursorScript myCurserScript;
+
+	public SelectionScript mySelectionScript = null;
 
 	void Start () {
 
