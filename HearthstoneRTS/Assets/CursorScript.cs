@@ -20,6 +20,15 @@ public class CursorScript : MonoBehaviour
 	public float myRayLength = 100f;
 
 	private float myLastClickTime = -1f;
+
+	private float myLastDoubleClickTime = -1f;
+
+	public float LastDoubleClickTime
+	{
+		get { return myLastDoubleClickTime;  }
+	}
+
+	public float myDoubleClickWait = .5f;
 	
 	// Use this for initialization
 	void Start () {
@@ -60,16 +69,20 @@ public class CursorScript : MonoBehaviour
 
 		if(Input.GetMouseButtonDown(0))
 		{
-			if(DoubleClick())
+			if (DoubleClick())
 			{
+				myLastDoubleClickTime = Time.time;
+
 				if (Input.GetKey("left shift"))
 				{
 					myPlayerScript.mySelectionScript.mySelectedUnits.UnionWith(myOnScreenUnits);
-				} else {
+				}
+				else
+				{
 					myPlayerScript.mySelectionScript.mySelectedUnits = new HashSet<UnitScript>(myOnScreenUnits);
-				}				
+				}
 			}
-
+			
 			myLastClickTime = Time.time;
 		}
 
@@ -91,7 +104,7 @@ public class CursorScript : MonoBehaviour
 
 	public bool DoubleClick()
 	{
-		return Time.time - myLastClickTime < 1f;
+		return Time.time - myLastClickTime < myDoubleClickWait;
 	}
 
 }

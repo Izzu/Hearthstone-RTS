@@ -67,21 +67,23 @@ public class UnitScript : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 
-		if (Physics.Raycast(ray, out hit, myOwningPlayer.myCurserScript.myRayLength))
+		if (Time.time - myOwningPlayer.myCurserScript.LastDoubleClickTime > myOwningPlayer.myCurserScript.myDoubleClickWait)
 		{
-			if(hit.transform == this.transform)
+			if (Physics.Raycast(ray, out hit, myOwningPlayer.myCurserScript.myRayLength))
 			{
-				if (Input.GetKey("left shift"))
+				if(hit.transform == this.transform)
 				{
-					myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
-				} else {
-					myOwningPlayer.mySelectionScript.mySelectedUnits.Clear();
-					myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
+					if (Input.GetKey("left shift"))
+					{
+						myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
+					} else {
+						myOwningPlayer.mySelectionScript.mySelectedUnits.Clear();
+						myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
 
+					}
 				}
 			}
 		}
-		
 		
 	}
 
