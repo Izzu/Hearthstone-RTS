@@ -18,6 +18,8 @@ public class CursorScript : MonoBehaviour
 	public PlayerScript myPlayerScript;
 
 	public float myRayLength = 100f;
+
+	private float myLastClickTime = -1f;
 	
 	// Use this for initialization
 	void Start () {
@@ -26,7 +28,6 @@ public class CursorScript : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-
 		
 		if(myCardScript)
 		{
@@ -57,14 +58,27 @@ public class CursorScript : MonoBehaviour
 			}
 		}
 
+		if(Input.GetMouseButtonDown(0))
+		{
+			if(DoubleClick())
+			{
+				if (Input.GetKey("left shift"))
+				{
+					myPlayerScript.mySelectionScript.mySelectedUnits.UnionWith(myOnScreenUnits);
+				} else {
+					myPlayerScript.mySelectionScript.mySelectedUnits = new HashSet<UnitScript>(myOnScreenUnits);
+				}				
+			}
+
+			myLastClickTime = Time.time;
+		}
+
 	}
 
 	//screen point
 	public Vector3 CursorDown (Transform intransform)
 	{
 		myTransformScreenPoint = Camera.main.WorldToScreenPoint(intransform.position);
-
-		//myScreenToTransformOffset = intransform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, myTransformScreenPoint.z));
 
 		return myTransformScreenPoint;
 	}
@@ -75,5 +89,9 @@ public class CursorScript : MonoBehaviour
 		return new Vector3(Input.mousePosition.x, Input.mousePosition.y, myTransformScreenPoint.z);
 	}
 
+	public bool DoubleClick()
+	{
+		return Time.time - myLastClickTime < 1f;
+	}
 
 }
