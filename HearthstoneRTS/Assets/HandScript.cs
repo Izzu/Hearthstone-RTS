@@ -5,7 +5,7 @@ public class HandScript : MonoBehaviour {
 
     public PlayerScript myOwningPlayer;
 
-	public QuadScript myQuadScript;
+	//public QuadScript myQuadScript;
 
     public int myCardCapacity = 10;
 

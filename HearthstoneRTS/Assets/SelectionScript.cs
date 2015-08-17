@@ -84,7 +84,7 @@ public class SelectionScript : MonoBehaviour {
 
 			foreach (UnitScript unit in FindObjectsOfType<UnitScript>())
 			{
-				if (unit.ScreenCheck(selectionRect))
+				if (unit.myOwningPlayer == myPlayerScript && unit.ScreenCheck(selectionRect))
 				{
 					mySelectedUnits.Add(unit);
 				}

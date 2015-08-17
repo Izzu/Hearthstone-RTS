@@ -79,7 +79,7 @@ public class CardScript : MonoBehaviour {
 
 		myHandScript.myOwningPlayer.myCurserScript.CursorDown(transform);
 
-		mySize.Animate(new Vector3(.5f, .75f, .01f), .2f);
+		mySize.Animate(new Vector3(.25f, .375f, .01f), .2f);
 
 		myRotation.Animate(Quaternion.Euler(0f, 0f, 0f), 0.2f);
 	}

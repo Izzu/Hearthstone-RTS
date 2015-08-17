@@ -8,6 +8,8 @@ public class UnitScript : MonoBehaviour {
 	private Vector3 myScreenPosition;
 
 	public PlayerScript myOwningPlayer;
+
+	public UnitScript myTargetUnit;
 	
 	void Start () {
 		

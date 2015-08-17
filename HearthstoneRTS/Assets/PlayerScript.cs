@@ -13,7 +13,9 @@ public class PlayerScript : MonoBehaviour {
 
 	public CursorScript myCurserScript;
 
-	public SelectionScript mySelectionScript = null;
+	public SelectionScript mySelectionScript;
+
+	public UnitScript myHeroUnitScript;
 
 	void Start () {
 
@@ -21,14 +23,17 @@ public class PlayerScript : MonoBehaviour {
 	
 	void Update () {
 
-		if (Input.GetKey("down"))
-		{
-			GameObject card = Instantiate(Resources.Load("Card")) as GameObject;
-			if(false == GiftCard(card.GetComponent<CardScript>()))
-			{
-				Object.Destroy(card);
-			}
-		}
+		
+
+	}
+
+	public void TurnBegin()
+	{
+
+	}
+
+	public void TurnEnd()
+	{
 
 	}
 
