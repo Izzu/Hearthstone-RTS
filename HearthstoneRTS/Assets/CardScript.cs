@@ -29,7 +29,7 @@ public class CardScript : MonoBehaviour {
 
 		myCamera.targetTexture = myRenderTexture;
 
-		renderer.material.SetTexture("0", myRenderTexture);
+		//renderer.material.SetTexture("0", myRenderTexture);
 	}
 
 	// Update is called once per frame

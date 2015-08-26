@@ -32,12 +32,26 @@ public class SelectionScript : MonoBehaviour {
 
 				if (Physics.Raycast(ray, out hit, myPlayerScript.myCurserScript.myRayLength))
 				{
-					foreach (UnitScript unit in mySelectedUnits)
+					
+					UnitScript targetUnit = hit.transform.GetComponent<UnitScript>();
+					if (null != targetUnit
+						&& targetUnit.myOwningPlayer != myPlayerScript)
 					{
-						unit.GetComponent<NavMeshAgent>().destination = hit.point;
+						foreach (UnitScript unit in mySelectedUnits)
+						{
+							unit.myTargetUnit = targetUnit;
+						}
+					}
+					else
+					{
+						foreach (UnitScript unit in mySelectedUnits)
+						{
+							unit.GetComponent<NavMeshAgent>().destination = hit.point;
+						}
 					}
 				}
 			}
+
 		}
 
 	}

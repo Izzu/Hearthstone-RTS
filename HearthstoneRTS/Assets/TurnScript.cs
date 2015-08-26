@@ -49,7 +49,6 @@ public class TurnScript : MonoBehaviour {
 	
 		if(Time.time > myTurnoverTime)
 		{
-
 			myCurrentPlayer = Next;
 
 			myTurnoverTime = Time.time + myTurnTime;
