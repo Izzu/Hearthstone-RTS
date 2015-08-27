@@ -92,23 +92,27 @@ public class UnitScript : MonoBehaviour {
 		}
 		else //idle
 		{
-			const float aggroRange = 5f;
-			UnitScript closestUnitScript = null;
-			float min = aggroRange;
-			//find enemies
-			foreach(UnitScript unitScript in GlobalScript.ourUnitScripts)
+			if (null != GlobalScript.ourUnitScripts)
 			{
-				if(unitScript.myOwningPlayer != myOwningPlayer)
+				const float aggroRange = 5f;
+				UnitScript closestUnitScript = null;
+				float min = aggroRange;
+
+				//find enemies
+				foreach (UnitScript unitScript in GlobalScript.ourUnitScripts)
 				{
-					float dist = (unitScript.transform.position - thisPosition).magnitude;
-					if (dist < aggroRange)
+					if (unitScript.myOwningPlayer != myOwningPlayer)
 					{
-						min = dist;
-						closestUnitScript = unitScript;
+						float dist = (unitScript.transform.position - thisPosition).magnitude;
+						if (dist < aggroRange)
+						{
+							min = dist;
+							closestUnitScript = unitScript;
+						}
 					}
 				}
+				myTargetUnit = closestUnitScript;
 			}
-			myTargetUnit = closestUnitScript;
 		}
 
 		transform.GetComponent<Renderer>().material.color = color;

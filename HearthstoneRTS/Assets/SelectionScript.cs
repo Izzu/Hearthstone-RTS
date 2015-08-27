@@ -96,11 +96,14 @@ public class SelectionScript : MonoBehaviour {
 				Mathf.Max(mySelectionBegin.x, mySelectionEnd.x) - left,
 				Mathf.Max(mySelectionBegin.y, mySelectionEnd.y) - screentop);
 
-			foreach (UnitScript unit in GlobalScript.ourUnitScripts)
+			if (null != GlobalScript.ourUnitScripts)
 			{
-				if (unit.myOwningPlayer == myPlayerScript && unit.ScreenCheck(selectionRect))
+				foreach (UnitScript unit in GlobalScript.ourUnitScripts)
 				{
-					mySelectedUnits.Add(unit);
+					if (unit.myOwningPlayer == myPlayerScript && unit.ScreenCheck(selectionRect))
+					{
+						mySelectedUnits.Add(unit);
+					}
 				}
 			}
 
