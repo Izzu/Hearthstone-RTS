@@ -86,7 +86,7 @@ public class UnitScript : MonoBehaviour {
 				GetComponent<NavMeshAgent>().destination = myTargetUnit.transform.position;
 			}
 		}
-		else if(GetComponent<NavMeshAgent>().isPathStale)
+		else if(GetComponent<NavMeshAgent>().hasPath)
 		{
 
 		}
