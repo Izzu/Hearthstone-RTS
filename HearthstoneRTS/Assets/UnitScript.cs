@@ -14,7 +14,7 @@ public class UnitScript : MonoBehaviour {
 	public PlayerScript myOwningPlayer;
 
 	public UnitScript myTargetUnit;
-	
+
 	void Start () {
 		
 	}
@@ -96,7 +96,7 @@ public class UnitScript : MonoBehaviour {
 			UnitScript closestUnitScript = null;
 			float min = aggroRange;
 			//find enemies
-			foreach(UnitScript unitScript in FindObjectsOfType<UnitScript>())
+			foreach(UnitScript unitScript in GlobalScript.ourUnitScripts)
 			{
 				if(unitScript.myOwningPlayer != myOwningPlayer)
 				{

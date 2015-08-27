@@ -19,7 +19,7 @@ public class TurnScript : MonoBehaviour {
 			
 			bool found = false;
 			PlayerScript first = null;
-			foreach (PlayerScript player in Object.FindObjectsOfType<PlayerScript>())
+			foreach (PlayerScript player in GlobalScript.ourPlayerScripts)
 			{
 				if (null == first)
 				{

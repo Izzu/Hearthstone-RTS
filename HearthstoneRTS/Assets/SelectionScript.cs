@@ -96,7 +96,7 @@ public class SelectionScript : MonoBehaviour {
 				Mathf.Max(mySelectionBegin.x, mySelectionEnd.x) - left,
 				Mathf.Max(mySelectionBegin.y, mySelectionEnd.y) - screentop);
 
-			foreach (UnitScript unit in FindObjectsOfType<UnitScript>())
+			foreach (UnitScript unit in GlobalScript.ourUnitScripts)
 			{
 				if (unit.myOwningPlayer == myPlayerScript && unit.ScreenCheck(selectionRect))
 				{
