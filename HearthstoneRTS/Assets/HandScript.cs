@@ -35,9 +35,7 @@ public class HandScript : MonoBehaviour {
         {
             input.myHandIndex = CountCards();
 
-            input.transform.parent = transform;
-
-            input.myHandScript = this;
+			input.myHandScript = this;
 
 			foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
 			{
@@ -51,7 +49,6 @@ public class HandScript : MonoBehaviour {
         return false;
     }
 
-    //returns the success of the removal
     public CardScript RemoveCard(CardScript input)
     {
         if (input.transform.IsChildOf(transform))
@@ -63,7 +60,7 @@ public class HandScript : MonoBehaviour {
                     cardScript.myHandIndex--;
                 }
             }
-            input.transform.parent = null;
+            input.myHandScript = null;
 
             return input;
         }

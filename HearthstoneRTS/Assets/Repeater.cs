@@ -32,9 +32,9 @@ public class Repeater {
 		return true;
 	}
 
-	public float Cycle()
+	public int Cycle()
 	{
-		return (Time.time - myBegin) / myLength;
+		return (int)((Time.time - myBegin) / myLength);
 	}
          
 	public float Percent ()

@@ -11,11 +11,38 @@ public class CardScript : MonoBehaviour {
 
 	public Slerper myRotation = new Slerper();
 
-    public HandScript myHandScript;
+	public HandScript myHandScript
+	{
+		get 
+		{ 
+			return transform.parent.GetComponent<HandScript>(); 
+		}
 
-	private RenderTexture myRenderTexture = new RenderTexture(300, 400, 0);
+		set
+		{
+			transform.parent = value.transform;
+		}
+	}
 
-	private Camera myCamera = new Camera();
+	public DeckScript myDeckScript
+	{
+		get
+		{
+			return transform.parent.GetComponent<DeckScript>();
+		}
+
+		set
+		{
+			DeckScript deckScript = value;
+
+			transform.parent = null;
+			
+			if (null != deckScript)
+			{
+				transform.parent = deckScript.transform;
+			}
+		}
+	}
 
 	private delegate int myPlayEffect(Message inMessage);
 	private delegate int myDiscardEffect(Message inMessage);
@@ -23,13 +50,6 @@ public class CardScript : MonoBehaviour {
 
 	void Start()
 	{
-		myRenderTexture.isPowerOfTwo = false;
-
-		myRenderTexture.Create();
-
-		myCamera.targetTexture = myRenderTexture;
-
-		//renderer.material.SetTexture("0", myRenderTexture);
 	}
 
 	// Update is called once per frame

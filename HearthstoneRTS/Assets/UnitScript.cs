@@ -71,7 +71,7 @@ public class UnitScript : MonoBehaviour {
 			}
 		}
 
-		if(null != myTargetUnit)
+		if (PhaseScript.IsAggressive() && null != myTargetUnit)
 		{
 			if ((thisPosition - myTargetUnit.transform.position).magnitude < myRange + (myTargetUnit.transform.localScale.magnitude * 0.5f) + (transform.localScale.magnitude * 0.5f)) 
 			{
@@ -104,7 +104,7 @@ public class UnitScript : MonoBehaviour {
 					if (unitScript.myOwningPlayer != myOwningPlayer)
 					{
 						float dist = (unitScript.transform.position - thisPosition).magnitude;
-						if (dist < aggroRange)
+						if (dist < aggroRange && dist < min)
 						{
 							min = dist;
 							closestUnitScript = unitScript;

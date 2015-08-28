@@ -17,6 +17,8 @@ public class PlayerScript : MonoBehaviour {
 
 	public UnitScript myHeroUnitScript;
 
+	public DeckScript myDeckScript;
+
 	void Start () {
 
 	}
@@ -25,34 +27,6 @@ public class PlayerScript : MonoBehaviour {
 
 		
 
-	}
-
-	public void TurnBegin()
-	{
-
-	}
-
-	public void TurnEnd()
-	{
-
-	}
-
-	bool GiftCard (CardScript input)
-	{
-		if(myHandScript)
-		{
-			return myHandScript.InsertCard(input);
-		}
-		return false;
-	}
-
-	CardScript BurnCard (int index)
-	{
-		if (myHandScript)
-		{
-			return myHandScript.RemoveCard(myHandScript.GetCard(index));
-		}
-		return null;
 	}
 	
 }
