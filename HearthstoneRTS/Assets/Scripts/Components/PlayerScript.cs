@@ -27,14 +27,63 @@ public class PlayerScript : MonoBehaviour {
 
 	}
 
-	public Message.Term ToTerm (CardScript inCardScript = null)
+	public Message.Term ToTerm ()
 	{
-		return new Message.Term(this, inCardScript, myHeroUnitScript, null != myHeroUnitScript ? myHeroUnitScript.transform.position : transform.position);
+		Message.Term term = null == myHeroUnitScript ? new Message.Term(this, null, null, transform.position) : myHeroUnitScript.ToTerm();
+
+		term.myPlayerScript = this;
+		
+		return term;
 	}
 	
-	public Message ToMessage (CardScript inCardScript = null)
+	public Message ToMessage ()
 	{
-		//return new Message(ToTerm(inCardScript), null == myHeroUnitScript ? new Message.Term() : null == myHeroUnitScript.myTargetUnit ? new Message.Term() : myHeroUnitScript.myTargetUnit.myOwningPlayerToTerm(null));
+		//no hero
+		if(myHeroUnitScript)
+		{
+			return myHeroUnitScript.ToMessage();
+		}
+		//player has a hero
+		else
+		{
+			//finding another player
+			foreach (PlayerScript playerScript in GlobalScript.ourPlayerScripts)
+			{
+				if (playerScript != this)
+				{
+					return new Message(ToTerm(), playerScript.ToTerm());
+				}
+			}
+
+			//no player found, be null
+			return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero));
+		}
+	}
+
+	public PlayerScript Draw(CardScript drawCardScript = null)
+	{
+		drawCardScript = myDeckScript.RemoveCard();
+
+		if (drawCardScript)
+		{
+			myHandScript.InsertCard(drawCardScript);
+		}
+
+		return this;
+	}
+
+	public PlayerScript AddMana (int input)
+	{
+		myMana += input;
+
+		return this;
+	}
+
+	public PlayerScript SubMana(int input)
+	{
+		myMana -= input;
+
+		return this;
 	}
 
 }

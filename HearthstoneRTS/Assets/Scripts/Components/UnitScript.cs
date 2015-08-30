@@ -15,6 +15,8 @@ public class UnitScript : MonoBehaviour {
 
 	public UnitScript myTargetUnit;
 
+	public CardScript myCardScript;
+
 	void Start () {
 		
 	}
@@ -139,8 +141,6 @@ public class UnitScript : MonoBehaviour {
 
 	}
 
-	
-
 	void OnMouseDown()
 	{
 		GlobalScript.ourCursorScript.myUnitScript = this;
@@ -188,5 +188,23 @@ public class UnitScript : MonoBehaviour {
 
 		GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), (myHealth - myDamage).ToString());
 	}
-	
+
+	public Message.Term ToTerm()
+	{
+		return new Message.Term(myOwningPlayer, myCardScript, this, transform.position);
+	}
+
+	public Message ToMessage()
+	{
+		//has a target
+		if(myTargetUnit)
+		{
+			return new Message(ToTerm(), myTargetUnit.ToTerm()); 
+		}
+		//doesn't have a target
+		{
+			return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero)); 
+		}
+	}
+
 }

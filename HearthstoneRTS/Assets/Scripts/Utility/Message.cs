@@ -21,7 +21,6 @@ public class Message {
 			myPlayerScript = inPlayerScript;
 			myPosition = inposition;
 		}
-
 	}
 
 	public Message(Term inSubject, Term inObject)

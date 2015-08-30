@@ -30,23 +30,33 @@ public class HandScript : MonoBehaviour {
 
     public bool InsertCard(CardScript input)
     {
-        int cardCount = CountCards();
-        if (cardCount < myCardCapacity)
-        {
-            input.myHandIndex = CountCards();
+		if (input)
+		{
 
-			input.myHandScript = this;
+			EffectMethods.methods[(int)input.myInsertEffect](myOwningPlayer.ToMessage());
 
-			foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
+			int cardCount = CountCards();
+			if (cardCount < myCardCapacity)
 			{
-				cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount + 1), 1f);
+				input.myHandIndex = CountCards();
 
-				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount + 1), .5f);
+				input.myHandScript = this;
+
+				foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
+				{
+					cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount + 1), 1f);
+
+					cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount + 1), .5f);
+				}
+
+				return true;
 			}
-
-            return true;
-        }
-        return false;
+			else
+			{
+				EffectMethods.methods[(int)input.myRemoveEffect](myOwningPlayer.ToMessage());
+			}
+		}
+		return false;
     }
 
     public CardScript RemoveCard(CardScript input)
@@ -60,7 +70,10 @@ public class HandScript : MonoBehaviour {
                     cardScript.myHandIndex--;
                 }
             }
-            input.myHandScript = null;
+
+			EffectMethods.methods[(int)input.myRemoveEffect](myOwningPlayer.ToMessage());
+			
+			input.myHandScript = null;
 
             return input;
         }

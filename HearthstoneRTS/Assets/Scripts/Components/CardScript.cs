@@ -11,16 +11,22 @@ public class CardScript : MonoBehaviour {
 
 	public Slerper myRotation = new Slerper();
 
+	public EffectMethods.Enum myPlayEffect;
+	public EffectMethods.Enum myInsertEffect;
+	public EffectMethods.Enum myRemoveEffect;
+
 	public HandScript myHandScript
 	{
 		get 
-		{ 
-			return transform.parent.GetComponent<HandScript>(); 
+		{
+			return transform.parent ? transform.parent.GetComponent<HandScript>() : null; 
 		}
 
 		set
 		{
-			transform.parent = value.transform;
+			HandScript handScript = value;
+
+			transform.parent = handScript ? handScript.transform : null;
 		}
 	}
 
@@ -44,24 +50,6 @@ public class CardScript : MonoBehaviour {
 		}
 	}
 
-	public delegate int MethodEffect(Message inMessage);
-
-	public MethodEffect myPlayEffect;
-	public MethodEffect myDrawEffect;
-	public MethodEffect myDiscardEffect;
-
-	public static int ManaEffect (Message input)
-	{
-		input.mySubject.myPlayerScript.myMana++;
-
-		return 0;
-	}
-
-	void Start()
-	{
-		myPlayEffect = ManaEffect;
-	}
-
 	// Update is called once per frame
 	void Update () {
 
@@ -74,7 +62,9 @@ public class CardScript : MonoBehaviour {
 	
 	void OnMouseDrag ()
 	{
-		if(null != myHandScript && myHandScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		HandScript handScript = myHandScript;
+
+		if (null != handScript && handScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
 		{
 			transform.position = Camera.main.ScreenToWorldPoint(GlobalScript.ourCursorScript.Cursor());
 
@@ -96,11 +86,13 @@ public class CardScript : MonoBehaviour {
 
 	void OnMouseExit()
 	{
-		if (GlobalScript.ourCursorScript.myCardScript != this)
-		{
-			myRotation.Animate(myHandScript.CardRotation(this), .2f);
+		HandScript handScript = myHandScript;
 
-			myPosition.Animate(myHandScript.CardPosition(this), .2f);
+		if (handScript && GlobalScript.ourCursorScript.myCardScript != this)
+		{
+			myRotation.Animate(handScript.CardRotation(this), .2f);
+
+			myPosition.Animate(handScript.CardPosition(this), .2f);
 
 			mySize.Animate(new Vector3(.5f, .75f, .01f), .2f);
 		}
@@ -110,9 +102,10 @@ public class CardScript : MonoBehaviour {
 	{
 		GlobalScript.ourCursorScript.myCardScript = this;
 
-		if (null != myHandScript && myHandScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
-		{
+		HandScript handScript = myHandScript;
 
+		if (null != handScript && handScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		{
 			GlobalScript.ourCursorScript.CursorDown(transform);
 
 			mySize.Animate(new Vector3(.25f, .375f, .01f), .2f);
@@ -124,17 +117,44 @@ public class CardScript : MonoBehaviour {
 	void OnMouseUp ()
 	{
 		GlobalScript.ourCursorScript.myCardScript = null;
+		
+		//store handscript because it's not free
+		HandScript handScript = myHandScript;
 
-		if (null != myHandScript && myHandScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		PlayerScript playerScript = handScript.myOwningPlayer;
+
+		//check if card is main player's
+		if (handScript && playerScript == GlobalScript.ourGlobalScript.myMainPlayerScript)
 		{
+
+			//card must be over 20% of the screen to be used
 			Debug.Log(Input.mousePosition.y / Screen.height);
 			if (Input.mousePosition.y / Screen.height > .2f)
 			{
+				//get cost of card
 				int manaCost = CostMana;
-				if(manaCost > myHandScript.myOwningPlayer.myMana)
+
+				//if player has enough
+				if (manaCost <= playerScript.myMana)
 				{
-					//myPlayEffect(new Message(new Message.Term(), new Message.Term()));
+
+					//pay cost
+					playerScript.SubMana(manaCost);
+
+					handScript.RemoveCard(this);
+
+					Message message = playerScript.ToMessage();
+
+					EffectMethods.methods[(int)myPlayEffect](message);
+
+					Destroy(gameObject);
 				}
+				else
+				{
+					Debug.Log("Card: " + gameObject.name + " uses " + manaCost + " mana.");
+				}
+
+				return;
 			}
 
 			myPosition.Reset(transform.localPosition).Animate(myHandScript.CardPosition(this), .2f);

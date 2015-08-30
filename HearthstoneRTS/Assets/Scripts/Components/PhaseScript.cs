@@ -27,12 +27,7 @@ public class PhaseScript : MonoBehaviour {
 
 					foreach(PlayerScript playerScript in GlobalScript.ourPlayerScripts)
 					{
-						CardScript cardScript = playerScript.myDeckScript.RemoveCard();
-
-						if (null != cardScript)
-						{
-							playerScript.myHandScript.InsertCard(cardScript);
-						}
+						playerScript.Draw();
 					}
 
 					Debug.Log("BEGIN");
@@ -72,9 +67,13 @@ public class PhaseScript : MonoBehaviour {
 							if (null != playerScript
 								&& null != playerScript.myDeckScript)
 							{
-								GameObject gameobject = Instantiate(Resources.Load("Prefabs/Card")) as GameObject;
+								Object prefab = Resources.Load("Prefabs/Card");
+
+								GameObject gameobject = Instantiate(prefab) as GameObject;
 
 								CardScript cardScript = gameobject.GetComponent<CardScript>();
+
+								cardScript.gameObject.name = prefab.name;
 
 								if (null != cardScript)
 								{
