@@ -13,9 +13,11 @@ public class CursorScript : MonoBehaviour
 
 	public UnitScript myUnitScript = null;
 
-	public HashSet<UnitScript> myOnScreenUnits = new HashSet<UnitScript>();
+	public DeckScript myDeckScript = null;
 
-	public PlayerScript myPlayerScript;
+	public HashSet<UnitScript> myOnScreenOwnedUnitScripts = new HashSet<UnitScript>();
+
+	public HashSet<UnitScript> myOnScreenUnownedUnitScripts = new HashSet<UnitScript>();
 
 	public float myRayLength = 100f;
 
@@ -37,20 +39,39 @@ public class CursorScript : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+
+		PlayerScript mainPlayerScript = GlobalScript.ourGlobalScript.myMainPlayerScript;
 		
+		//move cursor's card
 		if(myCardScript)
 		{
 			myCardScript.transform.position = Camera.main.ScreenToWorldPoint(Cursor());
 		}
 
-		if (myUnitScript == null && myCardScript == null)
+		//deck uninspection
+		if(null != myDeckScript)
 		{
-			myPlayerScript.mySelectionScript.Selection();
+			if(Input.GetMouseButtonUp(0))
+			{
+				DeckScript deckScript = myDeckScript;
+
+				myDeckScript = null;
+
+				deckScript.myRotation.Animate(Quaternion.Euler(305.3767f, 93.77283f, 310.0072f), .2f);
+
+				deckScript.mySize.Animate(deckScript.DeckSize(), .2f);
+			}
+		}
+		//drag box when nothing selected
+		else if (null == myUnitScript && null == myCardScript)
+		{
+			GlobalScript.ourGlobalScript.myMainPlayerScript.mySelectionScript.Selection();
 		}
 
-		if(myUnitScript)
+		//move cursor's unit
+		if (myUnitScript && myUnitScript.myOwningPlayer == mainPlayerScript)
 		{
-			myPlayerScript.mySelectionScript.myIsDragging = false;
+			mainPlayerScript.mySelectionScript.myIsDragging = false;
 
 			if(Input.GetMouseButton(0))
 			{ 
@@ -75,11 +96,11 @@ public class CursorScript : MonoBehaviour
 
 				if (Input.GetKey("left shift"))
 				{
-					myPlayerScript.mySelectionScript.mySelectedUnits.UnionWith(myOnScreenUnits);
+					mainPlayerScript.mySelectionScript.mySelectedUnits.UnionWith(myOnScreenOwnedUnitScripts);
 				}
 				else
 				{
-					myPlayerScript.mySelectionScript.mySelectedUnits = new HashSet<UnitScript>(myOnScreenUnits);
+					mainPlayerScript.mySelectionScript.mySelectedUnits = new HashSet<UnitScript>(myOnScreenOwnedUnitScripts);
 				}
 			}
 			

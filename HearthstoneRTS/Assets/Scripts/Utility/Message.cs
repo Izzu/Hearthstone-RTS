@@ -24,6 +24,12 @@ public class Message {
 
 	}
 
+	public Message(Term inSubject, Term inObject)
+	{
+		mySubject = inSubject;
+		myObject = inObject;
+	}
+
 	public Term mySubject, myObject;
 
 }

@@ -39,9 +39,9 @@ public class HandScript : MonoBehaviour {
 
 			foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
 			{
-				cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount), 0.2f);
+				cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount + 1), 1f);
 
-				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount), 0.2f);
+				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount + 1), .5f);
 			}
 
             return true;

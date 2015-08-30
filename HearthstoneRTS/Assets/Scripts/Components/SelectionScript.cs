@@ -22,7 +22,6 @@ public class SelectionScript : MonoBehaviour {
 
 	void Update()
 	{
-
 		if (mySelectedUnits.Count > 0)
 		{
 			if (Input.GetMouseButton(1))
@@ -30,7 +29,7 @@ public class SelectionScript : MonoBehaviour {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
 
-				if (Physics.Raycast(ray, out hit, myPlayerScript.myCurserScript.myRayLength))
+				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength))
 				{
 					
 					UnitScript targetUnit = hit.transform.GetComponent<UnitScript>();

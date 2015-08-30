@@ -5,10 +5,17 @@ public class GlobalScript : MonoBehaviour {
 
 	public static UnitScript[] ourUnitScripts;
 	public static PlayerScript[] ourPlayerScripts;
+	public static CursorScript ourCursorScript;
+	public static GlobalScript ourGlobalScript;
+	
+	public PlayerScript myMainPlayerScript;
 
 	// Use this for initialization
 	void Start () {
-		
+
+		ourGlobalScript = this;
+
+		ourCursorScript = Object.FindObjectOfType<CursorScript>();
 	}
 	
 	// Update is called once per frame
@@ -17,5 +24,6 @@ public class GlobalScript : MonoBehaviour {
 		ourUnitScripts = Object.FindObjectsOfType<UnitScript>();
 
 		ourPlayerScripts = Object.FindObjectsOfType<PlayerScript>();
+
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PhaseScript : MonoBehaviour {
 
-	private static Repeater ourRepeater = new Repeater(15f);
+	private static Repeater ourRepeater = new Repeater(3f);
 	private static int ourLastCycle = ourRepeater.Cycle();
 
 	public enum Phase
@@ -72,7 +72,7 @@ public class PhaseScript : MonoBehaviour {
 							if (null != playerScript
 								&& null != playerScript.myDeckScript)
 							{
-								GameObject gameobject = Instantiate(Resources.Load("Card")) as GameObject;
+								GameObject gameobject = Instantiate(Resources.Load("Prefabs/Card")) as GameObject;
 
 								CardScript cardScript = gameobject.GetComponent<CardScript>();
 

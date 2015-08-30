@@ -19,8 +19,8 @@ public class UnitScript : MonoBehaviour {
 		
 	}
 	
-	public void Damage (int input) {
-
+	public void Damage (int input) 
+	{
 		myDamage += input;
 
 		Checkup();
@@ -40,36 +40,50 @@ public class UnitScript : MonoBehaviour {
 
 		myScreenPosition = Camera.main.WorldToScreenPoint(thisPosition);
 
-		if (null != myOwningPlayer.myCurserScript)
+		PlayerScript mainPlayerScript = GlobalScript.ourGlobalScript.myMainPlayerScript;
+
+		if (null != GlobalScript.ourCursorScript)
 		{
 			//should actually check with all players to see if it's on screen but w/e
 			if (ScreenCheck(new Rect(0f, 0f, Screen.width, Screen.height)))
 			{
-				myOwningPlayer.myCurserScript.myOnScreenUnits.Add(this);
+				if (mainPlayerScript == myOwningPlayer) 
+				{
+					GlobalScript.ourCursorScript.myOnScreenOwnedUnitScripts.Add(this);
+				} else {
+					GlobalScript.ourCursorScript.myOnScreenUnownedUnitScripts.Add(this);
+				}
 			}
 			else
 			{
-				myOwningPlayer.myCurserScript.myOnScreenUnits.Remove(this);
+				if(mainPlayerScript == myOwningPlayer)
+				{
+					GlobalScript.ourCursorScript.myOnScreenOwnedUnitScripts.Remove(this);
+				} else {
+					GlobalScript.ourCursorScript.myOnScreenUnownedUnitScripts.Remove(this);
+				}
 			}
 		}
 
-		Color color = Color.black;
+		/*Color color = Color.black;
 
-		if (null != myOwningPlayer.myCurserScript)
+		if (null != GlobalScript.ourCursorScript)
 		{
-			if (myOwningPlayer.myCurserScript.myOnScreenUnits.Contains(this))
+			if (GlobalScript.ourCursorScript.myOnScreenUnits.Contains(this))
 			{
 				color.b = 1f;
 			}
-			if (myOwningPlayer.mySelectionScript.mySelectedUnits.Contains(this))
+			if (null != myOwningPlayer
+				&& null != myOwningPlayer.mySelectionScript
+				&& myOwningPlayer.mySelectionScript.mySelectedUnits.Contains(this))
 			{
 				color.g = 1f;
 			}
-			if (myOwningPlayer.myCurserScript.myUnitScript == this)
+			if (GlobalScript.ourCursorScript.myUnitScript == this)
 			{
 				color.r = 1f;
 			}
-		}
+		}*/
 
 		if (PhaseScript.IsAggressive() && null != myTargetUnit)
 		{
@@ -115,7 +129,13 @@ public class UnitScript : MonoBehaviour {
 			}
 		}
 
-		transform.GetComponent<Renderer>().material.color = color;
+		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
+
+		if (null != myOwningPlayer.mySelectionScript 
+			&& myOwningPlayer.mySelectionScript.mySelectedUnits.Contains(this))
+		{
+			transform.GetComponent<Renderer>().material.color = Color.white;
+		}
 
 	}
 
@@ -123,19 +143,19 @@ public class UnitScript : MonoBehaviour {
 
 	void OnMouseDown()
 	{
-		myOwningPlayer.myCurserScript.myUnitScript = this;
+		GlobalScript.ourCursorScript.myUnitScript = this;
 	}
 
 	void OnMouseUp()
 	{
-		myOwningPlayer.myCurserScript.myUnitScript = null;
+		GlobalScript.ourCursorScript.myUnitScript = null;
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 
-		if (Time.time - myOwningPlayer.myCurserScript.LastDoubleClickTime > myOwningPlayer.myCurserScript.myDoubleClickWait)
+		if (Time.time - GlobalScript.ourCursorScript.LastDoubleClickTime > GlobalScript.ourCursorScript.myDoubleClickWait)
 		{
-			if (Physics.Raycast(ray, out hit, myOwningPlayer.myCurserScript.myRayLength))
+			if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength))
 			{
 				if(hit.transform == this.transform)
 				{
@@ -162,5 +182,11 @@ public class UnitScript : MonoBehaviour {
 			myScreenPosition.y > rekt.yMin;
 	}
 
+	void OnGUI()
+	{
+		Vector2 GUIposition = new Vector2(myScreenPosition.x, Screen.height - myScreenPosition.y);
+
+		GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), (myHealth - myDamage).ToString());
+	}
 	
 }
