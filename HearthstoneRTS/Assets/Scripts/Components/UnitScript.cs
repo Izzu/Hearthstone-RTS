@@ -17,6 +17,12 @@ public class UnitScript : MonoBehaviour {
 
 	public CardScript myCardScript;
 
+	public EffectMethods.Enum[] myDeathEffects;
+
+	public EffectMethods.Enum[] myBeginTurnEffects;
+
+	public EffectMethods.Enum[] myEndTurnEffects;
+
 	void Start () {
 		
 	}
@@ -30,8 +36,15 @@ public class UnitScript : MonoBehaviour {
 	
 	public void Checkup ()
 	{
+		Message message = ToMessage();
+
 		if(myDamage > myHealth)
 		{
+			foreach(EffectMethods.Enum effect in myDeathEffects)
+			{
+				EffectMethods.methods[(int)effect](message);
+			}
+
 			Destroy(gameObject);
 		}
 	}
@@ -206,5 +219,4 @@ public class UnitScript : MonoBehaviour {
 			return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero)); 
 		}
 	}
-
 }

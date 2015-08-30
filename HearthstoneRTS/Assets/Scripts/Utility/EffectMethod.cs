@@ -34,4 +34,37 @@ public class EffectMethods {
 		return 0;
 	}
 
+	static public Enum[] Push (Enum[] list, Enum input, int inch = 2)
+	{
+		inch = inch < 1 ? 1 : inch;
+		if(null == list)
+		{
+			list = new Enum[2];
+			list[0] = input;
+			list[1] = Enum.Null;
+			return list;
+		}
+		else
+		{
+			for(int i = 0; i < list.Length; i++)
+			{
+				if(list[i] == Enum.Null)
+				{
+					list[i] = input;
+					return list;
+				}
+			}
+
+			Enum[] newList = new Enum[list.Length + 2];
+
+			for (int i = 0; i < list.Length; i++ )
+			{
+				newList[i] = list[i];
+			}
+
+			newList[list.Length] = input;
+			return newList;
+		}
+	}
+
 }

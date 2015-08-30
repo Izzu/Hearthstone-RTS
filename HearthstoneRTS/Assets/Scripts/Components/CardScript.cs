@@ -165,9 +165,7 @@ public class CardScript : MonoBehaviour {
 						{
 							Debug.Log("Unit: " + unitScript.name);
 
-							message.myObject.myUnitScript = unitScript;
-
-							message.myObject.myPosition = unitScript.transform.position;
+							message.myObject = unitScript.ToTerm();
 						}
 					}
 
