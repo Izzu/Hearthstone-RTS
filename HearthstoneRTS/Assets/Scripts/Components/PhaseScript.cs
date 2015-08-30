@@ -27,7 +27,7 @@ public class PhaseScript : MonoBehaviour {
 
 					foreach(PlayerScript playerScript in GlobalScript.ourPlayerScripts)
 					{
-						playerScript.Draw();
+						playerScript.TurnBegin();
 					}
 
 					Debug.Log("BEGIN");
@@ -67,7 +67,7 @@ public class PhaseScript : MonoBehaviour {
 							if (null != playerScript
 								&& null != playerScript.myDeckScript)
 							{
-								Object prefab = Resources.Load("Prefabs/Card");
+								Object prefab = Resources.Load("Prefabs/Mana");
 
 								GameObject gameobject = Instantiate(prefab) as GameObject;
 

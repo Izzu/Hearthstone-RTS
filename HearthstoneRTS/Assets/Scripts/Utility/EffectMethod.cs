@@ -16,8 +16,14 @@ public class EffectMethods {
 		AddMana
 	};
 
-	static int Return (Message input)
+	static int Return(Message input)
 	{
+		return 0;
+	}
+	static int Kill(Message input)
+	{
+		input.mySubject.myUnitScript.Damage(30);
+
 		return 0;
 	}
 

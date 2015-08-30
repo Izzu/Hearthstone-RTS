@@ -5,7 +5,7 @@ public class PlayerScript : MonoBehaviour {
 
 	public string myName;
 
-	public int myMana;
+	public int myMana, myManaCap, myGold;
 
 	public HandScript myHandScript;
 
@@ -34,6 +34,18 @@ public class PlayerScript : MonoBehaviour {
 		term.myPlayerScript = this;
 		
 		return term;
+	}
+
+	public void TurnBegin ()
+	{
+		Draw();
+
+		AddMana(++myManaCap - myMana);
+	}
+
+	public void TurnEnd ()
+	{
+
 	}
 	
 	public Message ToMessage ()

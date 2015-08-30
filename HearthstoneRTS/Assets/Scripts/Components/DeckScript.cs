@@ -11,12 +11,18 @@ public class DeckScript : MonoBehaviour {
 
 	public Slerper myRotation;
 
+	private Quaternion myIdleRotation;
+
+	public float myInspectAngle;
+
 	// Use this for initialization
 	void Start () 
 	{
 		mySize = new Lerper(DeckSize());
 
-		myRotation = new Slerper(Quaternion.Euler(305.3767f, 93.77283f, 310.0072f));
+		myIdleRotation = transform.localRotation;
+
+		myRotation = new Slerper(myIdleRotation);
 	}
 	
 	// Update is called once per frame
@@ -85,7 +91,7 @@ public class DeckScript : MonoBehaviour {
 	{
 		GlobalScript.ourCursorScript.myDeckScript = this;
 
-		myRotation.Animate(Quaternion.Euler(0f, 34.6248f, 0f), .2f);
+		myRotation.Animate(Quaternion.Euler(0f, myInspectAngle, 0f), .2f);
 
 		mySize.Animate(DeckSize(), .2f);
 	}
@@ -96,7 +102,7 @@ public class DeckScript : MonoBehaviour {
 		{
 			GlobalScript.ourCursorScript.myDeckScript = null;
 
-			myRotation.Animate(Quaternion.Euler(305.3767f, 93.77283f, 310.0072f), .2f);
+			myRotation.Animate(myIdleRotation, .2f);
 
 			mySize.Animate(DeckSize(), .2f);
 		}
@@ -108,5 +114,10 @@ public class DeckScript : MonoBehaviour {
 
 		return count > 0 ? new Vector3(.5f, (GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f), CountCards() * .005f) : Vector3.zero;
 	}
+
+	/*public Quaternion DeckRotation ()
+	{
+		return Quaternion.Euler(305.3767f, 93.77283f, 310.0072f);
+	}*/
 
 }

@@ -145,6 +145,32 @@ public class CardScript : MonoBehaviour {
 
 					Message message = playerScript.ToMessage();
 
+					//raycast terrain
+					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+					RaycastHit hit;
+
+					if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 8))
+					{
+						Debug.Log("Terrain: " + hit.point);
+
+						message.myObject.myPosition = hit.point;
+					}
+
+					//raycast units
+					if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 9))
+					{
+						UnitScript unitScript = hit.transform.GetComponent<UnitScript>();
+
+						if (unitScript)
+						{
+							Debug.Log("Unit: " + unitScript.name);
+
+							message.myObject.myUnitScript = unitScript;
+
+							message.myObject.myPosition = unitScript.transform.position;
+						}
+					}
+
 					EffectMethods.methods[(int)myPlayEffect](message);
 
 					Destroy(gameObject);
@@ -177,13 +203,19 @@ public class CardScript : MonoBehaviour {
 		}
 	}
 
+	//delete this when cards have names
 	void OnGUI ()
 	{
-		Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+		HandScript handScript = myHandScript;
 
-		Vector2 GUIposition = new Vector2(screenPosition.x, Screen.height - screenPosition.y);
+		if (handScript && handScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		{
+			Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
 
-		GUI.Box(new Rect(GUIposition, new Vector2(100f, 20f)), transform.name);
+			Vector2 GUIposition = new Vector2(screenPosition.x - 75f * .5f, Screen.height - screenPosition.y + 10f);
+
+			GUI.Box(new Rect(GUIposition, new Vector2(75f, 20f)), transform.name);
+		}
 	}
 
 }

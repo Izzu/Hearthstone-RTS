@@ -117,7 +117,7 @@ public class UnitScript : MonoBehaviour {
 				//find enemies
 				foreach (UnitScript unitScript in GlobalScript.ourUnitScripts)
 				{
-					if (unitScript.myOwningPlayer != myOwningPlayer)
+					if (unitScript && unitScript.myOwningPlayer != myOwningPlayer)
 					{
 						float dist = (unitScript.transform.position - thisPosition).magnitude;
 						if (dist < aggroRange && dist < min)
