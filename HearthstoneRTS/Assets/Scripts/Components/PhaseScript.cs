@@ -59,29 +59,33 @@ public class PhaseScript : MonoBehaviour {
 			{
 				case Phase.Null:
 
-					foreach (PlayerScript playerScript in GlobalScript.ourPlayerScripts)
+					PlayerScript[] playerScripts = GlobalScript.ourPlayerScripts;
+					if (null != playerScripts)
 					{
-						if (playerScript && playerScript.myDeckScript) 
+						foreach (PlayerScript playerScript in playerScripts)
 						{
-							for (int i = 0; i < 5; i++)
+							if (playerScript && playerScript.myDeckScript)
 							{
-								Object prefab = Resources.Load("Prefabs/Mana");
-
-								GameObject gameobject = Instantiate(prefab) as GameObject;
-
-								CardScript cardScript = gameobject.GetComponent<CardScript>();
-
-								cardScript.gameObject.name = prefab.name;
-
-								if (null != cardScript)
+								for (int i = 0; i < 5; i++)
 								{
-									playerScript.myDeckScript.InsertCard(cardScript);
-								}
-							}
+									Object prefab = Resources.Load("Prefabs/Mana");
 
-							for(int i = 0; i < 5; i++)
-							{
-								playerScript.Draw();
+									GameObject gameobject = Instantiate(prefab) as GameObject;
+
+									CardScript cardScript = gameobject.GetComponent<CardScript>();
+
+									cardScript.gameObject.name = prefab.name;
+
+									if (null != cardScript)
+									{
+										playerScript.myDeckScript.InsertCard(cardScript);
+									}
+								}
+
+								for (int i = 0; i < 5; i++)
+								{
+									playerScript.Draw();
+								}
 							}
 						}
 					}

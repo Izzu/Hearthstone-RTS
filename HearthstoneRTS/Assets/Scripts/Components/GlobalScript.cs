@@ -15,6 +15,10 @@ public class GlobalScript : MonoBehaviour {
 
 		ourGlobalScript = this;
 
+		ourUnitScripts = Object.FindObjectsOfType<UnitScript>();
+
+		ourPlayerScripts = Object.FindObjectsOfType<PlayerScript>();
+
 		ourCursorScript = Object.FindObjectOfType<CursorScript>();
 	}
 	
@@ -28,27 +32,39 @@ public class GlobalScript : MonoBehaviour {
 
 	public static void TurnBegin ()
 	{
-		foreach(PlayerScript playerScript in ourPlayerScripts)
+		if (null != ourPlayerScripts)
 		{
-			playerScript.TurnBegin();
+			foreach (PlayerScript playerScript in ourPlayerScripts)
+			{
+				playerScript.TurnBegin();
+			}
 		}
-
-		foreach (UnitScript unitScript in ourUnitScripts)
+			
+		if (null != ourUnitScripts)
 		{
-			unitScript.TurnBegin();
+			foreach (UnitScript unitScript in ourUnitScripts)
+			{
+				unitScript.TurnBegin();
+			}
 		}
 	}
 
 	public static void TurnEnd ()
 	{
-		foreach (PlayerScript playerScript in ourPlayerScripts)
+		if (null != ourPlayerScripts)
 		{
-			playerScript.TurnEnd();
+			foreach (PlayerScript playerScript in ourPlayerScripts)
+			{
+				playerScript.TurnEnd();
+			}
 		}
 
-		foreach (UnitScript unitScript in ourUnitScripts)
+		if (null != ourUnitScripts)
 		{
-			unitScript.TurnEnd();
+			foreach (UnitScript unitScript in ourUnitScripts)
+			{
+				unitScript.TurnEnd();
+			}
 		}
 	}
 

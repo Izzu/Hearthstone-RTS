@@ -5,7 +5,7 @@ public class PlayerScript : MonoBehaviour {
 
 	public string myName;
 
-	public int myMana, myManaCap, myGold;
+	public int myMana, myManaCap, myGold, myDebt, mySupply, myDemand;
 
 	public HandScript myHandScript;
 
@@ -55,6 +55,7 @@ public class PlayerScript : MonoBehaviour {
 		{
 			return myHeroUnitScript.ToMessage();
 		}
+
 		//player has a hero
 		else
 		{
@@ -84,9 +85,36 @@ public class PlayerScript : MonoBehaviour {
 		return this;
 	}
 
-	public PlayerScript AddMana (int input)
+	public PlayerScript AddMana(int input)
 	{
 		myMana += input;
+
+		return this;
+	}
+	public PlayerScript AddGold(int input)
+	{
+		if(myDebt > 0)
+		{
+			if(myDebt > input)
+			{
+				myDebt -= input;
+			}
+			else
+			{
+				myDebt = 0;
+				myGold += input - myDebt;
+			}
+		}
+		else
+		{
+			myGold += input;
+		}
+
+		return this;
+	}
+	public PlayerScript AddDebt(int input)
+	{
+		myDebt += input;
 
 		return this;
 	}

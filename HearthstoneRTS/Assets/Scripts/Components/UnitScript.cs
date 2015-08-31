@@ -42,7 +42,7 @@ public class UnitScript : MonoBehaviour {
 	{
 		Message message = ToMessage();
 
-		if(myDamage > myHealth)
+		if(myDamage >= myHealth)
 		{
 			EffectMethods.Affect(myDeathEffects, message);
 
@@ -213,9 +213,12 @@ public class UnitScript : MonoBehaviour {
 
 	void OnGUI()
 	{
-		Vector2 GUIposition = new Vector2(myScreenPosition.x - 10f, Screen.height - myScreenPosition.y - 10f);
+		if (myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		{
+			Vector2 GUIposition = new Vector2(myScreenPosition.x - 10f, Screen.height - myScreenPosition.y - 10f);
 
-		GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), (myHealth - myDamage).ToString());
+			GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), (myHealth - myDamage).ToString());
+		}
 	}
 
 	public Message.Term ToTerm()

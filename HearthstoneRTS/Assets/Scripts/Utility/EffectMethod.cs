@@ -7,29 +7,70 @@ public class EffectMethods {
 
 	public enum Enum {
 		Null,
-		AddMana
+		AddMana,
+		AddGold,
+		ForceBolt,
+		Damage
 	}
 
 	public static EffectMethod[] methods = 
 	{
 		Return,
-		AddMana
+		AddMana,
+		AddGold,
+		ForceBolt,
+		Damage
 	};
 
 	static int Return(Message input)
 	{
 		return 0;
 	}
-	static int Kill(Message input)
+
+	static int ForceBolt(Message input)
 	{
-		input.mySubject.myUnitScript.Damage(30);
+
+
+		return 0;
+	}
+
+	static int Damage (Message input)
+	{
+		UnitScript unitScript = input.myObject.myUnitScript;
+
+		int power = (int)input.myPower;
+
+		if (null != unitScript)
+		{
+			unitScript.Damage(power);
+		}
 
 		return 0;
 	}
 
 	static int AddMana(Message input)
 	{
-		input.mySubject.myPlayerScript.AddMana(1);
+		PlayerScript playerScript = input.myObject.myPlayerScript;
+
+		int power = (int)input.myPower;
+
+		if (null != playerScript)
+		{
+			playerScript.AddMana(power);
+		}
+		return 0;
+	}
+
+	static int AddGold(Message input)
+	{
+		PlayerScript playerScript = input.myObject.myPlayerScript;
+
+		int power = (int)input.myPower;
+
+		if (null != playerScript)
+		{
+			playerScript.AddGold(power);
+		}
 
 		return 0;
 	}
@@ -69,6 +110,10 @@ public class EffectMethods {
 
 	static public void Affect (Enum[] list, Message input)
 	{
+		if(null == list)
+		{
+			return;
+		}
 		foreach (EffectMethods.Enum effect in list)
 		{
 			EffectMethods.methods[(int)effect](input);

@@ -12,12 +12,12 @@ public class ZoomScript : MonoBehaviour {
 	void Update () 
 	{
 	
-		if(false && Input.GetMouseButton(2))
+		/*if(false && Input.GetMouseButton(2))
 		{
 			if(transform.position.z > 1f)
 			{
 				transform.Translate(new Vector3(0f, 0f, 1f));
 			}
-		}
+		}*/
 	}
 }

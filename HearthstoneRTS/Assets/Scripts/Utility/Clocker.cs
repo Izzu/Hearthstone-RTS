@@ -15,11 +15,11 @@ public class Clocker {
 		
 	}
 	
-	public Clocker () 
+	public Clocker (float duration = 0f) 
 	{	
 		myBegin = Time.time;
 		
-		myEnd = Time.time;
+		myEnd = Time.time + duration;
 	}
 
 	public Clocker Extend (float input) {
