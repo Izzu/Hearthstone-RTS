@@ -5,7 +5,7 @@ public class PlayerScript : MonoBehaviour {
 
 	public string myName;
 
-	public int myMana, myManaCap, myGold, myDebt, mySupply, myDemand;
+	public int myMana, myOverload, myManaCap, myGold, myDebt, mySupply, myDemand;
 
 	public HandScript myHandScript;
 
@@ -91,6 +91,14 @@ public class PlayerScript : MonoBehaviour {
 
 		return this;
 	}
+
+	public PlayerScript AddOverload (int input)
+	{
+		myOverload += input;
+
+		return this;
+	}
+	
 	public PlayerScript AddGold(int input)
 	{
 		if(myDebt > 0)
@@ -112,6 +120,20 @@ public class PlayerScript : MonoBehaviour {
 
 		return this;
 	}
+
+	public PlayerScript SubGold(int input)
+	{
+		if(myGold > input)
+		{
+			myGold -= input;
+		}
+		else
+		{
+			myGold = 0;
+		}
+		return this;
+	}
+
 	public PlayerScript AddDebt(int input)
 	{
 		myDebt += input;

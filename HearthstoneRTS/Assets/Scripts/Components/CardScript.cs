@@ -134,12 +134,14 @@ public class CardScript : MonoBehaviour {
 				//get cost of card
 				int manaCost = CostMana;
 
+				int goldCost = CostGold;
+
 				//if player has enough
-				if (manaCost <= playerScript.myMana)
+				if (goldCost <= playerScript.myGold && manaCost <= playerScript.myMana)
 				{
 
 					//pay cost
-					playerScript.SubMana(manaCost);
+					playerScript.SubMana(manaCost).SubGold(goldCost);
 
 					handScript.RemoveCard(this);
 
@@ -187,17 +189,30 @@ public class CardScript : MonoBehaviour {
 		}
 	}
 
-	private int myCostMana = 0;
+	public int myCostMana = 0;
+	public int myCostGold = 0;
 
 	public int CostMana
 	{
-		get 
-		{ 
-			return myCostMana; 
+		get
+		{
+			return myCostMana;
 		}
-		set 
-		{ 
-			myCostMana = value; 
+		set
+		{
+			myCostMana = value;
+		}
+	}
+
+	public int CostGold
+	{
+		get
+		{
+			return myCostGold;
+		}
+		set
+		{
+			myCostGold = value;
 		}
 	}
 
