@@ -80,7 +80,7 @@ public class CardScript : MonoBehaviour {
 
 			myPosition.Animate(myHandScript.CardPosition(this) + new Vector3(0f, .5f, -.1f), .2f);
 
-			mySize.Animate(new Vector3(1f, 1.5f, .01f), .2f);
+			mySize.Animate(new Vector3(.5f, .75f, .01f) * 1.5f, .2f);
 		}
 	}
 

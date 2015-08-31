@@ -67,4 +67,12 @@ public class EffectMethods {
 		}
 	}
 
+	static public void Affect (Enum[] list, Message input)
+	{
+		foreach (EffectMethods.Enum effect in list)
+		{
+			EffectMethods.methods[(int)effect](input);
+		}
+	}
+
 }

@@ -23,6 +23,10 @@ public class UnitScript : MonoBehaviour {
 
 	public EffectMethods.Enum[] myEndTurnEffects;
 
+	public EffectMethods.Enum[] myOffenseEffects;
+
+	public EffectMethods.Enum[] myDefenseEffects;
+
 	void Start () {
 		
 	}
@@ -40,13 +44,31 @@ public class UnitScript : MonoBehaviour {
 
 		if(myDamage > myHealth)
 		{
-			foreach(EffectMethods.Enum effect in myDeathEffects)
-			{
-				EffectMethods.methods[(int)effect](message);
-			}
+			EffectMethods.Affect(myDeathEffects, message);
 
 			Destroy(gameObject);
 		}
+	}
+
+	public void Attack ()
+	{
+		Message message = ToMessage();
+
+		EffectMethods.Affect(myOffenseEffects, message);
+	}
+
+	public void TurnBegin ()
+	{
+		Message message = ToMessage();
+
+		EffectMethods.Affect(myBeginTurnEffects, message);
+	}
+
+	public void TurnEnd ()
+	{
+		Message message = ToMessage();
+
+		EffectMethods.Affect(myEndTurnEffects, message);
 	}
 	
 	void Update () {
@@ -146,12 +168,6 @@ public class UnitScript : MonoBehaviour {
 
 		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
 
-		if (null != myOwningPlayer.mySelectionScript 
-			&& myOwningPlayer.mySelectionScript.mySelectedUnits.Contains(this))
-		{
-			transform.GetComponent<Renderer>().material.color = Color.white;
-		}
-
 	}
 
 	void OnMouseDown()
@@ -197,7 +213,7 @@ public class UnitScript : MonoBehaviour {
 
 	void OnGUI()
 	{
-		Vector2 GUIposition = new Vector2(myScreenPosition.x, Screen.height - myScreenPosition.y);
+		Vector2 GUIposition = new Vector2(myScreenPosition.x - 10f, Screen.height - myScreenPosition.y - 10f);
 
 		GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), (myHealth - myDamage).ToString());
 	}

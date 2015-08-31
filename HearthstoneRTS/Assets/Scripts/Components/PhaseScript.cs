@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PhaseScript : MonoBehaviour {
 
-	private static Repeater ourRepeater = new Repeater(3f);
+	private static Repeater ourRepeater = new Repeater(30f);
 	private static int ourLastCycle = ourRepeater.Cycle();
 
 	public enum Phase
@@ -25,10 +25,9 @@ public class PhaseScript : MonoBehaviour {
 			{
 				case Phase.Begin:
 
-					foreach(PlayerScript playerScript in GlobalScript.ourPlayerScripts)
-					{
-						playerScript.TurnBegin();
-					}
+					GlobalScript.TurnEnd();
+
+					GlobalScript.TurnBegin();
 
 					Debug.Log("BEGIN");
 					ourPhase = Phase.Begin;
@@ -54,7 +53,7 @@ public class PhaseScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		for (; ourLastCycle < ourRepeater.Cycle(); ourLastCycle++)
+		for (; ourLastCycle <= ourRepeater.Cycle(); ourLastCycle++)
 		{
 			switch (ourPhase)
 			{
@@ -62,10 +61,9 @@ public class PhaseScript : MonoBehaviour {
 
 					foreach (PlayerScript playerScript in GlobalScript.ourPlayerScripts)
 					{
-						for(int i = 0; i < 10; i++)
+						if (playerScript && playerScript.myDeckScript) 
 						{
-							if (null != playerScript
-								&& null != playerScript.myDeckScript)
+							for (int i = 0; i < 5; i++)
 							{
 								Object prefab = Resources.Load("Prefabs/Mana");
 
@@ -79,6 +77,11 @@ public class PhaseScript : MonoBehaviour {
 								{
 									playerScript.myDeckScript.InsertCard(cardScript);
 								}
+							}
+
+							for(int i = 0; i < 5; i++)
+							{
+								playerScript.Draw();
 							}
 						}
 					}

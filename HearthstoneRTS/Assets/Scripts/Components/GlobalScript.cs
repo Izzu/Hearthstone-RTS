@@ -24,6 +24,32 @@ public class GlobalScript : MonoBehaviour {
 		ourUnitScripts = Object.FindObjectsOfType<UnitScript>();
 
 		ourPlayerScripts = Object.FindObjectsOfType<PlayerScript>();
-
 	}
+
+	public static void TurnBegin ()
+	{
+		foreach(PlayerScript playerScript in ourPlayerScripts)
+		{
+			playerScript.TurnBegin();
+		}
+
+		foreach (UnitScript unitScript in ourUnitScripts)
+		{
+			unitScript.TurnBegin();
+		}
+	}
+
+	public static void TurnEnd ()
+	{
+		foreach (PlayerScript playerScript in ourPlayerScripts)
+		{
+			playerScript.TurnEnd();
+		}
+
+		foreach (UnitScript unitScript in ourUnitScripts)
+		{
+			unitScript.TurnEnd();
+		}
+	}
+
 }

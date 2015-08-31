@@ -63,12 +63,18 @@ public class HandScript : MonoBehaviour {
     {
         if (input.transform.IsChildOf(transform))
         {
+			int cardCount = CountCards();
+
             foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
             {
                 if (cardScript.myHandIndex > input.myHandIndex)
                 {
                     cardScript.myHandIndex--;
                 }
+
+				cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount - 1), 1f);
+
+				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount - 1), .5f);
             }
 
 			EffectMethods.methods[(int)input.myRemoveEffect](myOwningPlayer.ToMessage());

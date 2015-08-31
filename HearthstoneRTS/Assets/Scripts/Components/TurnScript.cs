@@ -15,8 +15,8 @@ public class TurnScript : MonoBehaviour {
 
 	public PlayerScript Next
 	{
-		get {
-			
+		get 
+		{	
 			bool found = false;
 			PlayerScript first = null;
 			foreach (PlayerScript player in GlobalScript.ourPlayerScripts)
@@ -35,7 +35,6 @@ public class TurnScript : MonoBehaviour {
 				}
 			}
 			return first;
-
 		}
 	}
 
