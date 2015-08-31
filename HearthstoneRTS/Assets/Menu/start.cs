@@ -3,11 +3,8 @@ using System.Collections;
 
 public class start : MonoBehaviour {
 
-    public bool begin;
-
-    void Start()
+    public void OnClick()
     {
-        if(begin)
-            Application.LoadLevel("IslandScene");
+         Application.LoadLevel("IslandScene");
     }
 }
