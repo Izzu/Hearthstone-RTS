@@ -3,11 +3,13 @@ using System.Collections;
 
 public class start : MonoBehaviour {
 
-    public bool begin;
+    public int world = 0;
 
-    void Start()
+    public void OnClick()
     {
-        if(begin)
+        if (world == 0)
             Application.LoadLevel("IslandScene");
+        else if (world == 1)
+            Application.LoadLevel("MatchScene");
     }
 }
