@@ -25,10 +25,6 @@ public class PhaseScript : MonoBehaviour {
 			{
 				case Phase.Begin:
 
-					GlobalScript.TurnEnd();
-
-					GlobalScript.TurnBegin();
-
 					Debug.Log("BEGIN");
 					ourPhase = Phase.Begin;
 					break;
@@ -78,7 +74,7 @@ public class PhaseScript : MonoBehaviour {
 
 									if (null != cardScript)
 									{
-										if(playerScript.myDeckScript.InsertCard(cardScript))
+										if(!playerScript.myDeckScript.InsertCard(cardScript))
 										{
 											Destroy(cardScript.gameObject);
 										}

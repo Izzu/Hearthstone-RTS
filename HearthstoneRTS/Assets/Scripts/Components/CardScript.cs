@@ -5,15 +5,24 @@ public class CardScript : MonoBehaviour {
 
 	public int myHandIndex;
 
-	public Lerper myPosition = new Lerper();
+	public Lerper myPosition;
 
-	private Lerper mySize = new Lerper(new Vector3(.5f, .75f, .01f));
+	private Lerper mySize;
 
-	public Slerper myRotation = new Slerper();
+	public Slerper myRotation;
 
 	public Operation myPlayEffect;
 	public Operation myInsertEffect;
 	public Operation myRemoveEffect;
+
+	void Awake ()
+	{
+		myPosition = new Lerper();
+
+		mySize = new Lerper(new Vector3(.5f, .75f, .01f));
+
+		myRotation = new Slerper();
+	}
 
 	void Start ()
 	{

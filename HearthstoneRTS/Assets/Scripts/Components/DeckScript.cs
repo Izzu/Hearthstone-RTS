@@ -15,14 +15,21 @@ public class DeckScript : MonoBehaviour {
 
 	public float myInspectAngle;
 
+	void Awake ()
+	{
+		mySize = new Lerper();
+
+		myRotation = new Slerper();
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
-		mySize = new Lerper(DeckSize());
+		mySize.Animate(DeckSize(), 1f);
 
 		myIdleRotation = transform.localRotation;
 
-		myRotation = new Slerper(myIdleRotation);
+		myRotation.Animate(myIdleRotation, 1f);
 	}
 	
 	// Update is called once per frame
@@ -117,8 +124,8 @@ public class DeckScript : MonoBehaviour {
 
 		return count > 0 ? 
 			new Vector3(
-				.5f, 
-				(GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f)
+				.5f,
+				(null != GlobalScript.ourCursorScript && GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f)
 				, CountCards() * .005f
 			) : 
 			Vector3.zero;
