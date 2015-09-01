@@ -3,9 +3,9 @@ using System.Collections;
 
 public class TurnScript : MonoBehaviour {
 
-	private static Repeater myRepeater = new Repeater(60f);
+	private float myTurnoverTime = 0f;
 
-	private int myLastCycle = 0;
+	public float myTurnTime = 30f;
 
 	public PlayerScript myCurrentPlayer;
 
@@ -45,12 +45,12 @@ public class TurnScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
-		for (; myLastCycle <= myRepeater.Cycle(); myLastCycle++)
+	
+		if(Time.time > myTurnoverTime)
 		{
-			GlobalScript.TurnEnd();
+			myCurrentPlayer = Next;
 
-			GlobalScript.TurnBegin();
+			myTurnoverTime = Time.time + myTurnTime;
 		}
 
 	}

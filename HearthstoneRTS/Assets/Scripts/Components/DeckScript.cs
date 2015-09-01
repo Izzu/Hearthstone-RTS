@@ -15,37 +15,22 @@ public class DeckScript : MonoBehaviour {
 
 	public float myInspectAngle;
 
-	//	Constructor
-	//		for initializing objects,
-	void Awake()
-	{
-		mySize = new Lerper();
-
-		myRotation = new Slerper();
-	}
-
 	// Use this for initialization
 	void Start () 
 	{
-		mySize.Animate(DeckSize(), 1f);
+		mySize = new Lerper(DeckSize());
 
 		myIdleRotation = transform.localRotation;
 
-		myRotation.Animate(myIdleRotation, 1f);
+		myRotation = new Slerper(myIdleRotation);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(null != myRotation)
-		{
-			transform.localRotation = myRotation.Slerp();
-		}
+		transform.localRotation = myRotation.Slerp();
 
-		if (null != mySize)
-		{
-			transform.localScale = mySize.Lerp();
-		}
+		transform.localScale = mySize.Lerp();
 	}
 
 	public int CountCards()
@@ -80,7 +65,6 @@ public class DeckScript : MonoBehaviour {
 	public CardScript RemoveCard()
 	{
 		CardScript[] deckCardScript = transform.GetComponentsInChildren<CardScript>();
-
 		if (deckCardScript.Length > 0)
 		{
 			CardScript cardScript = deckCardScript[0];
@@ -96,6 +80,7 @@ public class DeckScript : MonoBehaviour {
 			cardScript.myPosition.Reset(cardScript.transform.localPosition);
 
 			cardScript.transform.parent = null;
+			
 
 			mySize.Animate(DeckSize(), .2f);
 
@@ -126,19 +111,14 @@ public class DeckScript : MonoBehaviour {
 		}
 	}
 
-	//	Returns the size a deck should be
-	//	Factors in:
-	//		Cards in deck
-	//		If deck is being inspected(moused over)
 	public Vector3 DeckSize()
 	{
 		int count = CountCards();
 
 		return count > 0 ? 
 			new Vector3(
-				.5f,
-				//the height of a deck depends on whether the dursor is moused over it or not
-				(null != GlobalScript.ourCursorScript && GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f)
+				.5f, 
+				(GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f)
 				, CountCards() * .005f
 			) : 
 			Vector3.zero;
