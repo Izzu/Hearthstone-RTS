@@ -78,7 +78,10 @@ public class PhaseScript : MonoBehaviour {
 
 									if (null != cardScript)
 									{
-										playerScript.myDeckScript.InsertCard(cardScript);
+										if(playerScript.myDeckScript.InsertCard(cardScript))
+										{
+											Destroy(cardScript.gameObject);
+										}
 									}
 								}
 

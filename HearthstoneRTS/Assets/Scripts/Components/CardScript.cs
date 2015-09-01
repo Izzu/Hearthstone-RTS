@@ -11,9 +11,14 @@ public class CardScript : MonoBehaviour {
 
 	public Slerper myRotation = new Slerper();
 
-	public EffectMethods.Enum myPlayEffect;
-	public EffectMethods.Enum myInsertEffect;
-	public EffectMethods.Enum myRemoveEffect;
+	public Operation myPlayEffect;
+	public Operation myInsertEffect;
+	public Operation myRemoveEffect;
+
+	void Start ()
+	{
+
+	}
 
 	public HandScript myHandScript
 	{
@@ -131,47 +136,47 @@ public class CardScript : MonoBehaviour {
 			Debug.Log(Input.mousePosition.y / Screen.height);
 			if (Input.mousePosition.y / Screen.height > .2f)
 			{
-				//get cost of card
-				int manaCost = CostMana;
+				
+				Message message = playerScript.ToMessage();
 
-				int goldCost = CostGold;
+				//raycast terrain
+				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+				RaycastHit hit;
+
+				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 8))
+				{
+					Debug.Log("Terrain: " + hit.point);
+
+					message.myObject.myPosition = hit.point;
+				}
+
+				//raycast units
+				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 9))
+				{
+					UnitScript unitScript = hit.transform.GetComponent<UnitScript>();
+
+					if (unitScript)
+					{
+						Debug.Log("Unit: " + unitScript.name);
+
+						message.myObject = unitScript.ToTerm();
+					}
+				}
+
+				//get cost of card
+				int manaCost = CostMana(message);
+
+				int goldCost = CostGold(message);
 
 				//if player has enough
 				if (goldCost <= playerScript.myGold && manaCost <= playerScript.myMana)
 				{
-
 					//pay cost
-					playerScript.SubMana(manaCost).SubGold(goldCost);
+					playerScript.SubMana(manaCost).SubGold(goldCost).AddDebt(CostDebt(message)).AddOverload(CostOverload(message));
 
 					handScript.RemoveCard(this);
 
-					Message message = playerScript.ToMessage();
-
-					//raycast terrain
-					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-					RaycastHit hit;
-
-					if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 8))
-					{
-						Debug.Log("Terrain: " + hit.point);
-
-						message.myObject.myPosition = hit.point;
-					}
-
-					//raycast units
-					if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 9))
-					{
-						UnitScript unitScript = hit.transform.GetComponent<UnitScript>();
-
-						if (unitScript)
-						{
-							Debug.Log("Unit: " + unitScript.name);
-
-							message.myObject = unitScript.ToTerm();
-						}
-					}
-
-					EffectMethods.methods[(int)myPlayEffect](message);
+					myPlayEffect.Activate(message);
 
 					Destroy(gameObject);
 				}
@@ -189,31 +194,28 @@ public class CardScript : MonoBehaviour {
 		}
 	}
 
-	public int myCostMana = 0;
-	public int myCostGold = 0;
+	public int myCostMana, myCostGold, myCostSupply, myCostOverload, myCostDebt;
 
-	public int CostMana
+	public Operation myCostManaOp, myCostGoldOp, myCostOverloadOp, myCostDebtOp;
+
+	public int CostMana(Message message)
 	{
-		get
-		{
-			return myCostMana;
-		}
-		set
-		{
-			myCostMana = value;
-		}
+		return myCostMana + myCostManaOp.Activate(message);
 	}
 
-	public int CostGold
+	public int CostGold(Message message)
 	{
-		get
-		{
-			return myCostGold;
-		}
-		set
-		{
-			myCostGold = value;
-		}
+		return myCostGold + myCostGoldOp.Activate(message);
+	}
+
+	public int CostOverload(Message message)
+	{
+		return myCostOverload + myCostOverloadOp.Activate(message);
+	}
+
+	public int CostDebt(Message message)
+	{
+		return myCostDebt + myCostDebtOp.Activate(message);
 	}
 
 	//delete this when cards have names

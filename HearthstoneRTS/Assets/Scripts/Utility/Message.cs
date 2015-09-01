@@ -32,13 +32,11 @@ public class Message {
 	}
 
 	public Term mySubject, myObject;
-	public float myPower;
 
-	public Message(Term inSubject, Term inObject, float input = 1f)
+	public Message(Term inSubject, Term inObject)
 	{
 		mySubject = inSubject;
 		myObject = inObject;
-		myPower = 1f;
 	}
 
 }

@@ -28,14 +28,16 @@ public class HandScript : MonoBehaviour {
 		return null;
 	}
 
+	//	Inserts a card into the hand,
+	//		returns false if not successful
     public bool InsertCard(CardScript input)
     {
-		if (input)
+		if (null != input)
 		{
-
-			EffectMethods.methods[(int)input.myInsertEffect](myOwningPlayer.ToMessage());
+			input.myInsertEffect.Activate(myOwningPlayer.ToMessage());
 
 			int cardCount = CountCards();
+
 			if (cardCount < myCardCapacity)
 			{
 				input.myHandIndex = CountCards();
@@ -53,13 +55,13 @@ public class HandScript : MonoBehaviour {
 			}
 			else
 			{
-				EffectMethods.methods[(int)input.myRemoveEffect](myOwningPlayer.ToMessage());
+				input.myRemoveEffect.Activate(myOwningPlayer.ToMessage());
 			}
 		}
 		return false;
     }
 
-    public CardScript RemoveCard(CardScript input)
+    public CardScript RemoveCard(CardScript input, bool discarded = false)
     {
         if (input.transform.IsChildOf(transform))
         {
@@ -77,8 +79,11 @@ public class HandScript : MonoBehaviour {
 				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount - 1), .5f);
             }
 
-			EffectMethods.methods[(int)input.myRemoveEffect](myOwningPlayer.ToMessage());
-			
+			if (discarded)
+			{
+				input.myRemoveEffect.Activate(myOwningPlayer.ToMessage());
+			}
+
 			input.myHandScript = null;
 
             return input;

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ProjectileScript : MonoBehaviour {
 
-	public EffectMethods.Enum[] myHitUnit;
+	public Operation[] myHitUnit;
 
 	public Message myMessage;
 
@@ -39,7 +39,7 @@ public class ProjectileScript : MonoBehaviour {
 		{
 			myMessage.myObject = unitScript.ToTerm();
 
-			EffectMethods.Affect(myHitUnit, myMessage);
+			Operation.ActivateList(myHitUnit, myMessage);
 
 			if (myDeleteOnUnit)
 			{

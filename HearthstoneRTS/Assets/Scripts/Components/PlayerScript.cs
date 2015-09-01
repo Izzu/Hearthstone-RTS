@@ -48,6 +48,12 @@ public class PlayerScript : MonoBehaviour {
 
 	}
 	
+	//	Generates a Message from:
+	//		the player, 
+	//		his hero,
+	//		the unit his hero is attacking,
+	//		that unit's owner,
+	//		or some random player if nothing is found
 	public Message ToMessage ()
 	{
 		//no hero
@@ -73,13 +79,28 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
-	public PlayerScript Draw(CardScript drawCardScript = null)
+	//	If no space in hand, 
+	//		trigger removal effect
+	//		destroy card if specified
+	public PlayerScript Draw(CardScript drawCardScript = null, bool destroyOnFailure = true)
 	{
 		drawCardScript = myDeckScript.RemoveCard();
 
 		if (drawCardScript)
 		{
-			myHandScript.InsertCard(drawCardScript);
+			//	If false, then hand was over capacity,
+			//	But the removal effect for the card should go off
+			if(false == myHandScript.InsertCard(drawCardScript))
+			{
+				drawCardScript.myRemoveEffect.Activate(ToMessage());
+
+				//failed to draw card so destroy if specified
+				if (destroyOnFailure)
+				{
+					Debug.Log("DIE");
+					Destroy(drawCardScript.gameObject);
+				}
+			}
 		}
 
 		return this;

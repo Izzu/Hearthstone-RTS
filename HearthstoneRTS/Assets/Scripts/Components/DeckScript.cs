@@ -38,9 +38,12 @@ public class DeckScript : MonoBehaviour {
 		return transform.GetComponentsInChildren<CardScript>().Length;
 	}
 
+	//	When over capacity:
+	//		returns false
+	//		doesn't put the card in deck
 	public bool InsertCard(CardScript input)
 	{
-		if (CountCards() < myCardCapacity)
+		if (null != input && CountCards() < myCardCapacity)
 		{
 			input.transform.parent = transform;
 
@@ -112,7 +115,13 @@ public class DeckScript : MonoBehaviour {
 	{
 		int count = CountCards();
 
-		return count > 0 ? new Vector3(.5f, (GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f), CountCards() * .005f) : Vector3.zero;
+		return count > 0 ? 
+			new Vector3(
+				.5f, 
+				(GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f)
+				, CountCards() * .005f
+			) : 
+			Vector3.zero;
 	}
 
 	/*public Quaternion DeckRotation ()

@@ -17,15 +17,15 @@ public class UnitScript : MonoBehaviour {
 
 	public CardScript myCardScript;
 
-	public EffectMethods.Enum[] myDeathEffects;
+	public Operation[] myDeathEffects;
 
-	public EffectMethods.Enum[] myBeginTurnEffects;
+	public Operation[] myBeginTurnEffects;
 
-	public EffectMethods.Enum[] myEndTurnEffects;
+	public Operation[] myEndTurnEffects;
 
-	public EffectMethods.Enum[] myOffenseEffects;
+	public Operation[] myOffenseEffects;
 
-	public EffectMethods.Enum[] myDefenseEffects;
+	public Operation[] myDefenseEffects;
 
 	void Start () {
 		
@@ -44,7 +44,7 @@ public class UnitScript : MonoBehaviour {
 
 		if(myDamage >= myHealth)
 		{
-			EffectMethods.Affect(myDeathEffects, message);
+			Operation.ActivateList(myDeathEffects, message);
 
 			Destroy(gameObject);
 		}
@@ -54,21 +54,21 @@ public class UnitScript : MonoBehaviour {
 	{
 		Message message = ToMessage();
 
-		EffectMethods.Affect(myOffenseEffects, message);
+		Operation.ActivateList(myOffenseEffects, message);
 	}
 
 	public void TurnBegin ()
 	{
 		Message message = ToMessage();
 
-		EffectMethods.Affect(myBeginTurnEffects, message);
+		Operation.ActivateList(myBeginTurnEffects, message);
 	}
 
 	public void TurnEnd ()
 	{
 		Message message = ToMessage();
 
-		EffectMethods.Affect(myEndTurnEffects, message);
+		Operation.ActivateList(myEndTurnEffects, message);
 	}
 	
 	void Update () {
