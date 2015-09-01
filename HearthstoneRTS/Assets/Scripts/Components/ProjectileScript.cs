@@ -5,7 +5,7 @@ public class ProjectileScript : MonoBehaviour {
 
 	public Message myMessage;
 
-	public bool myDeleteOnUnit = true;
+	public bool myDeleteOnUnit = false;
 
 	public bool mySelfTrigger = false;
 
@@ -14,18 +14,11 @@ public class ProjectileScript : MonoBehaviour {
 	public Operation[] myHitUnit;
 
 	public Clocker myClocker;
-	// Use this for initialization
-	// Awake happens before start
-	// Don't have interdependent starts and awakes
-	void Start () 
-	{
-		if(null == myClocker) myClocker = new Clocker(21f);
-	}
-	
+
 	// Update is called once per frame
 	void Update()
 	{
-		if(!myClocker.IsActive())
+		if(null != myClocker && !myClocker.IsActive())
 		{
 			Destroy(gameObject);
 		}
@@ -40,13 +33,14 @@ public class ProjectileScript : MonoBehaviour {
 
 		if (null != unitScript)
 		{
+
 			if(false == mySelfTrigger && unitScript == myMessage.mySubject.myUnitScript)
 			{
 				return;
 			}
 			else
 			{
-				Debug.Log(unitScript + " and " + myMessage.mySubject.myUnitScript);
+
 			}
 
 			if(false == myAllyTrigger && unitScript.myOwningPlayer == myMessage.mySubject.myPlayerScript)

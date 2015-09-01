@@ -92,12 +92,11 @@ public class PlayerScript : MonoBehaviour {
 			//	But the removal effect for the card should go off
 			if(false == myHandScript.InsertCard(drawCardScript))
 			{
-				drawCardScript.myRemoveEffect.Activate(ToMessage());
+				Operation.ActivateList(drawCardScript.myRemoveEffect, ToMessage());
 
 				//failed to draw card so destroy if specified
 				if (destroyOnFailure)
 				{
-					Debug.Log("DIE");
 					Destroy(drawCardScript.gameObject);
 				}
 			}

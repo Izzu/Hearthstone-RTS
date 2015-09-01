@@ -34,7 +34,7 @@ public class HandScript : MonoBehaviour {
     {
 		if (null != input)
 		{
-			input.myInsertEffect.Activate(myOwningPlayer.ToMessage());
+			Operation.ActivateList(input.myInsertEffect, myOwningPlayer.ToMessage());
 
 			int cardCount = CountCards();
 
@@ -55,7 +55,7 @@ public class HandScript : MonoBehaviour {
 			}
 			else
 			{
-				input.myRemoveEffect.Activate(myOwningPlayer.ToMessage());
+				Operation.ActivateList(input.myRemoveEffect, myOwningPlayer.ToMessage());
 			}
 		}
 		return false;
@@ -81,7 +81,7 @@ public class HandScript : MonoBehaviour {
 
 			if (discarded)
 			{
-				input.myRemoveEffect.Activate(myOwningPlayer.ToMessage());
+				Operation.ActivateList(input.myRemoveEffect, myOwningPlayer.ToMessage());
 			}
 
 			input.myHandScript = null;

@@ -11,9 +11,9 @@ public class CardScript : MonoBehaviour {
 
 	public Slerper myRotation;
 
-	public Operation myPlayEffect;
-	public Operation myInsertEffect;
-	public Operation myRemoveEffect;
+	public Operation[] myPlayEffect;
+	public Operation[] myInsertEffect;
+	public Operation[] myRemoveEffect;
 
 	void Awake ()
 	{
@@ -142,7 +142,7 @@ public class CardScript : MonoBehaviour {
 		{
 
 			//card must be over 20% of the screen to be used
-			Debug.Log(Input.mousePosition.y / Screen.height);
+			//Debug.Log(Input.mousePosition.y / Screen.height);
 			if (Input.mousePosition.y / Screen.height > .2f)
 			{
 				
@@ -154,7 +154,7 @@ public class CardScript : MonoBehaviour {
 
 				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 8))
 				{
-					Debug.Log("Terrain: " + hit.point);
+					//Debug.Log("Terrain: " + hit.point);
 
 					message.myObject.myPosition = hit.point;
 				}
@@ -166,7 +166,7 @@ public class CardScript : MonoBehaviour {
 
 					if (unitScript)
 					{
-						Debug.Log("Unit: " + unitScript.name);
+						//Debug.Log("Unit: " + unitScript.name);
 
 						message.myObject = unitScript.ToTerm();
 					}
@@ -185,9 +185,7 @@ public class CardScript : MonoBehaviour {
 
 					handScript.RemoveCard(this);
 
-					Debug.Log("Subject: " + message.mySubject.myUnitScript);
-
-					myPlayEffect.Activate(message);
+					Operation.ActivateList(myPlayEffect, message);
 
 					Destroy(gameObject);
 				}
@@ -208,6 +206,19 @@ public class CardScript : MonoBehaviour {
 	public int myCostMana, myCostGold, myCostSupply, myCostOverload, myCostDebt;
 
 	public Operation myCostManaOp, myCostGoldOp, myCostOverloadOp, myCostDebtOp;
+
+	/*[System.Serializable]
+	 * 
+	public class Resource
+	{
+		public int myBase;
+		public Operation myFunct;
+
+		public int Cost (Message message)
+		{
+			return myBase + myFunct.Activate(message);
+		}
+	}*/
 
 	public int CostMana(Message message)
 	{

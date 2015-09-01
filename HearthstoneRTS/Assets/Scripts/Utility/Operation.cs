@@ -33,7 +33,10 @@ public class Operation
 		AddGold,
 		ForceBolt,
 		Damage,
-		NegHandSize
+		Attack,
+		NegHandSize,
+		Blizzard,
+		Frost
 	}
 
 	//Operation table, index with Enums
@@ -45,7 +48,10 @@ public class Operation
 		AddGold,
 		ForceBolt,
 		Damage,
-		NegHandSize
+		Attack,
+		NegHandSize,
+		Blizzard,
+		Frost
 	};
 	
 	// Uses the delegate indexed by enum with the float and a message
@@ -143,7 +149,52 @@ public class Operation
 	 *												*
 	 ************************************************/
 
-	static int Value(Message message, float value = 1f)
+	static int Attack (Message message, float value = 1f)
+	{
+		/****************************************
+		 *
+		 *		Eventually this will get done
+		 *
+		 *
+		 *
+		 *
+		 ****************************************/
+
+		return 0;
+	}
+
+	static int Frost (Message message, float value = 1f)
+	{
+		UnitScript unitScript = message.myObject.myUnitScript;
+
+		int power = (int)value;
+
+		if (null != unitScript)
+		{
+			unitScript.Damage(power);
+		}
+
+		return 0;
+	}
+
+	static int Blizzard (Message message, float value = 1f)
+	{
+		Object prefab = Resources.Load("Prefabs/Projectiles/Blizzard");
+
+		Vector3 position = message.myObject.myPosition;
+
+		GameObject gameObject = Transform.Instantiate(prefab, position, Quaternion.Euler(Vector3.up)) as GameObject;
+
+		RainScript rainScript = gameObject.GetComponent<RainScript>();
+
+		rainScript.myWaves = (int)value;
+
+		rainScript.myMessage = message;
+
+		return 0;
+	}
+
+	static int Value (Message message, float value = 1f)
 	{
 		return (int)value;
 	}
@@ -152,23 +203,33 @@ public class Operation
 	{
 		Object prefab = Resources.Load("Prefabs/Projectiles/Projectile");
 
-		Vector3 difference = message.myObject.myPosition - message.mySubject.myPosition;
+		Vector3 position = message.mySubject.myPosition;
+
+		Vector3 destination = message.myObject.myPosition;
+
+		Vector3 difference = destination - position;
 
 		Quaternion rotation = Quaternion.LookRotation(difference);
 
-		GameObject gameObject = Transform.Instantiate(prefab, message.mySubject.myPosition, rotation) as GameObject;
+		GameObject gameObject = Transform.Instantiate(prefab, Vector3.Lerp(position, destination, .8f / difference.magnitude), rotation) as GameObject;
 
 		ProjectileScript projectileScript = gameObject.GetComponent<ProjectileScript>();
 
 		projectileScript.myMessage = message;
 
+		projectileScript.myDeleteOnUnit = true;
+
+		projectileScript.myClocker = new Clocker(1f);
+
+		projectileScript.myHitUnit = new Operation[1];
+
+		projectileScript.myHitUnit[0] = new Operation(Enum.Damage, value);
+
 		gameObject.GetComponent<Renderer>().material.color = new Color(160f / 255f, 82f / 255f, 45f / 255f);
 
-		gameObject.transform.localScale = new Vector3(.1f, .1f, .5f);
+		gameObject.transform.localScale = new Vector3(.3f, .3f, .3f);
 
-		gameObject.transform.
-
-		gameObject.GetComponent<Rigidbody>().AddForce(value * difference.normalized);
+		gameObject.GetComponent<Rigidbody>().AddForce(1000f * difference.normalized);
 
 		gameObject.name = prefab.name;
 

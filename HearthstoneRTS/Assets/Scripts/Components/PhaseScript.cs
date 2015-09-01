@@ -64,7 +64,7 @@ public class PhaseScript : MonoBehaviour {
 							{
 								for (int i = 0; i < 9; i++)
 								{
-									Object prefab = Resources.Load("Prefabs/Mana");
+									Object prefab = Resources.Load("Prefabs/Cards/Mana");
 
 									GameObject gameobject = Instantiate(prefab) as GameObject;
 
