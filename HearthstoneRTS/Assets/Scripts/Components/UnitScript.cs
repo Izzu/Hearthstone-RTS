@@ -27,8 +27,9 @@ public class UnitScript : MonoBehaviour {
 
 	public Operation[] myDefenseEffects;
 
-	void Start () {
-		
+	void Start () 
+	{
+		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
 	}
 	
 	public void Damage (int input) 
@@ -165,9 +166,6 @@ public class UnitScript : MonoBehaviour {
 				myTargetUnit = closestUnitScript;
 			}
 		}
-
-		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
-
 	}
 
 	void OnMouseDown()

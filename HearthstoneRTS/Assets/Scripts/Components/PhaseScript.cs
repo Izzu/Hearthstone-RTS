@@ -62,7 +62,7 @@ public class PhaseScript : MonoBehaviour {
 						{
 							if (playerScript && playerScript.myDeckScript)
 							{
-								for (int i = 0; i < 5; i++)
+								for (int i = 0; i < 9; i++)
 								{
 									Object prefab = Resources.Load("Prefabs/Mana");
 
@@ -81,7 +81,7 @@ public class PhaseScript : MonoBehaviour {
 									}
 								}
 
-								for (int i = 0; i < 5; i++)
+								for (int i = 0; i < 4; i++)
 								{
 									playerScript.Draw();
 								}

@@ -150,7 +150,27 @@ public class Operation
 
 	static int ForceBolt(Message message, float value = 1f)
 	{
+		Object prefab = Resources.Load("Prefabs/Projectiles/Projectile");
 
+		Vector3 difference = message.myObject.myPosition - message.mySubject.myPosition;
+
+		Quaternion rotation = Quaternion.LookRotation(difference);
+
+		GameObject gameObject = Transform.Instantiate(prefab, message.mySubject.myPosition, rotation) as GameObject;
+
+		ProjectileScript projectileScript = gameObject.GetComponent<ProjectileScript>();
+
+		projectileScript.myMessage = message;
+
+		gameObject.GetComponent<Renderer>().material.color = new Color(160f / 255f, 82f / 255f, 45f / 255f);
+
+		gameObject.transform.localScale = new Vector3(.1f, .1f, .5f);
+
+		gameObject.transform.
+
+		gameObject.GetComponent<Rigidbody>().AddForce(value * difference.normalized);
+
+		gameObject.name = prefab.name;
 
 		return 0;
 	}
@@ -171,7 +191,7 @@ public class Operation
 
 	static int NegHandSize (Message message, float value = 1f)
 	{
-		PlayerScript playerScript = message.myObject.myPlayerScript;
+		PlayerScript playerScript = message.mySubject.myPlayerScript;
 
 		if (null != playerScript)
 		{
@@ -183,7 +203,7 @@ public class Operation
 
 	static int AddMana(Message message, float value = 1f)
 	{
-		PlayerScript playerScript = message.myObject.myPlayerScript;
+		PlayerScript playerScript = message.mySubject.myPlayerScript;
 
 		int power = (int)value;
 
@@ -196,7 +216,7 @@ public class Operation
 
 	static int AddGold(Message message, float value = 1f)
 	{
-		PlayerScript playerScript = message.myObject.myPlayerScript;
+		PlayerScript playerScript = message.mySubject.myPlayerScript;
 
 		int power = (int)value;
 

@@ -185,6 +185,8 @@ public class CardScript : MonoBehaviour {
 
 					handScript.RemoveCard(this);
 
+					Debug.Log("Subject: " + message.mySubject.myUnitScript);
+
 					myPlayEffect.Activate(message);
 
 					Destroy(gameObject);

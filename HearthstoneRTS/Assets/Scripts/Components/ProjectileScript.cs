@@ -3,11 +3,16 @@ using System.Collections;
 
 public class ProjectileScript : MonoBehaviour {
 
-	public Operation[] myHitUnit;
-
 	public Message myMessage;
 
 	public bool myDeleteOnUnit = true;
+
+	public bool mySelfTrigger = false;
+
+	public bool myAllyTrigger = false;
+
+	public Operation[] myHitUnit;
+
 	public Clocker myClocker;
 	// Use this for initialization
 	// Awake happens before start
@@ -31,12 +36,24 @@ public class ProjectileScript : MonoBehaviour {
 	{
 		UnitScript unitScript = collision.gameObject.GetComponent<UnitScript>();
 
-		myMessage = new Message(new Message.Term(), new Message.Term());
-
 		bool deleting = false;
 
 		if (null != unitScript)
 		{
+			if(false == mySelfTrigger && unitScript == myMessage.mySubject.myUnitScript)
+			{
+				return;
+			}
+			else
+			{
+				Debug.Log(unitScript + " and " + myMessage.mySubject.myUnitScript);
+			}
+
+			if(false == myAllyTrigger && unitScript.myOwningPlayer == myMessage.mySubject.myPlayerScript)
+			{
+				return;
+			}
+
 			myMessage.myObject = unitScript.ToTerm();
 
 			Operation.ActivateList(myHitUnit, myMessage);
