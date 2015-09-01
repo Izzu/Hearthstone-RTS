@@ -25,10 +25,6 @@ public class PhaseScript : MonoBehaviour {
 			{
 				case Phase.Begin:
 
-					GlobalScript.TurnEnd();
-
-					GlobalScript.TurnBegin();
-
 					Debug.Log("BEGIN");
 					ourPhase = Phase.Begin;
 					break;
@@ -58,17 +54,18 @@ public class PhaseScript : MonoBehaviour {
 			switch (ourPhase)
 			{
 				case Phase.Null:
-
+					Debug.Log("PHASE");
 					PlayerScript[] playerScripts = GlobalScript.ourPlayerScripts;
 					if (null != playerScripts)
 					{
 						foreach (PlayerScript playerScript in playerScripts)
 						{
-							if (playerScript && playerScript.myDeckScript)
+							if (null != playerScript && null != playerScript.myDeckScript)
 							{
+								Debug.Log(playerScript);
 								for (int i = 0; i < 5; i++)
 								{
-									Object prefab = Resources.Load("Prefabs/Mana");
+									Object prefab = Resources.Load("Prefabs/Cards/Mana");
 
 									GameObject gameobject = Instantiate(prefab) as GameObject;
 
@@ -76,9 +73,11 @@ public class PhaseScript : MonoBehaviour {
 
 									cardScript.gameObject.name = prefab.name;
 
+									//if card creation worked
 									if (null != cardScript)
 									{
-										if(playerScript.myDeckScript.InsertCard(cardScript))
+										//insert card, but if that fails, destroy card
+										if(!playerScript.myDeckScript.InsertCard(cardScript))
 										{
 											Destroy(cardScript.gameObject);
 										}

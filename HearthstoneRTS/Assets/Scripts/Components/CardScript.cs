@@ -5,15 +5,24 @@ public class CardScript : MonoBehaviour {
 
 	public int myHandIndex;
 
-	public Lerper myPosition = new Lerper();
+	public Lerper myPosition;
 
-	private Lerper mySize = new Lerper(new Vector3(.5f, .75f, .01f));
+	private Lerper mySize;
 
-	public Slerper myRotation = new Slerper();
+	public Slerper myRotation;
 
 	public Operation myPlayEffect;
 	public Operation myInsertEffect;
 	public Operation myRemoveEffect;
+
+	void Awake ()
+	{
+		myPosition = new Lerper();
+
+		mySize = new Lerper(new Vector3(.5f, .75f, .01f));
+
+		myRotation = new Slerper();
+	}
 
 	void Start ()
 	{
@@ -58,11 +67,20 @@ public class CardScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		transform.localRotation = myRotation.Slerp();
-		
-		transform.localPosition = myPosition.Lerp();
+		if (null != myRotation)
+		{
+			transform.localRotation = myRotation.Slerp();
+		}
 
-		transform.localScale = mySize.Lerp();
+		if (null != myPosition)
+		{
+			transform.localPosition = myPosition.Lerp();
+		}
+
+		if (null != mySize)
+		{
+			transform.localScale = mySize.Lerp();
+		}
 	}
 	
 	void OnMouseDrag ()
