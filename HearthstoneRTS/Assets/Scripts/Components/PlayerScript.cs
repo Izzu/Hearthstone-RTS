@@ -141,6 +141,13 @@ public class PlayerScript : MonoBehaviour {
 		return this;
 	}
 
+	public PlayerScript AddManaCap(int input)
+	{
+		myManaCap += input;
+
+		return this;
+	}
+
 	public PlayerScript SubGold(int input)
 	{
 		if(myGold > input)

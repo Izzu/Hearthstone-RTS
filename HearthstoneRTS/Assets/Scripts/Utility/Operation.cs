@@ -28,11 +28,13 @@ public class Operation
 	private delegate int Method(Message message, float value = 1f);
 
 	//enums for operations
+	//when making enums: YOU MUST ADD THEM TO THE END
 	public enum Enum
 	{
 		Null,//Null operations can be recycled
 		Value,
 		AddMana,
+		AddManaCap,
 		AddGold,
 		ForceBolt,
 		Damage,
@@ -40,8 +42,10 @@ public class Operation
 		NegHandSize,
 		Blizzard,
 		Frost,
-		Summon
-	}
+		Summon,
+		Draw,
+		Calldown
+	}//NEW OPS APPEND TO THE END
 
 	//Operation table, index with Enums
 	private static Method[] ourMethods = 
@@ -49,6 +53,7 @@ public class Operation
 		Value,//Null has a dummy method, and are replaces in Push()
 		Value,
 		AddMana,
+		AddManaCap,
 		AddGold,
 		ForceBolt,
 		Damage,
@@ -56,8 +61,10 @@ public class Operation
 		NegHandSize,
 		Blizzard,
 		Frost,
-		Summon
-	};
+		Summon,
+		Draw,
+		Calldown
+	};//NEW OPS APPEND TO THE END
 	
 	// Uses the delegate indexed by enum with the float and a message
 	public int Activate(Message message)
@@ -185,13 +192,28 @@ public class Operation
 		return 0;
 	}
 
-	static int Summon (Message message, float value = 1f)
+	static int Summon(Message message, float value = 1f)
 	{
 		Object prefab = Resources.Load("Prefabs/Units/Unit");
 
 		Vector3 position = message.myObject.myPosition;
 
 		GameObject gameObject = Transform.Instantiate(prefab, position, Quaternion.Euler(Vector3.up)) as GameObject;
+
+		UnitScript unitScript = gameObject.GetComponent<UnitScript>();
+
+		unitScript.myOwningPlayer = message.mySubject.myPlayerScript;
+
+		return 0;
+	}
+
+	static int Calldown(Message message, float value = 1f)
+	{
+		Object prefab = Resources.Load("Prefabs/Units/Building");
+
+		Vector3 position = message.myObject.myPosition;
+
+		GameObject gameObject = Transform.Instantiate(prefab, position + Vector3.up * 30, Quaternion.Euler(Vector3.up)) as GameObject;
 
 		UnitScript unitScript = gameObject.GetComponent<UnitScript>();
 
@@ -320,6 +342,19 @@ public class Operation
 		return 0;
 	}
 
+	static int AddManaCap(Message message, float value = 1f)
+	{
+		PlayerScript playerScript = message.mySubject.myPlayerScript;
+
+		int power = (int)value;
+
+		if (null != playerScript)
+		{
+			playerScript.AddManaCap(power);
+		}
+		return 0;
+	}
+
 	static int AddGold(Message message, float value = 1f)
 	{
 		PlayerScript playerScript = message.mySubject.myPlayerScript;
@@ -329,6 +364,23 @@ public class Operation
 		if (null != playerScript)
 		{
 			playerScript.AddGold(power);
+		}
+
+		return 0;
+	}
+
+	static int Draw(Message message, float value = 1f)
+	{
+		PlayerScript playerScript = message.mySubject.myPlayerScript;
+
+		int power = (int)value;
+
+		if (null != playerScript)
+		{
+			for (int i = 0; i < (int)value; i++)
+			{
+				playerScript.Draw();
+			} 
 		}
 
 		return 0;
