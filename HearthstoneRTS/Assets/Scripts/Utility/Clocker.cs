@@ -4,51 +4,52 @@ using System.Collections;
 //keeps track of two times and the time lapse between them
 public class Clocker {
 
-	private float myBegin;
+	private float myBeginTime;
 
-	private float myEnd;
+	private float myEndTime;
 
 	public Clocker (float a, float b) {
-	
-		myBegin = a;
-		myEnd = b;
+
+		myBeginTime = a;
+		myEndTime = b;
 		
 	}
 	
 	public Clocker (float duration = 0f) 
-	{	
-		myBegin = Time.time;
-		
-		myEnd = Time.time + duration;
+	{
+		myBeginTime = Time.time;
+
+		myEndTime = Time.time + duration;
 	}
 
-	public Clocker Extend (float input) {
-		myEnd += input;
+	public Clocker Extend (float input) 
+	{
+		myEndTime += input;
 		
 		return this;
 	}
 
 	public Clocker Set (float input) {
-		myBegin = Time.time;
-		myEnd = Time.time + input;
+		myBeginTime = Time.time;
+		myEndTime = Time.time + input;
 		
 		return this;
 	}
 
 	public Clocker Stop () {
-		myEnd = myBegin;
+		myEndTime = myBeginTime;
 		
 		return this;
 	}
 
 	public float Percent ()
 	{
-		return (Time.time - myBegin) / (myEnd - myBegin);
+		return (Time.time - myBeginTime) / (myEndTime - myBeginTime);
 	}
 
 	public bool IsActive ()
 	{
-		return (myBegin < myEnd) & (Time.time < myEnd);
+		return (myBeginTime < myEndTime) & (Time.time < myEndTime);
 	}
 
 

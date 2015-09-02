@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CardScript : MonoBehaviour {
 
 	public int myHandIndex;
 
-	public Lerper myPosition;
+	public Lerper3 myPosition;
 
-	private Lerper mySize;
+	private Lerper3 mySize;
 
 	public Slerper myRotation;
 
@@ -17,16 +18,11 @@ public class CardScript : MonoBehaviour {
 
 	void Awake ()
 	{
-		myPosition = new Lerper();
+		myPosition = new Lerper3();
 
-		mySize = new Lerper(new Vector3(.5f, .75f, .01f));
+		mySize = new Lerper3(new Vector3(.5f, .75f, .01f));
 
 		myRotation = new Slerper();
-	}
-
-	void Start ()
-	{
-
 	}
 
 	public HandScript myHandScript
@@ -173,15 +169,19 @@ public class CardScript : MonoBehaviour {
 				}
 
 				//get cost of card
-				int manaCost = CostMana(message);
+				int manaCost = CostMana(message).myTail;
 
-				int goldCost = CostGold(message);
+				int goldCost = CostGold(message).myTail;
 
 				//if player has enough
 				if (goldCost <= playerScript.myGold && manaCost <= playerScript.myMana)
 				{
 					//pay cost
-					playerScript.SubMana(manaCost).SubGold(goldCost).AddDebt(CostDebt(message)).AddOverload(CostOverload(message));
+					playerScript
+						.SubMana(manaCost)
+						.SubGold(goldCost)
+						.AddDebt(CostDebt(message).myTail)
+						.AddOverload(CostOverload(message).myTail);
 
 					handScript.RemoveCard(this);
 
@@ -203,45 +203,8 @@ public class CardScript : MonoBehaviour {
 		}
 	}
 
-	public int myCostMana, myCostGold, myCostSupply, myCostOverload, myCostDebt;
-
-	public Operation myCostManaOp, myCostGoldOp, myCostOverloadOp, myCostDebtOp;
-
-	/*[System.Serializable]
-	 * 
-	public class Resource
-	{
-		public int myBase;
-		public Operation myFunct;
-
-		public int Cost (Message message)
-		{
-			return myBase + myFunct.Activate(message);
-		}
-	}*/
-
-	public int CostMana(Message message)
-	{
-		return myCostMana + myCostManaOp.Activate(message);
-	}
-
-	public int CostGold(Message message)
-	{
-		return myCostGold + myCostGoldOp.Activate(message);
-	}
-
-	public int CostOverload(Message message)
-	{
-		return myCostOverload + myCostOverloadOp.Activate(message);
-	}
-
-	public int CostDebt(Message message)
-	{
-		return myCostDebt + myCostDebtOp.Activate(message);
-	}
-
 	//delete this when cards have names
-	void OnGUI ()
+	void OnGUI()
 	{
 		HandScript handScript = myHandScript;
 
@@ -253,6 +216,71 @@ public class CardScript : MonoBehaviour {
 
 			GUI.Box(new Rect(GUIposition, new Vector2(75f, 20f)), transform.name);
 		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/********************************
+	 * 
+	 *			Resources
+	 * 
+	 * *****************************/
+
+
+	[System.Serializable]
+	public class Resource
+	{
+		public int myBase;
+		public Operation myFunct;
+
+		//head: base cost
+		//tail: real cost
+		public Pair<int, int> Cost (Message message)
+		{
+			return new Pair<int, int>(myBase, myBase + myFunct.Activate(message));
+		}
+	}
+
+	public Resource myMana, myGold, mySupply, myOverload, myDebt;
+
+	public Pair<int, int> CostMana(Message message)
+	{
+		return myMana.Cost(message);
+	}
+	
+	public Pair<int, int> CostSupply(Message message)
+	{
+		return mySupply.Cost(message);
+	}
+
+	public Pair<int, int> CostGold(Message message)
+	{
+		return myGold.Cost(message);
+	}
+
+	public Pair<int, int> CostOverload(Message message)
+	{
+		return myOverload.Cost(message);
+	}
+
+	public Pair<int, int> CostDebt(Message message)
+	{
+		return myDebt.Cost(message);
 	}
 
 }

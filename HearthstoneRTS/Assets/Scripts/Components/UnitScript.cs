@@ -27,11 +27,13 @@ public class UnitScript : MonoBehaviour {
 
 	public Operation[] myDefenseEffects;
 
+	public int myDemand = 0;
+
 	void Start () 
 	{
 		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
 	}
-	
+
 	public void Damage (int input) 
 	{
 		myDamage += input;

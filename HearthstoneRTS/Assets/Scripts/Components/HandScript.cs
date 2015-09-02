@@ -94,7 +94,7 @@ public class HandScript : MonoBehaviour {
 	public Quaternion CardRotation(int cardIndex, int cardCount)
 	{
 		return Quaternion.Euler(0f, 0f, cardCount > 5 ? 
-			Erper.Erp(
+			Lerper.Erp(
 				60f,
 				-60f,
 				(cardIndex + 1f) / (cardCount + 1f)):

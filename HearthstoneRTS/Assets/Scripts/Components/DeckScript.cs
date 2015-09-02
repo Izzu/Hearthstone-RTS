@@ -7,7 +7,7 @@ public class DeckScript : MonoBehaviour {
 
 	public int myCardCapacity = 52;
 
-	public Lerper mySize;
+	public Lerper3 mySize;
 
 	public Slerper myRotation;
 
@@ -17,7 +17,7 @@ public class DeckScript : MonoBehaviour {
 
 	void Awake ()
 	{
-		mySize = new Lerper();
+		mySize = new Lerper3();
 
 		myRotation = new Slerper();
 	}

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Message {
+public class Message 
+{
 	
 	public class Term {
 

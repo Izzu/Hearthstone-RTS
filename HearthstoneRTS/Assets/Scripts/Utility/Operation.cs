@@ -11,8 +11,11 @@ using System.Collections;
 [System.Serializable]
 public class Operation
 {
-	public Enum myEnum = Enum.Null;
-	public float myValue = 1f;
+	[SerializeField]
+	private Enum myEnum = Enum.Null;
+
+	[SerializeField]
+	private float myValue = 1f;
 
 	public Operation(Enum input = Enum.Null, float value = 1f)
 	{
@@ -36,7 +39,8 @@ public class Operation
 		Attack,
 		NegHandSize,
 		Blizzard,
-		Frost
+		Frost,
+		Summon
 	}
 
 	//Operation table, index with Enums
@@ -51,7 +55,8 @@ public class Operation
 		Attack,
 		NegHandSize,
 		Blizzard,
-		Frost
+		Frost,
+		Summon
 	};
 	
 	// Uses the delegate indexed by enum with the float and a message
@@ -141,6 +146,8 @@ public class Operation
 
 
 
+
+
 	/************************************************
 	 *												*
 	 *												*
@@ -151,6 +158,7 @@ public class Operation
 
 	static int Attack (Message message, float value = 1f)
 	{
+		
 		/****************************************
 		 *
 		 *		Eventually this will get done
@@ -177,6 +185,45 @@ public class Operation
 		return 0;
 	}
 
+	static int Summon (Message message, float value = 1f)
+	{
+		Object prefab = Resources.Load("Prefabs/Units/Unit");
+
+		Vector3 position = message.myObject.myPosition;
+
+		GameObject gameObject = Transform.Instantiate(prefab, position, Quaternion.Euler(Vector3.up)) as GameObject;
+
+		UnitScript unitScript = gameObject.GetComponent<UnitScript>();
+
+		unitScript.myOwningPlayer = message.mySubject.myPlayerScript;
+
+		return 0;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*************************************
+	 * 
+	 *		Finished Functions
+	 * 
+	 * ***********************************/
+
 	static int Blizzard (Message message, float value = 1f)
 	{
 		Object prefab = Resources.Load("Prefabs/Projectiles/Blizzard");
@@ -201,7 +248,7 @@ public class Operation
 
 	static int ForceBolt(Message message, float value = 1f)
 	{
-		Object prefab = Resources.Load("Prefabs/Projectiles/Projectile");
+		Object prefab = Resources.Load("Prefabs/Projectiles/ForceBolt");
 
 		Vector3 position = message.mySubject.myPosition;
 
@@ -225,9 +272,7 @@ public class Operation
 
 		projectileScript.myHitUnit[0] = new Operation(Enum.Damage, value);
 
-		gameObject.GetComponent<Renderer>().material.color = new Color(160f / 255f, 82f / 255f, 45f / 255f);
-
-		gameObject.transform.localScale = new Vector3(.3f, .3f, .3f);
+		gameObject.GetComponent<Renderer>().material.color = new Color(200f / 255f, 122f / 255f, 85f / 255f);
 
 		gameObject.GetComponent<Rigidbody>().AddForce(1000f * difference.normalized);
 

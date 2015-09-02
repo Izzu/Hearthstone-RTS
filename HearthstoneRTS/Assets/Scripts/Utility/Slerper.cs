@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class Slerper : Clocker {
 
+	[SerializeField]
 	private Quaternion myBegin, myEnd;
 
 	public Slerper(Quaternion inPOSITION = new Quaternion())
 	{
-		
 		myBegin = inPOSITION;
 		
 		myEnd = inPOSITION;
-		
 	}
 
 	public Quaternion Slerp ()
@@ -50,8 +50,8 @@ public class Slerper : Clocker {
 		}
 	}
 	
-	public bool Reanimate (Quaternion inPOSITION, float inTIME) {
-		
+	public bool Reanimate (Quaternion inPOSITION, float inTIME)
+	{	
 		if (myEnd == inPOSITION) {
 			
 			return false;
@@ -59,9 +59,8 @@ public class Slerper : Clocker {
 		} else {
 			
 			return Animate(inPOSITION, inTIME);
-			
+
 		}
-		
 	}
 
 }

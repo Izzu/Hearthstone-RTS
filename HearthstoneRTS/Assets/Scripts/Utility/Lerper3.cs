@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//moves a vector 3 through time
+[System.Serializable]
+public class Lerper3 : Clocker {
 
-//moves a float through time
-public class Erper : Clocker {
+	[SerializeField]
+	private Vector3 myBegin, myEnd;
 	
-	private float myBegin, myEnd;
-
-	public Erper(float inPOSITION = 0.0f)
-	{
+	public Lerper3(Vector3 inPOSITION = new Vector3()) {
 		
 		myBegin = inPOSITION;
 		
@@ -16,17 +16,12 @@ public class Erper : Clocker {
 		
 	}
 
-	public static float Erp(float a, float b, float t)
+	public Vector3 Lerp ()
 	{
-		return a + t * (b - a);
+		return IsActive() ? Vector3.Lerp(myBegin, myEnd, Percent()) : myEnd;
 	}
 
-	public float Erp ()
-	{
-		return IsActive() ? Erp(myBegin, myEnd, Percent()) : myEnd;
-	}
-
-	public Erper Reset (float input)
+	public Lerper3 Reset(Vector3 input)
 	{
 		myBegin = input;
 		myEnd = input;
@@ -36,9 +31,9 @@ public class Erper : Clocker {
 		return this;
 	}
 
-	public bool Animate (float inPOSITION, float inTIME)
+	public bool Animate (Vector3 inPOSITION, float inTIME)
 	{
-		myBegin = Erp();
+		myBegin = Lerp();
 
 		if(0.0f > inTIME)
 		{
@@ -57,7 +52,7 @@ public class Erper : Clocker {
 		}
 	}
 	
-	public bool Reanimate (float inPOSITION, float inTIME) {
+	public bool Reanimate (Vector3 inPOSITION, float inTIME) {
 		
 		if (myEnd == inPOSITION) {
 			
@@ -70,4 +65,5 @@ public class Erper : Clocker {
 		}
 		
 	}
-}
+
+};
