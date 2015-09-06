@@ -27,8 +27,6 @@ public class ProjectileScript : MonoBehaviour {
 	//hits something
 	void OnCollisionEnter(Collision collision)
 	{
-		Debug.Log("Hit: " + collision.gameObject);
-
 		UnitScript unitScript = collision.gameObject.GetComponent<UnitScript>();
 
 		if (null == unitScript)

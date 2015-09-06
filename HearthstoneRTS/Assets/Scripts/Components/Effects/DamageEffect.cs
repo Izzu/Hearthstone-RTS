@@ -10,14 +10,14 @@ public class DamageEffect : EffectScript
 	public override float Affect(Message message, float input)
 	{
 		UnitScript unit = null == message ? null : message.Unit(myObject);
-
+		
 		if (null == unit)
 		{
 
 		}
 		else
 		{
-			Debug.Log("Damage: " + unit);
+			
 			unit.Damage(myValue);
 		}
 
