@@ -3,7 +3,11 @@ using System.Collections;
 
 public class UnitScript : MonoBehaviour {
 
-	public int myHealth, myDamage, myOffense, myDefense;
+	
+	public int myHealth;
+	public int myDamage;
+	public int myOffense;
+	public int myDefense;
 
 	public float myRange;
 
@@ -17,63 +21,105 @@ public class UnitScript : MonoBehaviour {
 
 	public CardScript myCardScript;
 
-	public Operation[] myDeathEffects;
+	public EffectScript[] myDeathEffects;
 
-	public Operation[] myBeginTurnEffects;
+	public EffectScript[] myOffenseEffects;
 
-	public Operation[] myEndTurnEffects;
-
-	public Operation[] myOffenseEffects;
-
-	public Operation[] myDefenseEffects;
+	public EffectScript[] myDefenseEffects;
 
 	public int myDemand = 0;
 
-	void Start () 
+	public NavMeshAgent myNavMeshAgent;
+
+	void Awake()
+	{
+		myNavMeshAgent = GetComponent<NavMeshAgent>();
+	}
+
+	void Start ()
 	{
 		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
 	}
 
+	public bool myDamageImmune;
+	public int myDivineShield, myTemperature;
+	
 	public void Damage (int input) 
 	{
+		if (myDamageImmune)
+		{
+			return;
+		}
+
+		if(myDivineShield > 0)
+		{
+			myDivineShield--;
+
+			return;
+		}
+
+		/*myOwningPlayer.myFrameData.myDamages++;
+		myOwningPlayer.myTurnData.myFrameData.myDamages++;
+		myOwningPlayer.myMatchData.myTurnData.myFrameData.myDamages++;
+
+		GlobalScript.ourPlayerFrameData.myDamages++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myDamages++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myDamages++;*/
+
 		myDamage += input;
 
 		Checkup();
 	}
-	
+
 	public void Checkup ()
 	{
-		Message message = ToMessage();
-
 		if(myDamage >= myHealth)
 		{
-			Operation.ActivateList(myDeathEffects, message);
-
-			Destroy(gameObject);
+			Death();
 		}
+	}
+	
+	public void Death ()
+	{
+		/*myOwningPlayer.myFrameData.myDeaths++;
+		myOwningPlayer.myTurnData.myFrameData.myDeaths++;
+		myOwningPlayer.myMatchData.myTurnData.myFrameData.myDeaths++;
+
+		GlobalScript.ourPlayerFrameData.myDeaths++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myDeaths++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myDeaths++;*/
+
+		EffectScript.AffectsList(myDeathEffects, ToMessage());
+
+		Destroy(gameObject);
 	}
 
 	public void Attack ()
 	{
-		Message message = ToMessage();
+		/*myOwningPlayer.myFrameData.myAttacks++;
+		myOwningPlayer.myTurnData.myFrameData.myAttacks++;
+		myOwningPlayer.myMatchData.myTurnData.myFrameData.myAttacks++;
 
-		Operation.ActivateList(myOffenseEffects, message);
+		GlobalScript.ourPlayerFrameData.myAttacks++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myAttacks++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myAttacks++;*/
+
+		EffectScript.AffectsList(myOffenseEffects, ToMessage());
 	}
 
-	public void TurnBegin ()
+	public void Heal (int input)
 	{
-		Message message = ToMessage();
+		/*myOwningPlayer.myFrameData.myHeals++;
+		myOwningPlayer.myTurnData.myFrameData.myHeals++;
+		myOwningPlayer.myMatchData.myTurnData.myFrameData.myHeals++;
 
-		Operation.ActivateList(myBeginTurnEffects, message);
+		GlobalScript.ourPlayerFrameData.myHeals++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myHeals++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myHeals++;*/
+
+		myDamage = input > myDamage ? 0 : myDamage - input;
 	}
 
-	public void TurnEnd ()
-	{
-		Message message = ToMessage();
-
-		Operation.ActivateList(myEndTurnEffects, message);
-	}
-	
 	void Update () {
 
 		Vector3 thisPosition = this.transform.position;
@@ -135,12 +181,12 @@ public class UnitScript : MonoBehaviour {
 					myTargetUnit.Damage(myOffense);
 				}
 			}
-			else
+			else if(null != myNavMeshAgent)
 			{
-				GetComponent<NavMeshAgent>().destination = myTargetUnit.transform.position;
+				myNavMeshAgent.destination = myTargetUnit.transform.position;
 			}
 		}
-		else if(GetComponent<NavMeshAgent>().hasPath)
+		else if (null != myNavMeshAgent && myNavMeshAgent.hasPath)
 		{
 
 		}
@@ -238,4 +284,5 @@ public class UnitScript : MonoBehaviour {
 			return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero)); 
 		}
 	}
+
 }

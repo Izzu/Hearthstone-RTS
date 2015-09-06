@@ -40,4 +40,14 @@ public class Message
 		myObject = inObject;
 	}
 
+	public PlayerScript Player (bool objective)
+	{
+		return objective ? null == myObject ? null : myObject.myPlayerScript : null == mySubject ? null : mySubject.myPlayerScript;
+	}
+
+	public UnitScript Unit (bool objective)
+	{
+		return objective ? null == myObject ? null : myObject.myUnitScript : null == mySubject ? null : mySubject.myUnitScript;
+	}
+
 }

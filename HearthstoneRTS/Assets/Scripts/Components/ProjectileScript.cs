@@ -11,7 +11,7 @@ public class ProjectileScript : MonoBehaviour {
 
 	public bool myAllyTrigger = false;
 
-	public Operation[] myHitUnit;
+	public EffectScript[] myHitUnit;
 
 	public Clocker myClocker;
 
@@ -27,42 +27,44 @@ public class ProjectileScript : MonoBehaviour {
 	//hits something
 	void OnCollisionEnter(Collision collision)
 	{
+		Debug.Log("Hit: " + collision.gameObject);
+
 		UnitScript unitScript = collision.gameObject.GetComponent<UnitScript>();
+
+		if (null == unitScript)
+		{
+			return;
+		}
 
 		bool deleting = false;
 
-		if (null != unitScript)
+		if(null == myMessage.mySubject)
 		{
+			
+		}
+		else if(false == mySelfTrigger && unitScript == myMessage.mySubject.myUnitScript)
+		{
+			return;
+		}
 
-			if(false == mySelfTrigger && unitScript == myMessage.mySubject.myUnitScript)
-			{
-				return;
-			}
-			else
-			{
+		if(false == myAllyTrigger && unitScript.myOwningPlayer == myMessage.mySubject.myPlayerScript)
+		{
+			return;
+		}
 
-			}
+		myMessage.myObject = unitScript.ToTerm();
 
-			if(false == myAllyTrigger && unitScript.myOwningPlayer == myMessage.mySubject.myPlayerScript)
-			{
-				return;
-			}
+		EffectScript.AffectsList(myHitUnit, myMessage);
 
-			myMessage.myObject = unitScript.ToTerm();
-
-			Operation.ActivateList(myHitUnit, myMessage);
-
-			if (myDeleteOnUnit)
-			{
-				deleting = true;
-			}
+		if (myDeleteOnUnit)
+		{
+			deleting = true;
 		}
 
 		if(deleting)
 		{
 			Destroy(gameObject);
 		}
-
 	}
 
 	//exit

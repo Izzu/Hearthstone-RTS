@@ -82,7 +82,7 @@ public class CursorScript : MonoBehaviour
 				{
 					if (hit.transform != myUnitScript.transform)
 					{
-						myUnitScript.GetComponent<NavMeshAgent>().destination = hit.point;
+						myUnitScript.myNavMeshAgent.destination = hit.point;
 					}
 				}
 			}

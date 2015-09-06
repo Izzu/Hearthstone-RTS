@@ -11,85 +11,92 @@ public class HandScript : MonoBehaviour {
 
 	public float myOffset = 2.0f;
 
+	public CardScript[] myCards
+	{
+		//	one day this getter
+		//	will be glorius
+		//	once children are computed once per update
+		get
+		{
+			return transform.GetComponentsInChildren<CardScript>();
+		}
+	}
+
+	void Awake()
+	{
+		//myCards = transform.GetComponentsInChildren<CardScript>();
+	}
+
+	void Update()
+	{
+		//myCards = transform.GetComponentsInChildren<CardScript>();
+	}
+
     public int CountCards()
     {
-        return transform.GetComponentsInChildren<CardScript>().Length;
+        return myCards.Length;
     }
 
 	public CardScript GetCard(int index)
 	{
-		foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
-		{
-			if (cardScript.myHandIndex == index)
-			{
-				return cardScript;
-			}
-		}
-		return null;
+		return index < myCards.Length ? myCards[index] : null;
 	}
 
 	//	Inserts a card into the hand,
 	//		returns false if not successful
-    public bool InsertCard(CardScript input)
+    public bool InsertCard(CardScript input, bool discard = true)
     {
 		if (null != input)
 		{
-			Operation.ActivateList(input.myInsertEffect, myOwningPlayer.ToMessage());
-
+			EffectScript.AffectsList(input.myInsertEffects, myOwningPlayer.ToMessage());
+			
 			int cardCount = CountCards();
 
 			if (cardCount < myCardCapacity)
 			{
-				input.myHandIndex = CountCards();
-
 				input.myHandScript = this;
 
-				foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
-				{
-					cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount + 1), 1f);
-
-					cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount + 1), .5f);
-				}
+				Reanimate();
 
 				return true;
 			}
-			else
+			else if (discard)
 			{
-				Operation.ActivateList(input.myRemoveEffect, myOwningPlayer.ToMessage());
+				EffectScript.AffectsList(input.myRemoveEffects, myOwningPlayer.ToMessage());
 			}
 		}
 		return false;
     }
 
-    public CardScript RemoveCard(CardScript input, bool discarded = false)
+	public CardScript RemoveCard(CardScript input, bool discard = false)
     {
         if (input.transform.IsChildOf(transform))
         {
-			int cardCount = CountCards();
-
-            foreach (CardScript cardScript in transform.GetComponentsInChildren<CardScript>())
-            {
-                if (cardScript.myHandIndex > input.myHandIndex)
-                {
-                    cardScript.myHandIndex--;
-                }
-
-				cardScript.myPosition.Reanimate(CardPosition(cardScript.myHandIndex, cardCount - 1), 1f);
-
-				cardScript.myRotation.Reanimate(CardRotation(cardScript.myHandIndex, cardCount - 1), .5f);
-            }
-
-			if (discarded)
-			{
-				Operation.ActivateList(input.myRemoveEffect, myOwningPlayer.ToMessage());
-			}
-
 			input.myHandScript = null;
+
+			Reanimate();
+
+			if (discard)
+			{
+				EffectScript.AffectsList(input.myRemoveEffects, myOwningPlayer.ToMessage());
+			}
 
             return input;
         }
         return null;
     }
+
+	public void Reanimate ()
+	{
+		CardScript[] handCardScripts = myCards;
+
+		for (int i = 0, n = handCardScripts.Length; i < n; i++)
+		{
+			handCardScripts[i].myPosition.Reanimate(CardPosition(i, n), 1f);
+
+			handCardScripts[i].myRotation.Reanimate(CardRotation(i, n), .5f);
+		}
+	}
 
 	public Quaternion CardRotation(int cardIndex, int cardCount)
 	{
@@ -101,9 +108,21 @@ public class HandScript : MonoBehaviour {
 			0f);
 	}
 
+	int Find (CardScript cardScript)
+	{
+		for(int i = 0; i < myCards.Length; i++)
+		{
+			if(myCards[i] == cardScript)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public Quaternion CardRotation(CardScript input)
 	{
-		return CardRotation(input.myHandIndex, CountCards());
+		return CardRotation(Find(input), CountCards());
 	}
 
 	public Vector3 CardPosition(int cardIndex, int cardCount)
@@ -114,7 +133,7 @@ public class HandScript : MonoBehaviour {
 
 	public Vector3 CardPosition(CardScript input)
 	{
-		return CardPosition(input.myHandIndex, CountCards());
+		return CardPosition(Find(input), CountCards());
 	}
 
 }

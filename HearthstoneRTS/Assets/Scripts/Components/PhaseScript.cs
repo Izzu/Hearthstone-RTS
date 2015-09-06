@@ -9,7 +9,7 @@ public class PhaseScript : MonoBehaviour {
 	public enum Phase
 	{
 		Null,
-		Begin,
+		Ceasefire,
 		Battle
 	}
 
@@ -23,15 +23,15 @@ public class PhaseScript : MonoBehaviour {
 		{
 			switch (value)
 			{
-				case Phase.Begin:
+				case Phase.Ceasefire:
 
-					Debug.Log("BEGIN");
-					ourPhase = Phase.Begin;
+					Debug.Log("Ceasefire Phase");
+					ourPhase = Phase.Ceasefire;
 					break;
 
 				case Phase.Battle:
 
-					Debug.Log("BATTLE");
+					Debug.Log("Battle Phase");
 					ourPhase = Phase.Battle;
 					break;
 
@@ -62,15 +62,9 @@ public class PhaseScript : MonoBehaviour {
 						{
 							if (playerScript && playerScript.myDeckScript)
 							{
-								for (int i = 0; i < 9; i++)
+								for (int i = 0; i < 10; i++)
 								{
-									Object prefab = Resources.Load("Prefabs/Cards/Mana");
-
-									GameObject gameobject = Instantiate(prefab) as GameObject;
-
-									CardScript cardScript = gameobject.GetComponent<CardScript>();
-
-									cardScript.gameObject.name = prefab.name;
+									CardScript cardScript = GlobalScript.New("Prefabs/Cards/Dual Mana").GetComponent<CardScript>();
 
 									if (null != cardScript)
 									{
@@ -89,17 +83,17 @@ public class PhaseScript : MonoBehaviour {
 						}
 					}
 
-					Current = Phase.Begin;
+					Current = Phase.Ceasefire;
 					break;
 
-				case Phase.Begin:
+				case Phase.Ceasefire:
 
 					Current = Phase.Battle;
 					break;
 
 				case Phase.Battle:
 
-					Current = Phase.Begin;
+					Current = Phase.Ceasefire;
 					break;
 			}
 		}

@@ -45,7 +45,7 @@ public class SelectionScript : MonoBehaviour {
 					{
 						foreach (UnitScript unit in mySelectedUnits)
 						{
-							unit.GetComponent<NavMeshAgent>().destination = hit.point;
+							unit.myNavMeshAgent.destination = hit.point;
 							unit.myTargetUnit = null;
 						}
 					}

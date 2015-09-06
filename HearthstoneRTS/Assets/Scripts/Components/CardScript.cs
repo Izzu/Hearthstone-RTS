@@ -4,7 +4,13 @@ using System.Collections.Generic;
 
 public class CardScript : MonoBehaviour {
 
-	public int myHandIndex;
+	public enum Type
+	{
+		Null,
+		Item,
+		Spell,
+		Unit
+	}
 
 	public Lerper3 myPosition;
 
@@ -12,9 +18,11 @@ public class CardScript : MonoBehaviour {
 
 	public Slerper myRotation;
 
-	public Operation[] myPlayEffect;
-	public Operation[] myInsertEffect;
-	public Operation[] myRemoveEffect;
+	public EffectScript[] myPlayEffects;
+	public EffectScript[] myInsertEffects;
+	public EffectScript[] myRemoveEffects;
+
+	public Type myType = Type.Null;
 
 	void Awake ()
 	{
@@ -23,20 +31,25 @@ public class CardScript : MonoBehaviour {
 		mySize = new Lerper3(new Vector3(.5f, .75f, .01f));
 
 		myRotation = new Slerper();
+
+		myRenderer = transform.GetComponent<Renderer>();
+
+		myBoxCollider = transform.GetComponent<BoxCollider>();
+
 	}
 
 	public HandScript myHandScript
 	{
 		get 
 		{
-			return transform.parent ? transform.parent.GetComponent<HandScript>() : null; 
+			return null != transform.parent ? transform.parent.GetComponent<HandScript>() : null; 
 		}
 
 		set
 		{
 			HandScript handScript = value;
 
-			transform.parent = handScript ? handScript.transform : null;
+			transform.parent = null != handScript ? handScript.transform : null;
 		}
 	}
 
@@ -150,8 +163,6 @@ public class CardScript : MonoBehaviour {
 
 				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 8))
 				{
-					//Debug.Log("Terrain: " + hit.point);
-
 					message.myObject.myPosition = hit.point;
 				}
 
@@ -162,16 +173,13 @@ public class CardScript : MonoBehaviour {
 
 					if (unitScript)
 					{
-						//Debug.Log("Unit: " + unitScript.name);
-
 						message.myObject = unitScript.ToTerm();
 					}
 				}
 
 				//get cost of card
-				int manaCost = CostMana(message).myTail;
-
-				int goldCost = CostGold(message).myTail;
+				int manaCost = CostMana(message);
+				int goldCost = CostGold(message);
 
 				//if player has enough
 				if (goldCost <= playerScript.myGold && manaCost <= playerScript.myMana)
@@ -180,12 +188,12 @@ public class CardScript : MonoBehaviour {
 					playerScript
 						.SubMana(manaCost)
 						.SubGold(goldCost)
-						.AddDebt(CostDebt(message).myTail)
-						.AddOverload(CostOverload(message).myTail);
+						.AddDebt(CostDebt(message))
+						.AddOverload(CostOverload(message));
 
-					handScript.RemoveCard(this);
+					handScript.RemoveCard(this, false);
 
-					Operation.ActivateList(myPlayEffect, message);
+					playerScript.ActivateCard(this, message);
 
 					Destroy(gameObject);
 				}
@@ -217,12 +225,7 @@ public class CardScript : MonoBehaviour {
 			GUI.Box(new Rect(GUIposition, new Vector2(75f, 20f)), transform.name);
 		}
 	}
-
-
-
-
-
-
+	
 
 
 
@@ -242,45 +245,36 @@ public class CardScript : MonoBehaviour {
 	 * *****************************/
 
 
-	[System.Serializable]
-	public class Resource
-	{
-		public int myBase;
-		public Operation myFunct;
-
-		//head: base cost
-		//tail: real cost
-		public Pair<int, int> Cost (Message message)
-		{
-			return new Pair<int, int>(myBase, myBase + myFunct.Activate(message));
-		}
-	}
+	
 
 	public Resource myMana, myGold, mySupply, myOverload, myDebt;
 
-	public Pair<int, int> CostMana(Message message)
+	public int CostMana(Message message)
 	{
 		return myMana.Cost(message);
 	}
-	
-	public Pair<int, int> CostSupply(Message message)
+
+	public int CostSupply(Message message)
 	{
 		return mySupply.Cost(message);
 	}
 
-	public Pair<int, int> CostGold(Message message)
+	public int CostGold(Message message)
 	{
 		return myGold.Cost(message);
 	}
 
-	public Pair<int, int> CostOverload(Message message)
+	public int CostOverload(Message message)
 	{
 		return myOverload.Cost(message);
 	}
 
-	public Pair<int, int> CostDebt(Message message)
+	public int CostDebt(Message message)
 	{
 		return myDebt.Cost(message);
 	}
+
+	public BoxCollider myBoxCollider;
+	public Renderer myRenderer;
 
 }

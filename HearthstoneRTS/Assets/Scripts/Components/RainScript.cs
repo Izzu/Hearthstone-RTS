@@ -9,7 +9,7 @@ public class RainScript : MonoBehaviour {
 
 	public Repeater myRepeater;
 
-	public int myLastCycle = 0, myWaves = 1;
+	public int myLastCycle, myWaves;
 
 	public Message myMessage;
 
@@ -25,15 +25,13 @@ public class RainScript : MonoBehaviour {
 		{
 			for (; myLastCycle <= myRepeater.Cycle(); myLastCycle++)
 			{
-				for (float i = 0f; i < myRadius * 3.14159f; i++)
+				for (float i = 0f; i < myRadius * 5f; i++)
 				{
-					Object prefab = Resources.Load("Prefabs/Projectiles/Icicle");
-
-					Vector3 position = transform.position + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * myRadius;
-
-					GameObject gameObject = Transform.Instantiate(prefab, position + Vector3.up * myHeight, Quaternion.Euler(Vector3.up)) as GameObject;
-
-					ProjectileScript projectileScript = gameObject.GetComponent<ProjectileScript>();
+					ProjectileScript projectileScript = GlobalScript.New(
+						"Prefabs/Projectiles/Icicle",
+						transform.position + Vector3.up * myHeight + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * myRadius,
+						Quaternion.identity
+					).GetComponent<ProjectileScript>();
 
 					projectileScript.myDeleteOnUnit = true;
 
@@ -48,4 +46,6 @@ public class RainScript : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
+
+	//trigger functions activate on collisions but don't respond to the collisions
 }

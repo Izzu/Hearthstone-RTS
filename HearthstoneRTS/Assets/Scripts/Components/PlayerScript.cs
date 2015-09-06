@@ -3,8 +3,6 @@ using System.Collections;
 
 public class PlayerScript : MonoBehaviour {
 
-	public string myName;
-
 	public int myMana, myOverload, myManaCap, myGold, myDebt, mySupply, myDemand;
 
 	public HandScript myHandScript;
@@ -19,11 +17,52 @@ public class PlayerScript : MonoBehaviour {
 
 	public Color myColor;
 
-	void Start () {
+	/*[System.Serializable]
+	public class FrameData
+	{
+		public int mySpellsCast;
+		public int myCardsPlayed;
+		public int myItemsUsed;
+		public int myUnitsMade;
+		public int myAttacks;
+		public int myHeals;
+		public int myDeaths;
+		public int myDamages;
+		public int myDraws;
+	}
+
+	[System.Serializable]
+	public class TurnData
+	{
+		public FrameData myFrameData = new FrameData();
+	}
+
+	[System.Serializable]
+	public class MatchData
+	{
+		public TurnData myTurnData = new TurnData();
+	}
+
+	public MatchData myMatchData;
+	public TurnData myTurnData;
+	public FrameData myFrameData;*/
+
+	void Awake ()
+	{
+		/*MatchData myMatchData = new MatchData();
+
+		TurnData myTurnData = new TurnData();
+
+		FrameData myFrameData = new FrameData();*/
+	}
+
+	void Start ()
+	{
 
 	}
 	
-	void Update () {
+	void Update ()
+	{
 
 	}
 
@@ -40,7 +79,7 @@ public class PlayerScript : MonoBehaviour {
 	{
 		Draw();
 
-		AddMana(++myManaCap - myMana);
+		ManaFill();
 	}
 
 	public void TurnEnd ()
@@ -48,13 +87,14 @@ public class PlayerScript : MonoBehaviour {
 
 	}
 	
+	public Message ToMessage ()
 	//	Generates a Message from:
-	//		the player, 
+	//		the player,
 	//		his hero,
 	//		the unit his hero is attacking,
 	//		that unit's owner,
 	//		or some random player if nothing is found
-	public Message ToMessage ()
+	
 	{
 		//no hero
 		if(myHeroUnitScript)
@@ -79,21 +119,29 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
+	public PlayerScript Draw(bool destroyOnFailure = true)
 	//	If no space in hand, 
 	//		trigger removal effect
 	//		destroy card if specified
-	public PlayerScript Draw(CardScript drawCardScript = null, bool destroyOnFailure = true)
 	{
-		drawCardScript = myDeckScript.RemoveCard();
+		CardScript drawCardScript = myDeckScript.RemoveCard();
 
-		if (drawCardScript)
+		if (null != drawCardScript)
 		{
+			/*myFrameData.myDraws++;
+			myTurnData.myFrameData.myDraws++;
+			myMatchData.myTurnData.myFrameData.myDraws++;
+
+			GlobalScript.ourPlayerFrameData.myDraws++;
+			GlobalScript.ourPlayerTurnData.myFrameData.myDraws++;
+			GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myDraws++;*/
+
 			//	If false, then hand was over capacity,
 			//	But the removal effect for the card should go off
 			if(false == myHandScript.InsertCard(drawCardScript))
 			{
-				Operation.ActivateList(drawCardScript.myRemoveEffect, ToMessage());
-
+				EffectScript.AffectsList(drawCardScript.myRemoveEffects, ToMessage());
+				
 				//failed to draw card so destroy if specified
 				if (destroyOnFailure)
 				{
@@ -104,6 +152,67 @@ public class PlayerScript : MonoBehaviour {
 
 		return this;
 	}
+
+	//	Activates a card
+	public void ActivateCard(CardScript cardScript, Message message)
+	{
+		EffectScript.AffectsList(cardScript.myPlayEffects, message);
+		
+		/*myFrameData.myCardsPlayed++;
+		myTurnData.myFrameData.myCardsPlayed++;
+		myMatchData.myTurnData.myFrameData.myCardsPlayed++;
+
+		GlobalScript.ourPlayerFrameData.myCardsPlayed++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myCardsPlayed++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myCardsPlayed++;*/
+
+		switch(cardScript.myType)
+		{
+			case CardScript.Type.Spell:
+
+				/*myFrameData.mySpellsCast++;
+				myTurnData.myFrameData.mySpellsCast++;
+				myMatchData.myTurnData.myFrameData.mySpellsCast++;
+
+				GlobalScript.ourPlayerFrameData.mySpellsCast++;
+				GlobalScript.ourPlayerTurnData.myFrameData.mySpellsCast++;
+				GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.mySpellsCast++;*/
+				break;
+
+			case CardScript.Type.Item:
+
+				/*myFrameData.myItemsUsed++;
+				myTurnData.myFrameData.myItemsUsed++;
+				myMatchData.myTurnData.myFrameData.myItemsUsed++;
+
+				GlobalScript.ourPlayerFrameData.myItemsUsed++;
+				GlobalScript.ourPlayerTurnData.myFrameData.myItemsUsed++;
+				GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myItemsUsed++;*/
+				break;
+
+			case CardScript.Type.Unit:
+
+				/*myFrameData.myUnitsMade++;
+				myTurnData.myFrameData.myUnitsMade++;
+				myMatchData.myTurnData.myFrameData.myUnitsMade++;
+
+				GlobalScript.ourPlayerFrameData.myUnitsMade++;
+				GlobalScript.ourPlayerTurnData.myFrameData.myUnitsMade++;
+				GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myUnitsMade++;*/
+				break;
+
+		}
+
+	}
+
+
+
+
+
+
+
+
+
 
 	public PlayerScript AddMana(int input)
 	{
@@ -118,7 +227,14 @@ public class PlayerScript : MonoBehaviour {
 
 		return this;
 	}
-	
+
+	public void ManaFill()
+	{
+		myMana = myManaCap - myOverload;
+
+		myOverload = 0;
+	}
+
 	public PlayerScript AddGold(int input)
 	{
 		if(myDebt > 0)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class TurnScript : MonoBehaviour {
 
@@ -9,10 +10,32 @@ public class TurnScript : MonoBehaviour {
 
 	public PlayerScript myCurrentPlayer;
 
+	/*public Queue<Pair<EffectScript, Message>> myTurnEndPersistentQueue = new Queue<Pair<EffectScript, Message>>();
+
+	public Queue<Pair<EffectScript, Message>> myTurnBeginPersistentQueue = new Queue<Pair<EffectScript, Message>>();
+
+	public Queue<Pair<EffectScript, Message>> myTurnEndQueue = new Queue<Pair<EffectScript, Message>>();
+
+	public Queue<Pair<EffectScript, Message>> myTurnBeginQueue = new Queue<Pair<EffectScript, Message>>();*/
+
 	public PlayerScript Current {
-		get { return myCurrentPlayer; }
+		get
+		{
+			return myCurrentPlayer; 
+		}
 	}
 
+	void Awake()
+	{
+		myRepeater = new Repeater(60f);
+	}
+
+	// Use this for initialization
+	void Start()
+	{
+
+	}
+	
 	public PlayerScript Next
 	{
 		get 
@@ -38,26 +61,48 @@ public class TurnScript : MonoBehaviour {
 		}
 	}
 
-	void Awake ()
-	{
-		 myRepeater = new Repeater(60f);
-	}
-
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
 	// Update is called once per frame
 	void Update () 
 	{
 		for (; myLastCycle <= myRepeater.Cycle(); myLastCycle++)
 		{
-			GlobalScript.TurnEnd();
+			TurnEnd();
 
-			GlobalScript.TurnBegin();
+			TurnBegin();
 		}
 	}
 
+	public void TurnEnd ()
+	{
+		GlobalScript.TurnEnd();
+
+		/*foreach (Pair<EffectScript, Message> pair in myTurnEndPersistentQueue)
+		{
+			pair.myHead.List(pair.myTail);
+		}
+
+		foreach (Pair<EffectScript, Message> pair in myTurnEndQueue)
+		{
+			pair.myHead.Activate(pair.myTail);
+		}
+
+		myTurnEndQueue.Clear();*/
+	}
+
+	public void TurnBegin()
+	{
+		GlobalScript.TurnBegin();
+
+		/*foreach (Pair<EffectScript, Message> pair in myTurnBeginPersistentQueue)
+		{
+			pair.myHead.Activate(pair.myTail);
+		}
+
+		foreach (Pair<EffectScript, Message> pair in myTurnBeginQueue)
+		{
+			pair.myHead.Activate(pair.myTail);
+		}
+
+		myTurnBeginQueue.Clear();*/
+	}
 }

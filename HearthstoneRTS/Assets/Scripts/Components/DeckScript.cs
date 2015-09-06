@@ -15,11 +15,29 @@ public class DeckScript : MonoBehaviour {
 
 	public float myInspectAngle;
 
+	public CardScript[] myCards
+	{
+		get 
+		{ 
+			return transform.GetComponentsInChildren<CardScript>(); 
+		}
+	}
+
+	public int Length 
+	{ 
+		get
+		{
+			return myCards.Length;
+		}
+	}
+
 	void Awake ()
 	{
 		mySize = new Lerper3();
 
 		myRotation = new Slerper();
+
+		//myCards = transform.GetComponentsInChildren<CardScript>();
 	}
 
 	// Use this for initialization
@@ -38,11 +56,8 @@ public class DeckScript : MonoBehaviour {
 		transform.localRotation = myRotation.Slerp();
 
 		transform.localScale = mySize.Lerp();
-	}
 
-	public int CountCards()
-	{
-		return transform.GetComponentsInChildren<CardScript>().Length;
+		//myCards = transform.GetComponentsInChildren<CardScript>();
 	}
 
 	//	When over capacity:
@@ -50,15 +65,15 @@ public class DeckScript : MonoBehaviour {
 	//		doesn't put the card in deck
 	public bool InsertCard(CardScript input)
 	{
-		if (null != input && CountCards() < myCardCapacity)
+		if (null != input && Length < myCardCapacity)
 		{
 			input.transform.parent = transform;
 
 			input.myDeckScript = this;
 
-			input.GetComponent<Renderer>().enabled = false;
+			input.myRenderer.enabled = false;
 
-			input.GetComponent<BoxCollider>().enabled = false;
+			input.myBoxCollider.enabled = false;
 
 			input.myPosition.Animate(Vector3.zero, 2);
 
@@ -71,16 +86,16 @@ public class DeckScript : MonoBehaviour {
 
 	public CardScript RemoveCard()
 	{
-		CardScript[] deckCardScript = transform.GetComponentsInChildren<CardScript>();
+		CardScript[] deckCardScript = myCards;
 		if (deckCardScript.Length > 0)
 		{
 			CardScript cardScript = deckCardScript[0];
 
 			cardScript.myDeckScript = null;
 
-			cardScript.GetComponent<Renderer>().enabled = true;
+			cardScript.myRenderer.enabled = true;
 
-			cardScript.GetComponent<BoxCollider>().enabled = true;
+			cardScript.myBoxCollider.enabled = true;
 
 			cardScript.transform.position = transform.position;
 
@@ -120,13 +135,13 @@ public class DeckScript : MonoBehaviour {
 
 	public Vector3 DeckSize()
 	{
-		int count = CountCards();
+		int count = Length;
 
 		return count > 0 ? 
 			new Vector3(
 				.5f,
 				(null != GlobalScript.ourCursorScript && GlobalScript.ourCursorScript.myDeckScript == this ? 2f : .75f)
-				, CountCards() * .005f
+				, count * .005f
 			) : 
 			Vector3.zero;
 	}
