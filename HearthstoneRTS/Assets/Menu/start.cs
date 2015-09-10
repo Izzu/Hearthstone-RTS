@@ -3,16 +3,22 @@ using System.Collections;
 
 public class start : MonoBehaviour {
 
-    public int world = 0;
+    public int map = 0;
 
     public void OnClick()
     {
-        //Debug.Log("clicked");
-        /*if (world == 0)
-            Application.LoadLevel("IslandScene");
-        else if (world == 1)
-            Application.LoadLevel("MatchScene");*/
-
+        Debug.Log(map);
         Application.LoadLevel("MatchScene");
     }
+
+    public void Map1()
+    {
+        map = 1;
+    }
+
+    public void Map2()
+    {
+        map = 2;
+    }
+
 }
