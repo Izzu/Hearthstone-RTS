@@ -16,7 +16,7 @@ public class Slerper : Clocker {
 
 	public Quaternion Slerp ()
 	{
-		return IsActive() ? Quaternion.Slerp(myBegin, myEnd, Percent()) : myEnd;
+		return isActive ? Quaternion.Slerp(myBegin, myEnd, percent) : myEnd;
 	}
 
 	public Slerper Reset(Quaternion input)
