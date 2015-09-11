@@ -13,7 +13,8 @@ public class InteractionScript : MonoBehaviour {
 
 	private bool isOn = false;
 
-
+	[SerializeField]
+	public bool isLoop = false;
 
 
 	[System.Serializable]
@@ -121,12 +122,27 @@ public class InteractionScript : MonoBehaviour {
 		Activate();
 	}
 
+	public int count
+	{
+		get
+		{
+			return myPhases.Length;
+		}
+	}
+
 	public void Activate ()
 	{
 		if (isOn && null != myPhases && Phaser<Data>.IsActive(myBegin, myPhases))
 		{
 			for (int n = Phaser<Data>.Phase(myBegin, myPhases); myLastPhase < n; myLastPhase++)
 			{
+				Debug.Log("Phase: " + myLastPhase);
+
+				if(myLastPhase == count)
+				{
+					isOn = isLoop;
+				}
+
 				Data phaseData = data;
 
 				if (null != phaseData && null != phaseData.myEffect)
