@@ -11,14 +11,9 @@ public class DamageEffect : EffectScript
 	{
 		UnitScript unit = null == message ? null : message.Unit(myObject);
 		
-		if (null == unit)
+		if (null != unit && null != unit.myHealth)
 		{
-
-		}
-		else
-		{
-			
-			unit.Damage(myValue);
+			unit.myHealth.Damage(myValue);
 		}
 
 		return input;

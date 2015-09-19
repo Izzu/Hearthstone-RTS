@@ -74,7 +74,11 @@ public class TurnScript : MonoBehaviour {
 
 	public void TurnEnd ()
 	{
-		GlobalScript.TurnEnd();
+		
+		foreach(PlayerScript player in GlobalScript.ourPlayerScripts)
+		{
+			player.TurnEnd();
+		}
 
 		/*foreach (Pair<EffectScript, Message> pair in myTurnEndPersistentQueue)
 		{
@@ -91,7 +95,13 @@ public class TurnScript : MonoBehaviour {
 
 	public void TurnBegin()
 	{
-		GlobalScript.TurnBegin();
+
+		Debug.Log("Turn Begins");
+
+		foreach (PlayerScript player in GlobalScript.ourPlayerScripts)
+		{
+			player.TurnBegin();
+		}
 
 		/*foreach (Pair<EffectScript, Message> pair in myTurnBeginPersistentQueue)
 		{

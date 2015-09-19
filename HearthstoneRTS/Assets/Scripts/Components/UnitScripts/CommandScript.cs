@@ -236,6 +236,80 @@ public class CommandScript : MonoBehaviour {
 					myAction.self = self;
 					myAction.target = myTarget;
 					myAction.begin = Time.time;
+					myAction.isLoop = false;
+				}
+			}
+			else
+			{
+				myAction.Stop();
+				self.myNavMeshAgent.destination = destination;
+			}
+		}
+
+		public override bool IsDone(UnitScript self)
+		{
+			return null == myTarget;
+		}
+
+		public override UnitScript target
+		{
+			get
+			{
+				return myTarget;
+			}
+		}
+	}
+
+	public class Target : Follow
+	{
+		public InteractionScript myAction;
+
+		public Target(UnitScript target, InteractionScript action) :
+			base(target, .5f)//it would make more sense to pull range from whatever is attacking
+		{
+			if (null == target)
+			{
+				throw new System.ArgumentException("Parameter cannot be null", "target");
+			}
+			if (null == action)
+			{
+				throw new System.ArgumentException("Parameter cannot be null", "action");
+			}
+			else
+			{
+				myAction = action;
+			}
+		}
+
+		public override void Begin(UnitScript self)
+		{
+			Update(self);
+		}
+
+		public override void Update(UnitScript self)
+		{
+			//if in range
+			//	if interaction started
+			//		update interaction
+			//	else
+			//		start interaction
+			//else
+			//	stop interaction
+			//	move in range
+			Vector3 position = self.transform.position;
+
+			Vector3 destination = myTarget.transform.position;
+
+			float distance = (position - destination).magnitude;
+
+			if (distance < myRange)
+			{
+				if (false == myAction.isActive)
+				{
+					myAction.self = self;
+					myAction.target = myTarget;
+					myAction.begin = Time.time;
+					myAction.isLoop = true;
 				}
 			}
 			else

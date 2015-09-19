@@ -69,7 +69,7 @@ public class CursorScript : MonoBehaviour
 		}
 
 		//move cursor's unit
-		if (myUnitScript && myUnitScript.myOwningPlayer == mainPlayerScript)
+		if (myUnitScript && myUnitScript.myOwner.owner == mainPlayerScript)
 		{
 			mainPlayerScript.mySelectionScript.myIsDragging = false;
 
