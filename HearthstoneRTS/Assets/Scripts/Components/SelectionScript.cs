@@ -22,10 +22,8 @@ public class SelectionScript : MonoBehaviour {
 
 	void Update()
 	{
-		//controlling selected units
 		if (mySelectedUnits.Count > 0)
 		{
-			//if mouse.right is down
 			if (Input.GetMouseButton(1))
 			{
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -33,54 +31,29 @@ public class SelectionScript : MonoBehaviour {
 
 				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength))
 				{
-					//the ray hit a "unit" gameObject
-					UnitScript target = hit.transform.gameObject.GetComponent<UnitScript>();
-					if (null != target && target.gameObject.layer == 9)
-						//we don't care whether we're targetting friend or foe anymore,
-						//commands will determine whether we're attacking or helping and how it is done
+					
+					UnitScript targetUnit = hit.transform.GetComponent<UnitScript>();
+					if (null != targetUnit
+						&& targetUnit.myOwningPlayer != myPlayerScript)
 					{
-						//order selected units to target
 						foreach (UnitScript unit in mySelectedUnits)
 						{
-							if (null != unit.myCommands)
-							{
-								if (false == Input.GetKey(KeyCode.LeftShift))
-								{
-									unit.myCommands.Clear();
-								}
-
-								//follow allies
-								if(target.myOwner.owner == myPlayerScript)
-								{
-									unit.myCommands.Order(new CommandScript.Follow(target, 2.5f));
-								}
-								//attack enemies
-								else
-								{
-									unit.myCommands.Order(new CommandScript.Interact(target, unit.myAttack));
-								}
-							}
+							unit.myTargetUnit = targetUnit;
 						}
 					}
 					else
 					{
-						//order selected units to move
 						foreach (UnitScript unit in mySelectedUnits)
 						{
-							if (null != unit.myCommands)
-							{
-								if (false == Input.GetKey(KeyCode.LeftShift))
-								{
-									unit.myCommands.Clear();
-								}
-
-								unit.myCommands.Order(new CommandScript.Move(hit.point));
-							}
+							unit.myNavMeshAgent.destination = hit.point;
+							unit.myTargetUnit = null;
 						}
 					}
 				}
 			}
+
 		}
+
 	}
 
 	public void Selection ()
@@ -127,7 +100,7 @@ public class SelectionScript : MonoBehaviour {
 			{
 				foreach (UnitScript unit in GlobalScript.ourUnitScripts)
 				{
-					if (unit.myOwner.owner == myPlayerScript && unit.ScreenCheck(selectionRect))
+					if (unit.myOwningPlayer == myPlayerScript && unit.ScreenCheck(selectionRect))
 					{
 						mySelectedUnits.Add(unit);
 					}

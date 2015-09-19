@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -17,8 +16,6 @@ public class PlayerScript : MonoBehaviour {
 	public DeckScript myDeckScript;
 
 	public Color myColor;
-
-	public HashSet<ProductionScript> myProduction;
 
 	/*[System.Serializable]
 	public class FrameData
@@ -57,8 +54,6 @@ public class PlayerScript : MonoBehaviour {
 		TurnData myTurnData = new TurnData();
 
 		FrameData myFrameData = new FrameData();*/
-
-		myProduction = new HashSet<ProductionScript>();
 	}
 
 	void Start ()
@@ -68,7 +63,16 @@ public class PlayerScript : MonoBehaviour {
 	
 	void Update ()
 	{
+
+	}
+
+	public Message.Term ToTerm ()
+	{
+		Message.Term term = null == myHeroUnitScript ? new Message.Term(this, null, null, transform.position) : myHeroUnitScript.ToTerm();
+
+		term.myPlayerScript = this;
 		
+		return term;
 	}
 
 	public void TurnBegin ()
@@ -82,48 +86,7 @@ public class PlayerScript : MonoBehaviour {
 	{
 
 	}
-
-	//registering units with a player costs the player supply
-	public bool Register(OwnerScript owned, int demand = 0, int supply = 0)
-	{
-
-		//if player hasn't enough supply
-		if(demand > mySupply - myDemand)
-		{
-			owned.Own(null, demand, supply);
-
-			Debug.Log(this + " can't afford " + demand + " supply.");
-			
-			return false;
-		}
-
-		//otherwise, proceed
-		owned.Own(this, demand, supply);
-
-		myDemand += demand;
-		mySupply += supply;
-
-		return true;
-	}
-
-	public void Release(OwnerScript owned)
-	{
-		if (this == owned.owner)
-		{
-			mySupply -= owned.supply;
-			myDemand -= owned.demand;
-		}
-	}
-
-	public Message.Term ToTerm()
-	{
-		Message.Term term = null == myHeroUnitScript ? new Message.Term(this, null, null, transform.position) : myHeroUnitScript.ToTerm();
-
-		term.myPlayerScript = this;
-
-		return term;
-	}
-
+	
 	public Message ToMessage ()
 	//	Generates a Message from:
 	//		the player,
@@ -134,7 +97,13 @@ public class PlayerScript : MonoBehaviour {
 	
 	{
 		//no hero
-		if(null == myHeroUnitScript)
+		if(myHeroUnitScript)
+		{
+			return myHeroUnitScript.ToMessage();
+		}
+
+		//player has a hero
+		else
 		{
 			//finding another player
 			foreach (PlayerScript playerScript in GlobalScript.ourPlayerScripts)
@@ -144,14 +113,9 @@ public class PlayerScript : MonoBehaviour {
 					return new Message(ToTerm(), playerScript.ToTerm());
 				}
 			}
+
 			//no player found, be null
 			return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero));
-		}
-
-		//player has a hero
-		else
-		{
-			return myHeroUnitScript.ToMessage();
 		}
 	}
 
@@ -269,8 +233,6 @@ public class PlayerScript : MonoBehaviour {
 		myMana = myManaCap - myOverload;
 
 		myOverload = 0;
-
-		myMana = myMana < 0 ? 0 : myMana;
 	}
 
 	public PlayerScript AddGold(int input)

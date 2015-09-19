@@ -4,21 +4,20 @@ using System.Collections;
 public class UnitScript : MonoBehaviour {
 
 	
+	public int myHealth;
+	public int myDamage;
 	public int myOffense;
 	public int myDefense;
 
 	public float myRange;
+
 	private float myCooldown = 0;
 
 	private Vector3 myScreenPosition;
 
-	public OwnerScript myOwner;
+	public PlayerScript myOwningPlayer;
 
-	public HealthScript myHealth;
-
-	public CommandScript myCommands;
-
-	public InteractionScript myAttack;
+	public UnitScript myTargetUnit;
 
 	public CardScript myCardScript;
 
@@ -35,39 +34,51 @@ public class UnitScript : MonoBehaviour {
 	void Awake()
 	{
 		myNavMeshAgent = GetComponent<NavMeshAgent>();
-
-		if(null == myOwner)
-		{
-			myOwner = GetComponent<OwnerScript>();
-		}
-
-		if(null == myHealth)
-		{
-			myHealth = GetComponent<HealthScript>();
-		}
-
-		if(null == myCommands)
-		{
-			myCommands = GetComponent<CommandScript>();
-		}
 	}
 
 	void Start ()
 	{
-		if (null != myOwner && null != myOwner.owner)
-		{
-			transform.GetComponent<Renderer>().material.color = myOwner.owner.myColor;
-		}
+		transform.GetComponent<Renderer>().material.color = myOwningPlayer.myColor;
 	}
 
-	public UnitScript target
+	public bool myDamageImmune;
+	public int myDivineShield, myTemperature;
+	
+	public void Damage (int input) 
 	{
-		get
+		if (myDamageImmune)
 		{
-			return null == myCommands ? null : myCommands.target;
+			return;
 		}
+
+		if(myDivineShield > 0)
+		{
+			myDivineShield--;
+
+			return;
+		}
+
+		/*myOwningPlayer.myFrameData.myDamages++;
+		myOwningPlayer.myTurnData.myFrameData.myDamages++;
+		myOwningPlayer.myMatchData.myTurnData.myFrameData.myDamages++;
+
+		GlobalScript.ourPlayerFrameData.myDamages++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myDamages++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myDamages++;*/
+
+		myDamage += input;
+
+		Checkup();
 	}
 
+	public void Checkup ()
+	{
+		if(myDamage >= myHealth)
+		{
+			Death();
+		}
+	}
+	
 	public void Death ()
 	{
 		/*myOwningPlayer.myFrameData.myDeaths++;
@@ -96,6 +107,19 @@ public class UnitScript : MonoBehaviour {
 		EffectScript.AffectsList(myOffenseEffects, ToMessage());
 	}
 
+	public void Heal (int input)
+	{
+		/*myOwningPlayer.myFrameData.myHeals++;
+		myOwningPlayer.myTurnData.myFrameData.myHeals++;
+		myOwningPlayer.myMatchData.myTurnData.myFrameData.myHeals++;
+
+		GlobalScript.ourPlayerFrameData.myHeals++;
+		GlobalScript.ourPlayerTurnData.myFrameData.myHeals++;
+		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myHeals++;*/
+
+		myDamage = input > myDamage ? 0 : myDamage - input;
+	}
+
 	void Update () {
 
 		Vector3 thisPosition = this.transform.position;
@@ -109,7 +133,7 @@ public class UnitScript : MonoBehaviour {
 			//should actually check with all players to see if it's on screen but w/e
 			if (ScreenCheck(new Rect(0f, 0f, Screen.width, Screen.height)))
 			{
-				if (mainPlayerScript == myOwner.owner) 
+				if (mainPlayerScript == myOwningPlayer) 
 				{
 					GlobalScript.ourCursorScript.myOnScreenOwnedUnitScripts.Add(this);
 				} else {
@@ -118,7 +142,7 @@ public class UnitScript : MonoBehaviour {
 			}
 			else
 			{
-				if (mainPlayerScript == myOwner.owner)
+				if(mainPlayerScript == myOwningPlayer)
 				{
 					GlobalScript.ourCursorScript.myOnScreenOwnedUnitScripts.Remove(this);
 				} else {
@@ -127,7 +151,27 @@ public class UnitScript : MonoBehaviour {
 			}
 		}
 
-		/*if (PhaseScript.isAggressive && null != myTargetUnit)
+		/*Color color = Color.black;
+
+		if (null != GlobalScript.ourCursorScript)
+		{
+			if (GlobalScript.ourCursorScript.myOnScreenUnits.Contains(this))
+			{
+				color.b = 1f;
+			}
+			if (null != myOwningPlayer
+				&& null != myOwningPlayer.mySelectionScript
+				&& myOwningPlayer.mySelectionScript.mySelectedUnits.Contains(this))
+			{
+				color.g = 1f;
+			}
+			if (GlobalScript.ourCursorScript.myUnitScript == this)
+			{
+				color.r = 1f;
+			}
+		}*/
+
+		if (PhaseScript.IsAggressive() && null != myTargetUnit)
 		{
 			if ((thisPosition - myTargetUnit.transform.position).magnitude < myRange + (myTargetUnit.transform.localScale.magnitude * 0.5f) + (transform.localScale.magnitude * 0.5f)) 
 			{
@@ -169,7 +213,7 @@ public class UnitScript : MonoBehaviour {
 				}
 				myTargetUnit = closestUnitScript;
 			}
-		}*/
+		}
 	}
 
 	void OnMouseDown()
@@ -192,16 +236,11 @@ public class UnitScript : MonoBehaviour {
 				{
 					if (Input.GetKey("left shift"))
 					{
-						myOwner.owner.mySelectionScript.mySelectedUnits.Add(this);
-					} 
-					else 
-					{
-						if (null != myOwner && null != myOwner.owner && null != myOwner.owner.mySelectionScript)
-						{
-							myOwner.owner.mySelectionScript.mySelectedUnits.Clear();
+						myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
+					} else {
+						myOwningPlayer.mySelectionScript.mySelectedUnits.Clear();
+						myOwningPlayer.mySelectionScript.mySelectedUnits.Add(this);
 
-							myOwner.owner.mySelectionScript.mySelectedUnits.Add(this);
-						}
 					}
 				}
 			}
@@ -220,35 +259,30 @@ public class UnitScript : MonoBehaviour {
 
 	void OnGUI()
 	{
-		if (
-			null != myOwner && 
-			myOwner.owner == GlobalScript.ourGlobalScript.myMainPlayerScript && 
-			null != myHealth && 
-			null != GlobalScript.ourGlobalScript.myMainPlayerScript &&
-			null != GlobalScript.ourGlobalScript.myMainPlayerScript.mySelectionScript &&
-			GlobalScript.ourGlobalScript.myMainPlayerScript.mySelectionScript.mySelectedUnits.Contains(this))
+		if (myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
 		{
 			Vector2 GUIposition = new Vector2(myScreenPosition.x - 10f, Screen.height - myScreenPosition.y - 10f);
 
-			GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), myHealth.health.ToString());
+			GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), (myHealth - myDamage).ToString());
 		}
 	}
 
 	public Message.Term ToTerm()
 	{
-		return new Message.Term(myOwner.owner, myCardScript, this, transform.position);
+		return new Message.Term(myOwningPlayer, myCardScript, this, transform.position);
 	}
 
 	public Message ToMessage()
 	{
 		//has a target
-		if(null != target)
+		if(myTargetUnit)
 		{
-			return new Message(ToTerm(), myCommands.target.ToTerm()); 
+			return new Message(ToTerm(), myTargetUnit.ToTerm()); 
 		}
-
 		//doesn't have a target
-		return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero)); 
+		{
+			return new Message(ToTerm(), new Message.Term(null, null, null, Vector3.zero)); 
+		}
 	}
 
 }

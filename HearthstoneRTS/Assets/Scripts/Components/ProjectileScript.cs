@@ -15,20 +15,10 @@ public class ProjectileScript : MonoBehaviour {
 
 	public Clocker myClocker;
 
-	public float myLifetime;
-
-	void Awake()
-	{
-		if (myLifetime > 0f)
-		{
-			myClocker = new Clocker();
-		}
-	}
-
 	// Update is called once per frame
 	void Update()
 	{
-		if(null != myClocker && !myClocker.isActive)
+		if(null != myClocker && !myClocker.IsActive())
 		{
 			Destroy(gameObject);
 		}
@@ -55,7 +45,7 @@ public class ProjectileScript : MonoBehaviour {
 			return;
 		}
 
-		if(false == myAllyTrigger && unitScript.myOwner == myMessage.mySubject.myPlayerScript)
+		if(false == myAllyTrigger && unitScript.myOwningPlayer == myMessage.mySubject.myPlayerScript)
 		{
 			return;
 		}

@@ -42,20 +42,15 @@ public class Clocker {
 		return this;
 	}
 
-	public float percent
+	public float Percent ()
 	{
-		get
-		{
-			return (Time.time - myBeginTime) / (myEndTime - myBeginTime);
-		}
+		return (Time.time - myBeginTime) / (myEndTime - myBeginTime);
 	}
 
-	public bool isActive
+	public bool IsActive ()
 	{
-		get
-		{
-			return (myBeginTime < myEndTime) & (Time.time < myEndTime);
-		}
+		return (myBeginTime < myEndTime) & (Time.time < myEndTime);
 	}
+
 
 }

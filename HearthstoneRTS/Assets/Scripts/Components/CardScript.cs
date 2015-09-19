@@ -35,6 +35,7 @@ public class CardScript : MonoBehaviour {
 		myRenderer = transform.GetComponent<Renderer>();
 
 		myBoxCollider = transform.GetComponent<BoxCollider>();
+
 	}
 
 	public HandScript myHandScript
@@ -96,7 +97,7 @@ public class CardScript : MonoBehaviour {
 
 	void OnMouseEnter()
 	{
-		if (GlobalScript.ourCursorScript.myCardScript != this && null != myHandScript)
+		if (GlobalScript.ourCursorScript.myCardScript != this)
 		{
 			myRotation.Animate(Quaternion.Euler(0f, 0f, 0f), .2f);
 
@@ -146,13 +147,14 @@ public class CardScript : MonoBehaviour {
 		PlayerScript playerScript = handScript.myOwningPlayer;
 
 		//check if card is main player's
-		if (null != handScript && playerScript == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		if (handScript && playerScript == GlobalScript.ourGlobalScript.myMainPlayerScript)
 		{
 
 			//card must be over 20% of the screen to be used
 			//Debug.Log(Input.mousePosition.y / Screen.height);
 			if (Input.mousePosition.y / Screen.height > .2f)
 			{
+				
 				Message message = playerScript.ToMessage();
 
 				//raycast terrain
@@ -180,27 +182,20 @@ public class CardScript : MonoBehaviour {
 				int goldCost = CostGold(message);
 
 				//if player has enough
-				if (manaCost <= playerScript.myMana)
+				if (goldCost <= playerScript.myGold && manaCost <= playerScript.myMana)
 				{
-					if (goldCost <= playerScript.myGold)
-					{
-						//pay cost
-						playerScript
-							.SubMana(manaCost)
-							.SubGold(goldCost)
-							.AddDebt(CostDebt(message))
-							.AddOverload(CostOverload(message));
+					//pay cost
+					playerScript
+						.SubMana(manaCost)
+						.SubGold(goldCost)
+						.AddDebt(CostDebt(message))
+						.AddOverload(CostOverload(message));
 
-						handScript.RemoveCard(this, false);
+					handScript.RemoveCard(this, false);
 
-						playerScript.ActivateCard(this, message);
+					playerScript.ActivateCard(this, message);
 
-						Destroy(gameObject);
-					}
-					else
-					{
-						Debug.Log("Card: " + gameObject.name + " uses " + goldCost + " gold.");
-					}
+					Destroy(gameObject);
 				}
 				else
 				{
@@ -221,7 +216,7 @@ public class CardScript : MonoBehaviour {
 	{
 		HandScript handScript = myHandScript;
 
-		if (null != handScript && handScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
+		if (handScript && handScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
 		{
 			Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
 

@@ -24,7 +24,7 @@ public class Lerper : Clocker {
 
 	public float Erp ()
 	{
-		return isActive ? Erp(myBegin, myEnd, percent) : myEnd;
+		return IsActive() ? Erp(myBegin, myEnd, Percent()) : myEnd;
 	}
 
 	public Lerper Reset (float input)

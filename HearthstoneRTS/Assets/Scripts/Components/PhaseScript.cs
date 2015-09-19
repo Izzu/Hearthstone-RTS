@@ -40,14 +40,6 @@ public class PhaseScript : MonoBehaviour {
 
 	}
 
-	public static bool isAggressive
-	{
-		get
-		{
-			return ourPhase == Phase.Battle;
-		}
-	}
-
 	// Use this for initialization
 	void Start()
 	{
@@ -105,6 +97,11 @@ public class PhaseScript : MonoBehaviour {
 					break;
 			}
 		}
+	}
+
+	public static bool IsAggressive()
+	{
+		return ourPhase == Phase.Battle;
 	}
 
 }

@@ -15,8 +15,6 @@ public class GlobalScript : MonoBehaviour {
 	
 	public PlayerScript myMainPlayerScript;
 
-	public TextMesh myManaText, myGoldText, mySupplyText;
-
 	// Use this for initialization
 	void Start ()
 	{
@@ -39,18 +37,29 @@ public class GlobalScript : MonoBehaviour {
 		ourUnitScripts = Object.FindObjectsOfType<UnitScript>();
 
 		ourPlayerScripts = Object.FindObjectsOfType<PlayerScript>();
+	}
 
-		if (null != myManaText)
+	public static void TurnBegin ()
+	{
+		Debug.Log("Turn: Begin");
+
+		if (null != ourPlayerScripts)
 		{
-			myManaText.text = myMainPlayerScript.myMana + " / " + myMainPlayerScript.myManaCap;
+			foreach (PlayerScript playerScript in ourPlayerScripts)
+			{
+				playerScript.TurnBegin();
+			}
 		}
-		if (null != myGoldText)
+	}
+
+	public static void TurnEnd ()
+	{
+		if (null != ourPlayerScripts)
 		{
-			myGoldText.text = myMainPlayerScript.myGold + " - " + myMainPlayerScript.myDebt;
-		}
-		if (null != mySupplyText)
-		{
-			mySupplyText.text = myMainPlayerScript.myDemand + " / " + myMainPlayerScript.mySupply;
+			foreach (PlayerScript playerScript in ourPlayerScripts)
+			{
+				playerScript.TurnEnd();
+			}
 		}
 	}
 

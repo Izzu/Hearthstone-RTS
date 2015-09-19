@@ -9,7 +9,7 @@ public class Repeater {
 		return (Time.time - inBegin) / (End() - inBegin);
 	}
 
-	public Repeater(float b = 1)
+	public Repeater(float b = 1) 
 	{
 		myBegin = Time.time < Time.time ? (Time.time + Time.time / (b == 0 ? 1 : b) * (b == 0 ? 1 : b)) : Time.time;
 

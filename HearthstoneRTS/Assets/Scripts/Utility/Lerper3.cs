@@ -18,7 +18,7 @@ public class Lerper3 : Clocker {
 
 	public Vector3 Lerp ()
 	{
-		return isActive ? Vector3.Lerp(myBegin, myEnd, percent) : myEnd;
+		return IsActive() ? Vector3.Lerp(myBegin, myEnd, Percent()) : myEnd;
 	}
 
 	public Lerper3 Reset(Vector3 input)
