@@ -14,6 +14,25 @@ public class AggroScript : MonoBehaviour
 		myUnit = GetComponent<UnitScript>();
 	}
 
+
+	void Update()
+	{
+		GameObject target = Search();
+
+		if (null == target)
+			
+			return;
+
+		UnitScript unit = target.GetComponent<UnitScript>();
+
+		if(null != unit)
+		{
+			//Debug.Log(unit);
+			myUnit.myCommands.Order(new CommandScript.Interact(unit, myUnit.myAttack));
+		}
+	}
+
+
 	public GameObject Search ()
 	{
 		Vector3 position = myUnit.transform.position;
@@ -25,26 +44,21 @@ public class AggroScript : MonoBehaviour
 			return null;
 		}
 
-		GameObject closestUnit = colliders[0].gameObject;
+		GameObject closestUnit = null;
 
-		float closestDist = (colliders[0].transform.position - position).magnitude;
+		float closestDist = myRange;
 
-		if(colliders.Length > 1)
+		foreach(Collider collider in colliders)
 		{
-			for(int i = 1; i < colliders.Length; i++)
+			if (collider.gameObject != gameObject)
 			{
-				Collider collider = colliders[i];
+				float distance = (collider.transform.position - position).magnitude;
 
-				if (collider.gameObject != gameObject)
+				if (distance < closestDist)
 				{
-					float distance = (collider.transform.position - position).magnitude;
+					closestUnit = collider.transform.gameObject;
 
-					if (distance < closestDist)
-					{
-						closestUnit = collider.transform.gameObject;
-
-						closestDist = distance;
-					}
+					closestDist = distance;
 				}
 			}
 		}
