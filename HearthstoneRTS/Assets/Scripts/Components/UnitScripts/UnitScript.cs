@@ -83,7 +83,7 @@ public class UnitScript : MonoBehaviour {
 		Destroy(gameObject);
 	}
 
-	public void Attack ()
+	public void Attack (UnitScript target)
 	{
 		/*myOwningPlayer.myFrameData.myAttacks++;
 		myOwningPlayer.myTurnData.myFrameData.myAttacks++;
@@ -92,6 +92,8 @@ public class UnitScript : MonoBehaviour {
 		GlobalScript.ourPlayerFrameData.myAttacks++;
 		GlobalScript.ourPlayerTurnData.myFrameData.myAttacks++;
 		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myAttacks++;*/
+
+
 
 		EffectScript.AffectsList(myOffenseEffects, ToMessage());
 	}
