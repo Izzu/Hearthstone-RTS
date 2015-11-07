@@ -32,6 +32,8 @@ public class UnitScript : MonoBehaviour {
 
 	public NavMeshAgent myNavMeshAgent;
 
+	public Animation myAttackAnimation, myIdleAnimation, myWalkingAnimation;
+
 	void Awake()
 	{
 		myNavMeshAgent = GetComponent<NavMeshAgent>();
@@ -85,6 +87,7 @@ public class UnitScript : MonoBehaviour {
 
 	public void Attack (UnitScript target)
 	{
+		Animation myAttackAnimation;
 		/*myOwningPlayer.myFrameData.myAttacks++;
 		myOwningPlayer.myTurnData.myFrameData.myAttacks++;
 		myOwningPlayer.myMatchData.myTurnData.myFrameData.myAttacks++;
@@ -93,7 +96,13 @@ public class UnitScript : MonoBehaviour {
 		GlobalScript.ourPlayerTurnData.myFrameData.myAttacks++;
 		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myAttacks++;*/
 
-
+		/*/foreach (AnimationState state in anim)
+		{
+			//state.speed = 0.5F;
+			
+		}*/
+		myAttackAnimation.Play();
+		
 
 		EffectScript.AffectsList(myOffenseEffects, ToMessage());
 	}

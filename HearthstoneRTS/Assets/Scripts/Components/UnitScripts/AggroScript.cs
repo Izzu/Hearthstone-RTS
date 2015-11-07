@@ -28,7 +28,7 @@ public class AggroScript : MonoBehaviour
 		if(null != unit)
 		{
 			//Debug.Log(unit);
-			myUnit.myCommands.Order(new CommandScript.Interact(unit, myUnit.myAttack));
+			myUnit.Attack(unit);
 		}
 	}
 
