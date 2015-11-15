@@ -8,17 +8,11 @@ public class PlayerScript : MonoBehaviour {
 
 	public HandScript myHandScript;
 
-	public PanningScript myPanningScript;
-
-	public SelectionScript mySelectionScript;
-
 	public UnitScript myHeroUnitScript;
 
 	public DeckScript myDeckScript;
 
 	public Color myColor;
-
-	public HashSet<ProductionScript> myProduction;
 
 	/*[System.Serializable]
 	public class FrameData
@@ -58,7 +52,6 @@ public class PlayerScript : MonoBehaviour {
 
 		FrameData myFrameData = new FrameData();*/
 
-		myProduction = new HashSet<ProductionScript>();
 	}
 
 	void Start ()

@@ -16,10 +16,6 @@ public class UnitScript : MonoBehaviour {
 
 	public HealthScript myHealth;
 
-	public CommandScript myCommands;
-
-	public InteractionScript myAttack;
-
 	public CardScript myCardScript;
 
 	public EffectScript[] myDeathEffects;
@@ -48,10 +44,10 @@ public class UnitScript : MonoBehaviour {
 			myHealth = GetComponent<HealthScript>();
 		}
 
-		if(null == myCommands)
+		/*if(null == myCommands)
 		{
 			myCommands = GetComponent<CommandScript>();
-		}
+		}*/
 	}
 
 	void Start ()
@@ -66,7 +62,7 @@ public class UnitScript : MonoBehaviour {
 	{
 		get
 		{
-			return null == myCommands ? null : myCommands.target;
+			return null;/*return null == myCommands ? null : myCommands.target;*/
 		}
 	}
 
@@ -87,7 +83,6 @@ public class UnitScript : MonoBehaviour {
 
 	public void Attack (UnitScript target)
 	{
-		Animation myAttackAnimation;
 		/*myOwningPlayer.myFrameData.myAttacks++;
 		myOwningPlayer.myTurnData.myFrameData.myAttacks++;
 		myOwningPlayer.myMatchData.myTurnData.myFrameData.myAttacks++;
@@ -101,8 +96,6 @@ public class UnitScript : MonoBehaviour {
 			//state.speed = 0.5F;
 			
 		}*/
-		myAttackAnimation.Play();
-		
 
 		EffectScript.AffectsList(myOffenseEffects, ToMessage());
 	}
@@ -194,30 +187,6 @@ public class UnitScript : MonoBehaviour {
 
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
-
-		if (Time.time - GlobalScript.ourCursorScript.LastDoubleClickTime > GlobalScript.ourCursorScript.myDoubleClickWait)
-		{
-			if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength))
-			{
-				if(hit.transform == this.transform)
-				{
-					if (Input.GetKey("left shift"))
-					{
-						myOwner.owner.mySelectionScript.mySelectedUnits.Add(this);
-					} 
-					else 
-					{
-						if (null != myOwner && null != myOwner.owner && null != myOwner.owner.mySelectionScript)
-						{
-							myOwner.owner.mySelectionScript.mySelectedUnits.Clear();
-
-							myOwner.owner.mySelectionScript.mySelectedUnits.Add(this);
-						}
-					}
-				}
-			}
-		}
-		
 	}
 
 	public bool ScreenCheck (Rect rekt)
@@ -227,22 +196,6 @@ public class UnitScript : MonoBehaviour {
 			myScreenPosition.y < rekt.yMax &&
 			myScreenPosition.x > rekt.xMin &&
 			myScreenPosition.y > rekt.yMin;
-	}
-
-	void OnGUI()
-	{
-		if (
-			null != myOwner && 
-			myOwner.owner == GlobalScript.ourGlobalScript.myMainPlayerScript && 
-			null != myHealth && 
-			null != GlobalScript.ourGlobalScript.myMainPlayerScript &&
-			null != GlobalScript.ourGlobalScript.myMainPlayerScript.mySelectionScript &&
-			GlobalScript.ourGlobalScript.myMainPlayerScript.mySelectionScript.mySelectedUnits.Contains(this))
-		{
-			Vector2 GUIposition = new Vector2(myScreenPosition.x - 10f, Screen.height - myScreenPosition.y - 10f);
-
-			GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), myHealth.health.ToString());
-		}
 	}
 
 	public Message.Term ToTerm()
@@ -255,7 +208,7 @@ public class UnitScript : MonoBehaviour {
 		//has a target
 		if(null != target)
 		{
-			return new Message(ToTerm(), myCommands.target.ToTerm()); 
+			return new Message(ToTerm(), null/*myCommands.target.ToTerm()*/); 
 		}
 
 		//doesn't have a target

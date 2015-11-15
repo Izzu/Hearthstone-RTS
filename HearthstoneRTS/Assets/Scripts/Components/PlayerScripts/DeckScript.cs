@@ -114,7 +114,7 @@ public class DeckScript : MonoBehaviour {
 
 	void OnMouseEnter()
 	{
-		GlobalScript.ourCursorScript.myDeckScript = this;
+		//GlobalScript.ourCursorScript.myDeckScript = this;
 
 		myRotation.Animate(Quaternion.Euler(0f, myInspectAngle, 0f), .2f);
 
@@ -125,7 +125,7 @@ public class DeckScript : MonoBehaviour {
 	{
 		if(false == Input.GetMouseButton(0))
 		{
-			GlobalScript.ourCursorScript.myDeckScript = null;
+			//GlobalScript.ourCursorScript.myDeckScript = null;
 
 			myRotation.Animate(myIdleRotation, .2f);
 

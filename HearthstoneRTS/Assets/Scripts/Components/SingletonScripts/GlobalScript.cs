@@ -8,7 +8,6 @@ public class GlobalScript : MonoBehaviour {
 	public static CursorScript ourCursorScript;
 	public static GlobalScript ourGlobalScript;
 	public static TurnScript ourTurnScript;
-	public static PhaseScript ourPhaseScript;
 	/*public static PlayerScript.FrameData ourPlayerFrameData = new PlayerScript.FrameData();
 	public static PlayerScript.TurnData ourPlayerTurnData = new PlayerScript.TurnData();
 	public static PlayerScript.MatchData ourPlayerMatchData = new PlayerScript.MatchData();*/
@@ -29,8 +28,6 @@ public class GlobalScript : MonoBehaviour {
 		ourCursorScript = Object.FindObjectOfType<CursorScript>();
 
 		ourTurnScript = Object.FindObjectOfType<TurnScript>();
-
-		ourPhaseScript = Object.FindObjectOfType<PhaseScript>();
 	}
 	
 	// Update is called once per frame

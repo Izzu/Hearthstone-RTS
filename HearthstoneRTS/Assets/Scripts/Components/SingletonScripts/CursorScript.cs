@@ -7,8 +7,6 @@ public class CursorScript : MonoBehaviour
 
 	private Vector3 myTransformScreenPoint;
 
-	//private Vector3 myScreenToTransformOffset;
-
 	public CardScript myCardScript = null;
 
 	public UnitScript myUnitScript = null;
@@ -62,51 +60,6 @@ public class CursorScript : MonoBehaviour
 				deckScript.mySize.Animate(deckScript.DeckSize(), .2f);
 			}
 		}
-		//drag box when nothing selected
-		else if (null == myUnitScript && null == myCardScript)
-		{
-			GlobalScript.ourGlobalScript.myMainPlayerScript.mySelectionScript.Selection();
-		}
-
-		//move cursor's unit
-		if (myUnitScript && myUnitScript.myOwner.owner == mainPlayerScript)
-		{
-			mainPlayerScript.mySelectionScript.myIsDragging = false;
-
-			if(Input.GetMouseButton(0))
-			{ 
-				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-				RaycastHit hit;
-
-				if (Physics.Raycast(ray, out hit, myRayLength))
-				{
-					if (hit.transform != myUnitScript.transform)
-					{
-						myUnitScript.myNavMeshAgent.destination = hit.point;
-					}
-				}
-			}
-		}
-
-		if(Input.GetMouseButtonDown(0))
-		{
-			if (DoubleClick())
-			{
-				myLastDoubleClickTime = Time.time;
-
-				if (Input.GetKey("left shift"))
-				{
-					mainPlayerScript.mySelectionScript.mySelectedUnits.UnionWith(myOnScreenOwnedUnitScripts);
-				}
-				else
-				{
-					mainPlayerScript.mySelectionScript.mySelectedUnits = new HashSet<UnitScript>(myOnScreenOwnedUnitScripts);
-				}
-			}
-			
-			myLastClickTime = Time.time;
-		}
-
 	}
 
 	//screen point
