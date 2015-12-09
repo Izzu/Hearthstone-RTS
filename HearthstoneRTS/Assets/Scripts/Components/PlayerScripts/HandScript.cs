@@ -29,6 +29,8 @@ public class HandScript : MonoBehaviour {
 
 	void Update()
 	{
+
+
 		//myCards = transform.GetComponentsInChildren<CardScript>();
 	}
 
