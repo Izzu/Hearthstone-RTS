@@ -27,6 +27,8 @@ public class InteractionScript : MonoBehaviour {
 		public float myValue;
 
 		public float myRange;
+
+		public Messenger_Script myMessenger;
 	}
 
 
@@ -136,7 +138,7 @@ public class InteractionScript : MonoBehaviour {
 		{
 			for (int n = Phaser<Data>.Phase(myBegin, myPhases); myLastPhase < n; myLastPhase++)
 			{
-				Debug.Log("Phase: " + myLastPhase);
+				//Debug.Log("Phase: " + myLastPhase);
 
 				if(myLastPhase == count)
 				{
@@ -151,6 +153,8 @@ public class InteractionScript : MonoBehaviour {
 						new Message(myUnit.ToTerm(),
 							null == myTarget ? new Message.Term() : myTarget.ToTerm()), 
 						null == phaseData ? 0f : phaseData.myRange);
+
+					phaseData.myMessenger.Publish();
 				}
 			}
 		}

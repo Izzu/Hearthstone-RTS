@@ -19,6 +19,7 @@ public class UnitScript : MonoBehaviour {
 	public CommandScript myCommands;
 
 	public InteractionScript myAttack;
+	public Messenger_Script myAttackMessenger;
 
 	public CardScript myCardScript;
 
@@ -51,6 +52,11 @@ public class UnitScript : MonoBehaviour {
 		if(null == myCommands)
 		{
 			myCommands = GetComponent<CommandScript>();
+		}
+
+		if(null == myAttackMessenger)
+		{
+			myAttackMessenger = gameObject.AddComponent<Messenger_Script>() as Messenger_Script;
 		}
 	}
 
@@ -87,24 +93,16 @@ public class UnitScript : MonoBehaviour {
 
 	public void Attack (UnitScript target)
 	{
-		Animation myAttackAnimation;
-		/*myOwningPlayer.myFrameData.myAttacks++;
-		myOwningPlayer.myTurnData.myFrameData.myAttacks++;
-		myOwningPlayer.myMatchData.myTurnData.myFrameData.myAttacks++;
 
-		GlobalScript.ourPlayerFrameData.myAttacks++;
-		GlobalScript.ourPlayerTurnData.myFrameData.myAttacks++;
-		GlobalScript.ourPlayerMatchData.myTurnData.myFrameData.myAttacks++;*/
-
-		/*/foreach (AnimationState state in anim)
+		if (PhaseScript.isAggressive)
 		{
-			//state.speed = 0.5F;
-			
-		}*/
-		myAttackAnimation.Play();
-		
+			if (myAttackMessenger)
+			{
+				myAttackMessenger.Publish();
+			}
 
-		EffectScript.AffectsList(myOffenseEffects, ToMessage());
+			myCommands.Order(new CommandScript.Target(target, myAttack));
+		}
 	}
 
 	void Update () {

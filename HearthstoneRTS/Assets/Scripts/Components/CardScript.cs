@@ -159,7 +159,7 @@ public class CardScript : MonoBehaviour {
 				Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 				RaycastHit hit;
 
-				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength, 1 << 8))
+				if (Physics.Raycast(ray, out hit, GlobalScript.ourCursorScript.myRayLength))
 				{
 					message.myObject.myPosition = hit.point;
 				}
@@ -215,22 +215,6 @@ public class CardScript : MonoBehaviour {
 			myRotation.Reset(transform.localRotation).Animate(myHandScript.CardRotation(this), .2f);
 		}
 	}
-
-	//delete this when cards have names
-	void OnGUI()
-	{
-		HandScript handScript = myHandScript;
-
-		if (null != handScript && handScript.myOwningPlayer == GlobalScript.ourGlobalScript.myMainPlayerScript)
-		{
-			Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-
-			Vector2 GUIposition = new Vector2(screenPosition.x - 75f * .5f, Screen.height - screenPosition.y + 10f);
-
-			GUI.Box(new Rect(GUIposition, new Vector2(75f, 20f)), transform.name);
-		}
-	}
-	
 
 
 

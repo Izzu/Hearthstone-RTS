@@ -44,6 +44,8 @@ public class AggroScript : MonoBehaviour
 			return null;
 		}
 
+		PlayerScript owner = myUnit.gameObject.GetComponent<OwnerScript>().owner;
+
 		GameObject closestUnit = null;
 
 		float closestDist = myRange;
@@ -52,6 +54,11 @@ public class AggroScript : MonoBehaviour
 		{
 			if (collider.gameObject != gameObject)
 			{
+				if (owner == collider.gameObject.GetComponent<OwnerScript>().owner)
+				{
+					continue;
+				}
+
 				float distance = (collider.transform.position - position).magnitude;
 
 				if (distance < closestDist)
