@@ -5,18 +5,18 @@ public class BugAnimationScript : MonoBehaviour
 {
 
 	[SerializeField]
-	Animation myAnimation;
+	Animator myAnim;
 
 	void AttackAnimation()
 	{
-		myAnimation.Play("Attack");
-		myAttacking = 1f;
+		myAnim.SetInteger("state", 1);
+		myWait = 1f;
 	}
 
     void DeathAnimation()
-    {
-        myAnimation.Play("Die_1");
-        myAttacking = 100f;
+	{
+		myAnim.SetInteger("state", 5);
+		myWait = 2f;
     }
 
 	void Update()
@@ -25,29 +25,31 @@ public class BugAnimationScript : MonoBehaviour
 
 		Vector3 diff = position - myLastPosition;
 
-		if (myAttacking > 0f)
+		myLastPosition = position;
+
+		if(myWait > 0f)
 		{
-			myAttacking -= Time.deltaTime;
+			myWait -= Time.deltaTime;
 		}
 		else
 		{
-			myAttacking = 0f;
-			if ((diff).magnitude > 0)
+			if ((diff).magnitude > 0f)
 			{
-				if (Vector3.Dot(diff, transform.forward) < 0)
+				Debug.Log((diff).magnitude);
+
+				if (myWait < 0f)
 				{
-					myAnimation.Play("Walk");
+					myAnim.SetInteger("state", 7);
+					myWait = 3f;
 				}
 			}
 			else
 			{
-				myAnimation.Play("Idle");
+				//myAnim.SetInteger("state", 0);
 			}
 		}
-
-		myLastPosition = position;
 	}
 
-	private float myAttacking;
+	private float myWait;
 	private Vector3 myLastPosition;
 }
