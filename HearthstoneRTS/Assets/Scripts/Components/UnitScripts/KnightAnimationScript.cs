@@ -7,21 +7,8 @@ public class KnightAnimationScript : MonoBehaviour
 	[SerializeField]
 	Animation myAnimation;
 
-	[SerializeField]
-	Messenger_Script myAttackMessenger;
-
-    [SerializeField]
-    Messenger_Script myDeathMessenger;
-
-	void Start ()
+	void AttackAnimation()
 	{
-		myAttackMessenger.Subscribe(new Messenger_Script.Subscription(gameObject, "Attack"));
-        myDeathMessenger.Subscribe(new Messenger_Script.Subscription(gameObject, "DeathAnimation"));
-	}
-
-	void Attack()
-	{
-        Debug.Log("playing attk animation");
 		myAnimation.Play("atk01");
 		myAttacking = 1f;
 	}
