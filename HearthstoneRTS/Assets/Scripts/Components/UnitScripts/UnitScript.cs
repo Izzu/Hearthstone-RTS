@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering;
 using System.Collections;
 
 public class UnitScript : MonoBehaviour {
@@ -92,7 +93,9 @@ public class UnitScript : MonoBehaviour {
 
         myDeathMessenger.Publish();
 
-		Destroy(gameObject, 100f);
+		myNavMeshAgent.speed = 0f;
+
+		Destroy(gameObject, 10f);
 	}
 
 	public void Attack (UnitScript target)
@@ -244,6 +247,14 @@ public class UnitScript : MonoBehaviour {
 			Vector2 GUIposition = new Vector2(myScreenPosition.x - 10f, Screen.height - myScreenPosition.y - 10f);
 
 			GUI.Box(new Rect(GUIposition, new Vector2(20f, 20f)), myHealth.health.ToString());
+
+			Behaviour h = (Behaviour)GetComponent("Halo");
+			h.enabled = true;
+		}
+		else
+		{
+			Behaviour h = (Behaviour)GetComponent("Halo");
+			h.enabled = false;
 		}
 	}
 

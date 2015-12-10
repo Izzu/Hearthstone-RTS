@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BugAnimationScript : MonoBehaviour 
+public class Skeleton_Animation_Script : MonoBehaviour 
 {
 
 	[SerializeField]
@@ -10,18 +10,18 @@ public class BugAnimationScript : MonoBehaviour
 	void AttackAnimation()
 	{
 		if (myAnimator)
-			myAnimator.SetInteger("state", 1);
+			myAnimator.SetInteger("state", 2);
 
 		myWait = 1f;
 	}
 
-    void DeathAnimation()
+	void DeathAnimation()
 	{
 		if (myAnimator)
-			myAnimator.SetInteger("state", 5);
+			myAnimator.SetInteger("state", 3);
 
 		myWait = 2f;
-    }
+	}
 
 	void Update()
 	{
@@ -29,9 +29,7 @@ public class BugAnimationScript : MonoBehaviour
 
 		Vector3 diff = position - myLastPosition;
 
-		myLastPosition = position;
-
-		if(myWait > 0f)
+		if (myWait > 0f)
 		{
 			myWait -= Time.deltaTime;
 		}
@@ -39,17 +37,19 @@ public class BugAnimationScript : MonoBehaviour
 		{
 			if ((diff).magnitude > 0f)
 			{
-				Debug.Log(myWait);
-
 				if (myAnimator)
-					myAnimator.SetInteger("state", 7);
+					myAnimator.SetInteger("state", 1);
 			}
 			else
 			{
+				Debug.Log("idle");
+
 				if (myAnimator)
 					myAnimator.SetInteger("state", 0);
 			}
 		}
+
+		myLastPosition = position;
 	}
 
 	private float myWait = 0f;
