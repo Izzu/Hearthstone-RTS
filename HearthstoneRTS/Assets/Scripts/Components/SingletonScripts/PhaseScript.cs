@@ -3,8 +3,8 @@ using System.Collections;
 
 public class PhaseScript : MonoBehaviour {
 
-	private static Repeater ourRepeater = new Repeater(30f);
-	private static int ourLastCycle = ourRepeater.Cycle();
+	private static Repeater ourRepeater;
+    private static int ourLastCycle; 
 
 	public enum Phase
 	{
@@ -51,7 +51,9 @@ public class PhaseScript : MonoBehaviour {
 	// Use this for initialization
 	void Start()
 	{
-
+       ourRepeater = new Repeater(30f);
+       ourLastCycle = ourRepeater.Cycle();
+	
 	}
 
 	// Update is called once per frame
