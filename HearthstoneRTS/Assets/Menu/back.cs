@@ -13,6 +13,7 @@ public class back : MonoBehaviour
     public Button map;
     public Button map1;
     public Button map2;
+	public Button map3;
 
     public void OnClick()
     {
@@ -30,6 +31,7 @@ public class back : MonoBehaviour
             map1.interactable = false;
             map2.interactable = false;
             map.interactable = true;
+			map3.interactable = false;
             menu = "Options";
         } 
     }
