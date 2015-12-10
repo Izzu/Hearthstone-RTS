@@ -8,6 +8,7 @@ public class choosemap : MonoBehaviour {
     public Button map;
     public Button map1;
     public Button map2;
+	public Button map3;
 
     public void OnClick()
     {
@@ -15,5 +16,6 @@ public class choosemap : MonoBehaviour {
         map.interactable = false;
         map1.interactable = true;
         map2.interactable = true;
+		map3.interactable = true;
     }
 }
