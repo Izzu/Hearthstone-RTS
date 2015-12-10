@@ -11,12 +11,12 @@ public class Resource_View_Script : MonoBehaviour {
 	Text mySupply, myGold, myMana;
 
 	// Update is called once per frame
-	void Update () {
-
+	void Update () 
+	{
 		mySupply.text = myPlayer.myDemand + " / " + myPlayer.mySupply;
 
 		myGold.text = myPlayer.myGold.ToString();
-		myMana.text = myPlayer.myMana + " / " + myPlayer.myManaCap;
 
+		myMana.text = myPlayer.myMana + " / " + myPlayer.myManaCap;
 	}
 }
