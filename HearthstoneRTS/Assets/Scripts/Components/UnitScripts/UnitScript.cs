@@ -254,7 +254,7 @@ public class UnitScript : MonoBehaviour {
 		else
 		{
 			Behaviour h = (Behaviour)GetComponent("Halo");
-			h.enabled = false;
+			if(h) h.enabled = false;
 		}
 	}
 
