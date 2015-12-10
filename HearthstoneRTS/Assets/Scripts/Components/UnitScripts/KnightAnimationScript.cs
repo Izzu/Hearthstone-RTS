@@ -10,9 +10,13 @@ public class KnightAnimationScript : MonoBehaviour
 	[SerializeField]
 	Messenger_Script myAttackMessenger;
 
+    [SerializeField]
+    Messenger_Script myDeathMessenger;
+
 	void Start ()
 	{
 		myAttackMessenger.Subscribe(new Messenger_Script.Subscription(gameObject, "Attack"));
+        myDeathMessenger.Subscribe(new Messenger_Script.Subscription(gameObject, "DeathAnimation"));
 	}
 
 	void Attack()
@@ -20,6 +24,12 @@ public class KnightAnimationScript : MonoBehaviour
 		myAnimation.Play("atk01");
 		myAttacking = 1f;
 	}
+
+    void DeathAnimation()
+    {
+        myAnimation.Play("die");
+        myAttacking = 100f;
+    }
 
 	void Update()
 	{

@@ -35,6 +35,8 @@ public class UnitScript : MonoBehaviour {
 
 	public Animation myAttackAnimation, myIdleAnimation, myWalkingAnimation;
 
+    public Messenger_Script myDeathMessenger;
+
 	void Awake()
 	{
 		myNavMeshAgent = GetComponent<NavMeshAgent>();
@@ -88,7 +90,9 @@ public class UnitScript : MonoBehaviour {
 
 		EffectScript.AffectsList(myDeathEffects, ToMessage());
 
-		Destroy(gameObject);
+        myDeathMessenger.Publish();
+
+		Destroy(gameObject, 1f);
 	}
 
 	public void Attack (UnitScript target)
