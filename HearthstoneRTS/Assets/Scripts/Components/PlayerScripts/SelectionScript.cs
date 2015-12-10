@@ -54,6 +54,7 @@ public class SelectionScript : MonoBehaviour {
 								{
 									unit.myCommands.Order(new CommandScript.Follow(target, 2.5f));
 								}
+
 								//attack enemies
 								else
 								{
@@ -64,6 +65,26 @@ public class SelectionScript : MonoBehaviour {
 					}
 					else
 					{
+						Vector3 sum = Vector3.zero;
+						foreach(UnitScript unit in mySelectedUnits)
+						{
+							sum += unit.transform.position;
+						}
+						Vector3 center = sum / mySelectedUnits.Count;
+
+						Vector3 difference = (center - hit.point);
+
+						Vector3 half = new Vector3(-difference.z, 0f, difference.x).normalized * mySelectedUnits.Count * .5f;
+
+						Debug.Log(half);
+
+						Vector3 left = hit.point + half;
+						Vector3 right = hit.point - half;
+
+						Debug.DrawLine(left, right);
+
+						float iter = 0f;
+
 						//order selected units to move
 						foreach (UnitScript unit in mySelectedUnits)
 						{
@@ -74,7 +95,11 @@ public class SelectionScript : MonoBehaviour {
 									unit.myCommands.Clear();
 								}
 
-								unit.myCommands.Order(new CommandScript.Move(hit.point));
+								Vector3 destination = Vector3.Lerp(left, right, iter / mySelectedUnits.Count);
+								//Debug.Log(destination);
+
+								unit.myCommands.Order(new CommandScript.Move(destination));
+								iter += 1f;
 							}
 						}
 					}
