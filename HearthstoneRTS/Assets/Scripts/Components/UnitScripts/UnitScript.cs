@@ -92,7 +92,7 @@ public class UnitScript : MonoBehaviour {
 
         myDeathMessenger.Publish();
 
-		Destroy(gameObject, 1f);
+		Destroy(gameObject, 100f);
 	}
 
 	public void Attack (UnitScript target)

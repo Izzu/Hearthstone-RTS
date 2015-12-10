@@ -21,6 +21,7 @@ public class KnightAnimationScript : MonoBehaviour
 
 	void Attack()
 	{
+        Debug.Log("playing attk animation");
 		myAnimation.Play("atk01");
 		myAttacking = 1f;
 	}
