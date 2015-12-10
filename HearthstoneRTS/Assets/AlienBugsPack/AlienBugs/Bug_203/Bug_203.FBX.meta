@@ -295,13 +295,13 @@ ModelImporter:
     - serializedVersion: 16
       name: Walk
       takeName: Take 001
-      firstFrame: 405
+      firstFrame: 403
       lastFrame: 444
-      wrapMode: 0
+      wrapMode: 2
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
-      loop: 0
+      loop: 1
       hasAdditiveReferencePose: 0
       loopTime: 1
       loopBlend: 1
@@ -316,7 +316,67 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Bug_203
+        weight: 1
+      - path: Bug_203_Egg
+        weight: 1
+      - path: Bug_203_RigBody
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigLLeg1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigLLeg1/Bug_203_RigLLeg2
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigLLeg1/Bug_203_RigLLeg2/Bug_203_RigLLeg3
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigLLeg1 1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigLLeg1 1/Bug_203_RigLLeg2 1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigLLeg1 1/Bug_203_RigLLeg2 1/Bug_203_RigLLeg3
+          1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigRLeg1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigRLeg1/Bug_203_RigRLeg2
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigRLeg1/Bug_203_RigRLeg2/Bug_203_RigRLeg3
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigRLeg1 1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigRLeg1 1/Bug_203_RigRLeg2 1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigRLeg1 1/Bug_203_RigRLeg2 1/Bug_203_RigRLeg3
+          1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigLArm1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigLArm1/Bug_203_RigLArm2
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigLArm1 1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigLArm1 1/Bug_203_RigLArm2
+          1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigRArm1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigRArm1/Bug_203_RigRArm2
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigRArm1 1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigSpine/Bug_203_RigHead/Bug_203_RigRArm1 1/Bug_203_RigRArm2
+          1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigTail1
+        weight: 1
+      - path: Bug_203_RigBody/Bug_203_RigTail1/Bug_203_RigTail2
+        weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0

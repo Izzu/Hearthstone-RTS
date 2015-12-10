@@ -34,7 +34,7 @@ public class KnightAnimationScript : MonoBehaviour
 			myAttacking = 0f;
 			if ((diff).magnitude > 0)
 			{
-				if (Vector3.Dot(diff, transform.forward) < 0)
+				if (Vector3.Dot(diff, transform.forward) > 0)
 				{
 					myAnimation.Play("walk");
 				}
