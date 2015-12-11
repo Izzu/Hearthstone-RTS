@@ -51,7 +51,11 @@ public class Bug_Wave_Spawner : MonoBehaviour {
 						{
 							UnitScript unit = Instantiate(myUnit).GetComponent<UnitScript>();
 
-							unit.Attack(myTarget);
+							unit.transform.position = spawn.transform.position;
+
+							AggroScript aggro = unit.GetComponent<AggroScript>();
+
+							aggro.myRange = 9999f;
 
 							myBugs.Add(unit);
 						}
@@ -60,7 +64,10 @@ public class Bug_Wave_Spawner : MonoBehaviour {
 					if(1 == myWaves)
 					{
 						Debug.Log("Boss Wave");
-						myBoss.Attack(myTarget);
+
+						AggroScript aggro = myBoss.GetComponent<AggroScript>();
+
+						aggro.myRange = 9999f;
 					}
 
 					myWaves--;

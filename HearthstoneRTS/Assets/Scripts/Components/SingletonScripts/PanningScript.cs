@@ -47,26 +47,33 @@ public class PanningScript : MonoBehaviour {
 
 		Vector2 screenPosition = new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
 
-		if (screenPosition.x > 0.975f)
+		if(Input.GetKey("right"))
+		//if (screenPosition.x > 0.975f)
 		{
 			//moving EAST
 			transform.Translate(myPanningFactor, 0.0f, 0.0f);
 
 		}
-		else if (screenPosition.x < 0.025f)
+		else
+			if (Input.GetKey("left"))
+			//if (screenPosition.x < 0.025f)
 		{
 			//moving WEST
 			transform.Translate(-myPanningFactor, 0.0f, 0.0f);
 
 		}
 
-		if (screenPosition.y > 0.975f)
+
+		if (Input.GetKey("up"))
+		//if (screenPosition.y > 0.975f)
 		{
 			//moving NORTH
 			transform.Translate(0.0f, 0.0f, myPanningFactor);
 
 		}
-		else if (screenPosition.y < 0.025f)
+		else
+			if (Input.GetKey("down"))
+			//if (screenPosition.y < 0.025f)
 		{
 			//moving SOUTH
 			transform.Translate(0.0f, 0.0f, -myPanningFactor);

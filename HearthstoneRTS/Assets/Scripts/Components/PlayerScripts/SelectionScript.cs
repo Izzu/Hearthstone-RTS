@@ -76,12 +76,8 @@ public class SelectionScript : MonoBehaviour {
 
 						Vector3 half = new Vector3(-difference.z, 0f, difference.x).normalized * mySelectedUnits.Count * .5f;
 
-						Debug.Log(half);
-
 						Vector3 left = hit.point + half;
 						Vector3 right = hit.point - half;
-
-						Debug.DrawLine(left, right);
 
 						float iter = 0f;
 
