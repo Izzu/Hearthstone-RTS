@@ -29,25 +29,7 @@ public class HandScript : MonoBehaviour {
 
 	void Update()
 	{
-		CardScript[] cards = myCards;
-
-		foreach(CardScript card in cards)
-		{
-			//make animators for cards that don't have them
-			if(null == card.GetComponentInChildren<Card_Animator_Script>())
-			{
-				GameObject stats = GlobalScript.New("Prefabs/Cards/Card_Stats");
-
-				stats.GetComponent<Card_Animator_Script>().myCard = card;
-
-				stats.transform.parent = card.transform;
-
-				stats.transform.localRotation = Quaternion.identity;
-				stats.transform.localPosition = Vector3.zero;
-				stats.transform.localScale = Vector3.one;
-
-			}
-		}
+		
 
 		//myCards = transform.GetComponentsInChildren<CardScript>();
 	}
