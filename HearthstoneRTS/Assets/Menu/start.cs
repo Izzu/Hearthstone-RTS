@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class start : MonoBehaviour {
 
     public int map = 1;
+    public Image textbox;
 
     public void OnClick()
     {
