@@ -51,7 +51,7 @@ public class PanningScript : MonoBehaviour {
 		//if (screenPosition.x > 0.975f)
 		{
 			//moving EAST
-			transform.Translate(myPanningFactor, 0.0f, 0.0f);
+			transform.Translate(myPanningFactor * Time.deltaTime, 0.0f, 0.0f);
 
 		}
 		else
@@ -59,7 +59,7 @@ public class PanningScript : MonoBehaviour {
 			//if (screenPosition.x < 0.025f)
 		{
 			//moving WEST
-			transform.Translate(-myPanningFactor, 0.0f, 0.0f);
+            transform.Translate(-myPanningFactor * Time.deltaTime, 0.0f, 0.0f);
 
 		}
 
@@ -68,7 +68,7 @@ public class PanningScript : MonoBehaviour {
 		//if (screenPosition.y > 0.975f)
 		{
 			//moving NORTH
-			transform.Translate(0.0f, 0.0f, myPanningFactor);
+            transform.Translate(0.0f, 0.0f, myPanningFactor * Time.deltaTime);
 
 		}
 		else
@@ -76,7 +76,7 @@ public class PanningScript : MonoBehaviour {
 			//if (screenPosition.y < 0.025f)
 		{
 			//moving SOUTH
-			transform.Translate(0.0f, 0.0f, -myPanningFactor);
+            transform.Translate(0.0f, 0.0f, -myPanningFactor * Time.deltaTime);
 
 		}
 
