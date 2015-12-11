@@ -9,11 +9,9 @@ public class PanningScript : MonoBehaviour {
 
 	public PlayerScript myPlayerScript;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
+	[SerializeField]
+	private float myRightBound, myLeftBound, myForwardBound, myBackwardBound;
+
 	// Update is called once per frame
 	void Update () {
 
@@ -21,9 +19,26 @@ public class PanningScript : MonoBehaviour {
 		{
 			Panning(Input.mousePosition - myMouseLastPosition);
 		}
+		
+		if(transform.position.x > myRightBound)
+		{
+			transform.position = new Vector3(myRightBound, transform.position.y, transform.position.z);
+		}
+		else if(transform.position.x < myLeftBound)
+		{
+			transform.position = new Vector3(myLeftBound, transform.position.y, transform.position.z);
+		}
+
+		if(transform.position.z > myForwardBound)
+		{
+			transform.position = new Vector3(transform.position.x, transform.position.y, myForwardBound);
+		}
+		else if (transform.position.z < myBackwardBound)
+		{
+			transform.position = new Vector3(transform.position.x, transform.position.y, myBackwardBound);
+		}
 
 		myMouseLastPosition = Input.mousePosition;
-
 	}
 
 
