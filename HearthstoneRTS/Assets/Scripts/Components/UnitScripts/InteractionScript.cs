@@ -5,7 +5,7 @@ public class InteractionScript : MonoBehaviour {
 
 	private UnitScript myUnit;
 
-	private UnitScript myTarget;
+	public UnitScript myTarget;
 
 	//clocker waits
 	private float myWait;
@@ -106,11 +106,17 @@ public class InteractionScript : MonoBehaviour {
 		{
 			myWait = myDuration;
 
-			if (myTarget)
+			HealthScript health = myUnit.GetComponent<HealthScript>();
+
+			if(health.isAlive)
 			{
-				if ((myTarget.transform.position - myUnit.transform.position).magnitude < myRange)
+				if (myTarget)
 				{
-					myEffect.Affect(new Message(myUnit.ToTerm(), myTarget.ToTerm()), 0f);
+					myDistance = (myTarget.transform.position - myUnit.transform.position).magnitude;
+					if (myDistance < myRange)
+					{
+						myEffect.Affect(new Message(myUnit.ToTerm(), myTarget.ToTerm()), 0f);
+					}
 				}
 			}
 		}
@@ -119,4 +125,6 @@ public class InteractionScript : MonoBehaviour {
 			myWait -= Time.deltaTime;
 		}
 	}
+
+	float myDistance;
 }

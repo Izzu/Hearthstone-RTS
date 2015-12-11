@@ -261,7 +261,7 @@ public class CommandScript : MonoBehaviour {
 		public InteractionScript myAction;
 
 		public Target(UnitScript target, InteractionScript action) :
-			base(target, .5f)//it would make more sense to pull range from whatever is attacking
+			base(target, action.myRange)//it would make more sense to pull range from whatever is attacking
 		{
 			if (null == target)
 			{
@@ -297,13 +297,11 @@ public class CommandScript : MonoBehaviour {
 			Vector3 destination = myTarget.transform.position;
 
 			float distance = (position - destination).magnitude;
-
 			if (distance < myRange)
 			{//in range
-				
-					myAction.self = self;
-					myAction.target = myTarget;
-					myAction.isLoop = true;
+				myAction.self = self;
+				myAction.target = myTarget;
+				myAction.isLoop = true;
 			}
 			else
 			{
