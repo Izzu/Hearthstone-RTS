@@ -65,10 +65,7 @@ public class UnitScript : MonoBehaviour {
 
 	void Start ()
 	{
-		if (null != myOwner && null != myOwner.owner)
-		{
-			transform.GetComponent<Renderer>().material.color = myOwner.owner.myColor;
-		}
+		
 	}
 
 	public UnitScript target
