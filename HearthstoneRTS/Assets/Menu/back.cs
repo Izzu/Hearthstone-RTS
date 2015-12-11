@@ -13,8 +13,8 @@ public class back : MonoBehaviour
     public Button map;
     public Button map1;
     public Button map2;
-	public Button map3;
     public Button instructions;
+    public GameObject info;
 
     public void OnClick()
     {
@@ -31,7 +31,6 @@ public class back : MonoBehaviour
             map.interactable = true;
             map1.interactable = false;
             map2.interactable = false;
-            map3.interactable = false;
             instructions.interactable = true;
             menu = "Options";
         } 
@@ -39,6 +38,7 @@ public class back : MonoBehaviour
         {
             map.interactable = true;
             instructions.interactable = true;
+            info.SetActive(false);
             menu = "Options";
         }
     }

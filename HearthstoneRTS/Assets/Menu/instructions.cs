@@ -6,13 +6,15 @@ public class instructions : MonoBehaviour {
 
     public Button instructionbutton;
     public Button maps;
-    public Image info;
+    public GameObject info;
+    //public Image info;
 
     public void OnClick()
     {
         //Debug.Log("clicked");
         instructionbutton.interactable = false;
         maps.interactable = false;
-        info.enabled = true;
+        info.SetActive(true);
+        //info.enabled = true;
     }
 }
