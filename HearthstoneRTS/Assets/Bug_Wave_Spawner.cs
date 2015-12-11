@@ -47,7 +47,7 @@ public class Bug_Wave_Spawner : MonoBehaviour {
 					Debug.Log("All Clear");
 					foreach (GameObject spawn in mySpawns)
 					{
-						for (int i = 0; i < 6; i++)
+						for (int i = 0; i < 2; i++)
 						{
 							UnitScript unit = Instantiate(myUnit).GetComponent<UnitScript>();
 

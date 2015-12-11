@@ -4,9 +4,9 @@ using System.Collections;
 //keeps track of two times and the time lapse between them
 public class Clocker {
 
-	private float myBeginTime;
+	public float myBeginTime;
 
-	private float myEndTime;
+	public float myEndTime;
 
 	public Clocker (float a, float b) {
 

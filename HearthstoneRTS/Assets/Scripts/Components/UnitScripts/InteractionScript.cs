@@ -7,19 +7,19 @@ public class InteractionScript : MonoBehaviour {
 
 	private UnitScript myTarget;
 
-	private float myBegin;
+	private Clocker myClocker;
+	private float myDuration;
 
-	private int myLastPhase;
+	//private int myLastPhase;
 
 	private bool isOn = false;
 
 	[SerializeField]
 	public bool isLoop = false;
 
-
-	[System.Serializable]
-	public class Data
-	{
+	//[System.Serializable]
+	//public class Data
+	//{
 		//public bool isBusy, canMove;
 
 		public EffectScript myEffect;
@@ -28,17 +28,17 @@ public class InteractionScript : MonoBehaviour {
 
 		public float myRange;
 
-		public Messenger_Script myMessenger;
-	}
+	//	public Messenger_Script myMessenger;
+	//}
 
 
 
 
-	[System.Serializable]
-	private class Wrap : Phaser<Data> {}
+	//[System.Serializable]
+	//private class Wrap : Phaser<Data> {}
 
-	[SerializeField]
-	private Wrap[] myPhases;
+	//[SerializeField]
+	//private Wrap[] myPhases;
 
 
 	public void Stop ()
@@ -66,55 +66,45 @@ public class InteractionScript : MonoBehaviour {
 	{
 		get
 		{
-			return isOn && Phaser<Data>.IsActive(myBegin, myPhases);
+			return isOn && myClocker.isActive;
 		}
 	}
 
-	public Data data 
-	{
-		get
-		{
-			if(isActive)
-			{
-				return myPhases[Phaser<Data>.Phase(begin, myPhases)].myData;
-			}
-			return null;
-		}
-		set
-		{
-			myPhases[Phaser<Data>.Phase(begin, myPhases)].myData = value;
-		}
-	}
+	//public Data data 
+	//{
+	//	get
+	//	{
+	//		if(isActive)
+	//		{
+	//			return myPhases[Phaser<Data>.Phase(begin, myPhases)].myData;
+	//		}
+	//		return null;
+	//	}
+	//	set
+	//	{
+	//		myPhases[Phaser<Data>.Phase(begin, myPhases)].myData = value;
+	//	}
+	//}
 
 	public float begin
 	{
 		set
 		{
-			myBegin = value;
-
-			if(null != myPhases)
-			{
-				Phaser<Data>.Syncronize(myBegin, myPhases);
-			}
+			myClocker.myBeginTime = value;
+			myClocker.myEndTime = myClocker.myBeginTime + myDuration;
 
 			isOn = true;
-
-			myLastPhase = -1;
 		}
 
 		get
 		{
-			return myBegin;
+			return myClocker.myBeginTime;
 		}
 	}
-
-
 
 	void Awake()
 	{
 		myUnit = GetComponent<UnitScript>();
-
-		begin = myBegin;
 
 		isOn = false;
 	}
@@ -124,118 +114,23 @@ public class InteractionScript : MonoBehaviour {
 		Activate();
 	}
 
-	public int count
-	{
-		get
-		{
-			return myPhases.Length;
-		}
-	}
+	//public int count
+	//{
+	//	get
+	//	{
+	//		return myPhases.Length;
+	//	}
+	//}
 
 	public void Activate ()
 	{
-		if (isOn && null != myPhases && Phaser<Data>.IsActive(myBegin, myPhases))
+		if (isOn && myClocker.isActive)
 		{
-			for (int n = Phaser<Data>.Phase(myBegin, myPhases); myLastPhase < n; myLastPhase++)
-			{
-				//Debug.Log("Phase: " + myLastPhase);
-
-				if(myLastPhase == count)
-				{
-					isOn = isLoop;
-				}
-
-				Data phaseData = data;
-
-				if (null != phaseData && null != phaseData.myEffect)
-				{
-					phaseData.myEffect.Affect(
-						new Message(myUnit.ToTerm(),
-							null == myTarget ? new Message.Term() : myTarget.ToTerm()), 
-						null == phaseData ? 0f : phaseData.myRange);
-
-					phaseData.myMessenger.Publish();
-				}
-			}
+			Debug.Log("Active");
+			if((myTarget.transform.position - myUnit.transform.position).magnitude < myRange)
+			myEffect.Affect(
+				new Message(myUnit.ToTerm(), null == myTarget ? new Message.Term() : myTarget.ToTerm()),
+				0f);
 		}
 	}
-}
-
-[System.Serializable]
-public class Phaser<Type>
-{
-	[SerializeField]
-	public float myDuration;
-
-	[SerializeField]
-	public Type myData;
-
-	private float myClock;
-
-	public static void Syncronize(float begin, Phaser<Type>[] phases)
-	{
-		for(int i = 0; i < phases.Length; i++)
-		{
-			begin += phases[i].myDuration;
-
-			phases[i].myClock = begin;
-		}
-	}
-
-	public static bool IsActive(float begin, Phaser<Type>[] phases)
-	{
-		if(null == phases | phases.Length == 0)
-		{
-			return false;
-		}
-
-		float end = phases[phases.Length - 1].myClock;
-
-		return (begin < end) & (Time.time < end);
-	}
-
-	public static int Phase(float begin, Phaser<Type>[] phases)
-	{
-		if(null == phases)
-		{
-			return -1;
-		}
-
-		float time = Time.time;
-
-		float end = phases[phases.Length - 1].myClock;
-
-		if (time < begin)
-		{
-			return -1;
-		}
-		else if (time > end)
-		{
-			return phases.Length;
-		}
-
-		int hi = phases.Length - 1;
-
-		int lo = 0;
-
-		int i = (hi + lo) >> 1;
-
-		for (; 1 < hi - lo; i = (hi + lo) >> 1)
-		{
-			if (time < phases[i].myClock)
-			{
-				hi = i;
-			}
-			else
-			{
-				lo = i;
-			}
-		}
-		if(time < phases[lo].myClock)
-		{
-			return lo;
-		}
-		return hi;
-	}
-
 }

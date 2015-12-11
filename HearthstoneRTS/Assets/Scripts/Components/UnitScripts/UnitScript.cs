@@ -100,11 +100,6 @@ public class UnitScript : MonoBehaviour {
 
 		if (PhaseScript.isAggressive)
 		{
-			if (myAttackMessenger)
-			{
-				myAttackMessenger.Publish();
-			}
-
 			myCommands.Order(new CommandScript.Target(target, myAttack));
 		}
 	}

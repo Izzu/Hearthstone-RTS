@@ -44,7 +44,7 @@ public class PhaseScript : MonoBehaviour {
 	{
 		get
 		{
-			return ourPhase == Phase.Battle;
+			return true;// ourPhase == Phase.Battle;
 		}
 	}
 
