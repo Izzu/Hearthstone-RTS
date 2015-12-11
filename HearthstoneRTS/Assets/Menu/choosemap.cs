@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class choosemap : MonoBehaviour {
 
-    public Button back;
     public Button map;
     public Button map1;
     public Button map2;

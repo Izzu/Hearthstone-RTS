@@ -9,6 +9,7 @@ public class options : MonoBehaviour {
     public Button exitbutton;
     public Button backbutton;
     public Button choosemap;
+    public Button instructions;
 
     public void OnClick()
     {
@@ -18,5 +19,6 @@ public class options : MonoBehaviour {
         exitbutton.interactable = false;
         backbutton.interactable = true;
         choosemap.interactable = true;
+        instructions.interactable = true;
     }
 }
