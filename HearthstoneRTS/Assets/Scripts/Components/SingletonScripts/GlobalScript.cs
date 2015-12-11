@@ -59,11 +59,15 @@ public class GlobalScript : MonoBehaviour {
 	{
 		Object prefab = Resources.Load(path);
 
-		GameObject gameObject = Instantiate(prefab) as GameObject;
+		if (prefab)
+		{
+			GameObject gameObject = Instantiate(prefab) as GameObject;
 
-		gameObject.name = prefab.name;
+			gameObject.name = prefab.name;
 
-		return gameObject;
+			return gameObject;
+		}
+		return null;
 	}
 
 	static public GameObject New(string path, Vector3 position, Quaternion rotation)

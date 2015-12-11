@@ -50,7 +50,8 @@ public class HandScript : MonoBehaviour {
     {
 		if (null != input)
 		{
-			EffectScript.AffectsList(input.myInsertEffects, myOwningPlayer.ToMessage());
+			if (myOwningPlayer)
+				EffectScript.AffectsList(input.myInsertEffects, myOwningPlayer.ToMessage());
 			
 			int cardCount = CountCards();
 
@@ -64,6 +65,7 @@ public class HandScript : MonoBehaviour {
 			}
 			else if (discard)
 			{
+				if (myOwningPlayer)
 				EffectScript.AffectsList(input.myRemoveEffects, myOwningPlayer.ToMessage());
 			}
 		}

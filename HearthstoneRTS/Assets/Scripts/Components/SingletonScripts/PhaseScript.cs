@@ -72,7 +72,7 @@ public class PhaseScript : MonoBehaviour {
 						{
 							if (playerScript && playerScript.myDeckScript)
 							{
-								for (int i = 0; i < 10; i++)
+								/*for (int i = 0; i < 10; i++)
 								{
 									CardScript cardScript = GlobalScript.New("Prefabs/Cards/Dual Mana").GetComponent<CardScript>();
 
@@ -88,7 +88,7 @@ public class PhaseScript : MonoBehaviour {
 								for (int i = 0; i < 4; i++)
 								{
 									playerScript.Draw();
-								}
+								}*/
 							}
 						}
 					}
