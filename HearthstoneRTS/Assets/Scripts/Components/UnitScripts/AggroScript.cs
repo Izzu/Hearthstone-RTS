@@ -59,6 +59,10 @@ public class AggroScript : MonoBehaviour
 					continue;
 				}
 
+				if (false == collider.gameObject.GetComponent<HealthScript>().isAlive)
+
+					continue;
+
 				float distance = (collider.transform.position - position).magnitude;
 
 				if (distance < closestDist)

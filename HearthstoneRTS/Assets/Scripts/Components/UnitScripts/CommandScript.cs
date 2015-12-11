@@ -105,9 +105,9 @@ public class CommandScript : MonoBehaviour {
 	{
 		public Vector3 myDestination;
 
-		public float myRange;
+		protected float myRange;
 
-		public Move(Vector3 input, float range = .5f)
+		public Move(Vector3 input, float range = 1f)
 		{
 			myDestination = input;
 			myRange = range;
@@ -125,7 +125,8 @@ public class CommandScript : MonoBehaviour {
 
 		public override bool IsDone(UnitScript self)
 		{
-			return (myDestination - self.gameObject.transform.position).magnitude < myRange;
+			float distance = (myDestination - self.gameObject.transform.position).magnitude;
+			return distance < myRange;
 		}
 
 		public override UnitScript target
@@ -192,7 +193,7 @@ public class CommandScript : MonoBehaviour {
 		public InteractionScript myAction;
 
 		public Interact(UnitScript target, InteractionScript action) :
-			base(target, .5f)//it would make more sense to pull range from whatever is attacking
+			base(target, 0.1f)//it would make more sense to pull range from whatever is attacking
 		{
 			if (null == target)
 			{
@@ -229,7 +230,7 @@ public class CommandScript : MonoBehaviour {
 
 			float distance = (position - destination).magnitude;
 
-			if(distance < myRange)
+			if(distance < myAction.myRange)
 			{
 					myAction.self = self;
 					myAction.target = myTarget;
@@ -261,7 +262,7 @@ public class CommandScript : MonoBehaviour {
 		public InteractionScript myAction;
 
 		public Target(UnitScript target, InteractionScript action) :
-			base(target, action.myRange)//it would make more sense to pull range from whatever is attacking
+			base(target, 0.1f)//it would make more sense to pull range from whatever is attacking
 		{
 			if (null == target)
 			{
@@ -297,11 +298,12 @@ public class CommandScript : MonoBehaviour {
 			Vector3 destination = myTarget.transform.position;
 
 			float distance = (position - destination).magnitude;
-			if (distance < myRange)
+			if (distance < myAction.myRange)
 			{//in range
 				myAction.self = self;
-				myAction.target = myTarget;
+				myAction.myTarget = myTarget;
 				myAction.isLoop = true;
+				self.myNavMeshAgent.destination = self.transform.position;
 			}
 			else
 			{
@@ -312,7 +314,13 @@ public class CommandScript : MonoBehaviour {
 
 		public override bool IsDone(UnitScript self)
 		{
-			return null == myTarget;
+			if(null == myTarget)
+				return true;
+
+			if (myTarget.GetComponent<HealthScript>().isAlive)
+				return false;
+			else
+				return true;
 		}
 
 		public override UnitScript target

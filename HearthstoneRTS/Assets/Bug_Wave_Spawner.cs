@@ -30,7 +30,7 @@ public class Bug_Wave_Spawner : MonoBehaviour {
 		{
 			if (myWait <= 0f)
 			{
-				myWait = 1f;
+				myWait = 10f;
 				Debug.Log("Wait done");
 				bool ready = true;
 
