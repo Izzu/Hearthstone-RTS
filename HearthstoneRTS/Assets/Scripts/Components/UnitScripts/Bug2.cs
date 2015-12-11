@@ -14,7 +14,7 @@ public class Bug2 : MonoBehaviour {
 	void DeathAnimation()
 	{
 		myAnimation.Play("Die_Left");
-		myAttacking = 100f;
+		myAttacking = 1000000000000000000000000f;
 	}
 
 	void Update()

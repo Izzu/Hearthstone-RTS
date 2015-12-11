@@ -16,7 +16,7 @@ public class KnightAnimationScript : MonoBehaviour
     void DeathAnimation()
     {
         myAnimation.Play("die");
-        myAttacking = 100f;
+        myAttacking = 1f;
     }
 
 	void Update()
@@ -34,14 +34,7 @@ public class KnightAnimationScript : MonoBehaviour
 			myAttacking = 0f;
 			if ((diff).magnitude > 0)
 			{
-				if (Vector3.Dot(diff, transform.forward) > 0)
-				{
 					myAnimation.Play("walk");
-				}
-				else
-				{
-					myAnimation.Play("walk_back");
-				}
 			}
 			else
 			{
