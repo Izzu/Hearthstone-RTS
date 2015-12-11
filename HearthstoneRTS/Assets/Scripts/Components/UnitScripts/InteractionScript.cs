@@ -7,7 +7,9 @@ public class InteractionScript : MonoBehaviour {
 
 	private UnitScript myTarget;
 
-	private Clocker myClocker;
+	//clocker waits
+	private float myWait;
+	[SerializeField]
 	private float myDuration;
 
 	//private int myLastPhase;
@@ -62,14 +64,6 @@ public class InteractionScript : MonoBehaviour {
 		}
 	}
 
-	public bool isActive
-	{
-		get
-		{
-			return isOn && myClocker.isActive;
-		}
-	}
-
 	//public Data data 
 	//{
 	//	get
@@ -86,27 +80,11 @@ public class InteractionScript : MonoBehaviour {
 	//	}
 	//}
 
-	public float begin
-	{
-		set
-		{
-			myClocker.myBeginTime = value;
-			myClocker.myEndTime = myClocker.myBeginTime + myDuration;
-
-			isOn = true;
-		}
-
-		get
-		{
-			return myClocker.myBeginTime;
-		}
-	}
-
 	void Awake()
 	{
 		myUnit = GetComponent<UnitScript>();
 
-		isOn = false;
+		isOn = true;
 	}
 
 	void Update()
@@ -124,13 +102,21 @@ public class InteractionScript : MonoBehaviour {
 
 	public void Activate ()
 	{
-		if (isOn && myClocker.isActive)
+		if (myWait <= 0f)
 		{
-			Debug.Log("Active");
-			if((myTarget.transform.position - myUnit.transform.position).magnitude < myRange)
-			myEffect.Affect(
-				new Message(myUnit.ToTerm(), null == myTarget ? new Message.Term() : myTarget.ToTerm()),
-				0f);
+			myWait = myDuration;
+
+			if (myTarget)
+			{
+				if ((myTarget.transform.position - myUnit.transform.position).magnitude < myRange)
+				{
+					myEffect.Affect(new Message(myUnit.ToTerm(), myTarget.ToTerm()), 0f);
+				}
+			}
+		}
+		else
+		{
+			myWait -= Time.deltaTime;
 		}
 	}
 }

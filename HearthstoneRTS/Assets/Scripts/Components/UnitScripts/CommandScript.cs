@@ -231,13 +231,9 @@ public class CommandScript : MonoBehaviour {
 
 			if(distance < myRange)
 			{
-				if(false == myAction.isActive)
-				{
 					myAction.self = self;
 					myAction.target = myTarget;
-					myAction.begin = Time.time;
 					myAction.isLoop = false;
-				}
 			}
 			else
 			{
@@ -303,14 +299,11 @@ public class CommandScript : MonoBehaviour {
 			float distance = (position - destination).magnitude;
 
 			if (distance < myRange)
-			{
-				if (false == myAction.isActive)
-				{
+			{//in range
+				
 					myAction.self = self;
 					myAction.target = myTarget;
-					myAction.begin = Time.time;
 					myAction.isLoop = true;
-				}
 			}
 			else
 			{
